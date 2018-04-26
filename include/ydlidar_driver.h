@@ -217,18 +217,17 @@ namespace ydlidar{
 	class YDlidarDriver
 	{
 	public:
-		static YDlidarDriver* singleton(){
-			return _impl;
-		}
-		static void initDriver(){
-			_impl = new YDlidarDriver;
-		}
-		static void done(){	
-			if(_impl){
-				delete _impl;	
-				_impl = NULL;
-			}
-		}
+        /**
+        * A constructor.
+        * A more elaborate description of the constructor.
+        */
+         YDlidarDriver();
+
+        /**
+        * A destructor.
+        * A more elaborate description of the destructor.
+        */
+         virtual ~YDlidarDriver();
 
 		/**
 		* @brief 连接雷达 \n
@@ -634,17 +633,6 @@ namespace ydlidar{
 		void simpleScanData(std::vector<scanDot> * scan_data , node_info *buffer, size_t count);
 
 	protected:
-	   /**
-       * A constructor.
-       * A more elaborate description of the constructor.
-       */
-		YDlidarDriver();
-
-	   /**
-       * A destructor.
-       * A more elaborate description of the destructor.
-       */
-		virtual ~YDlidarDriver();
 
 		/**
 		* @brief 创建解析雷达数据线程 \n
@@ -778,7 +766,6 @@ namespace ydlidar{
 
 	private:
         int PackageSampleBytes;             ///< 一个包包含的激光点数
-		static YDlidarDriver* _impl;		///< YDlidarDriver 
 		serial::Serial *_serial;			///< 串口
 		bool m_intensities;					///< 信号质量状体
 		int _sampling_rate;					///< 采样频率

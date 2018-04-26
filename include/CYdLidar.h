@@ -18,6 +18,8 @@
 
 #define DEG2RAD(x) ((x)*M_PI/180.)
 
+using namespace ydlidar;
+
 class YDLIDAR_API CYdLidar
 {
     PropertyBuilderByName(float,MaxRange,private)
@@ -92,5 +94,7 @@ private:
     int node_counts ;
     double each_angle;
     int show_error;
+    YDlidarDriver *lidarPtr;
+
 };	// End of class
 

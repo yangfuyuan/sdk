@@ -13,8 +13,6 @@ using namespace impl;
 
 namespace ydlidar{
 
-	YDlidarDriver* YDlidarDriver::_impl = NULL;
-
 	YDlidarDriver::YDlidarDriver():
 	_serial(0) {
 		isConnected = false;

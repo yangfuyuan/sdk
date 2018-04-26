@@ -32,6 +32,10 @@ enum \{ \\*
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}{Y\+Dlidar\+Driver} ()
+\item 
+virtual \hyperlink{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}{$\sim$\+Y\+Dlidar\+Driver} ()
+\item 
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a2c5eeecccaa6ed874635de1617e8d7d8}{connect} (const char $\ast$port\+\_\+path, uint32\+\_\+t baudrate)
 \begin{DoxyCompactList}\small\item\em 连接雷达 ~\newline
 连接成功后，必须使用\+::disconnect函数关闭 \end{DoxyCompactList}\item 
@@ -149,15 +153,6 @@ void \hyperlink{classydlidar_1_1_y_dlidar_driver_a797de2678c6c81c84a8126cf184a02
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static \hyperlink{classydlidar_1_1_y_dlidar_driver}{Y\+Dlidar\+Driver} $\ast$ {\bfseries singleton} ()\hypertarget{classydlidar_1_1_y_dlidar_driver_ae647504b6232c8fce584ca2d011a07d3}{}\label{classydlidar_1_1_y_dlidar_driver_ae647504b6232c8fce584ca2d011a07d3}
-
-\item 
-static void {\bfseries init\+Driver} ()\hypertarget{classydlidar_1_1_y_dlidar_driver_a15629ca7d39a463d1b18a5e35300dfe7}{}\label{classydlidar_1_1_y_dlidar_driver_a15629ca7d39a463d1b18a5e35300dfe7}
-
-\item 
-static void {\bfseries done} ()\hypertarget{classydlidar_1_1_y_dlidar_driver_a167ea8a27d77fae98488f1ba7f31969c}{}\label{classydlidar_1_1_y_dlidar_driver_a167ea8a27d77fae98488f1ba7f31969c}
-
-\item 
 static std\+::string \hyperlink{classydlidar_1_1_y_dlidar_driver_a542dc18ac8dbcda2a51657cf9bd44ae0}{get\+S\+D\+K\+Version} ()
 \begin{DoxyCompactList}\small\item\em 获取当前\+S\+D\+K版本号 ~\newline
 静态函数 \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -190,10 +185,6 @@ size\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a106fc563bb42f19e84e8d9d
 \begin{DoxyCompactList}\small\item\em 线程id \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
-\item 
-\hyperlink{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}{Y\+Dlidar\+Driver} ()
-\item 
-virtual \hyperlink{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}{$\sim$\+Y\+Dlidar\+Driver} ()
 \item 
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a2d2b317fa6381009222e03670812e917}{create\+Thread} ()
 \begin{DoxyCompactList}\small\item\em 创建解析雷达数据线程 ~\newline
@@ -281,14 +272,14 @@ Y\+D\+L\+I\+D\+A\+R\+\_\+\+G4C\hypertarget{classydlidar_1_1_y_dlidar_driver_abbb
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}{}\label{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}
+)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}{}\label{classydlidar_1_1_y_dlidar_driver_a19e20b6aa35834507a0dacc8a3c510e6}
 A constructor. A more elaborate description of the constructor. \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!````~Y\+Dlidar\+Driver@{$\sim$\+Y\+Dlidar\+Driver}}
 \index{````~Y\+Dlidar\+Driver@{$\sim$\+Y\+Dlidar\+Driver}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
 \subsubsection[{\texorpdfstring{$\sim$\+Y\+Dlidar\+Driver()}{~YDlidarDriver()}}]{\setlength{\rightskip}{0pt plus 5cm}ydlidar\+::\+Y\+Dlidar\+Driver\+::$\sim$\+Y\+Dlidar\+Driver (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}{}\label{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}{}\label{classydlidar_1_1_y_dlidar_driver_a87a50f9f1093a93b4d985f3e8bf27fde}
 A destructor. A more elaborate description of the destructor. 
 
 \subsection{Member Function Documentation}
