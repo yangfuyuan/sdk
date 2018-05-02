@@ -20,5 +20,5 @@ var searchData=
   ['getsdkversion',['getSDKVersion',['../classydlidar_1_1_y_dlidar_driver.html#a542dc18ac8dbcda2a51657cf9bd44ae0',1,'ydlidar::YDlidarDriver']]],
   ['getstopbits',['getStopbits',['../classserial_1_1_serial.html#a81ee96ec2fdb80d1851430d9e2c4698b',1,'serial::Serial']]],
   ['gettimeout',['getTimeout',['../classserial_1_1_serial.html#a13023f118c75b27fa2f0280d2d1c2a20',1,'serial::Serial']]],
-  ['grabscandata',['grabScanData',['../classydlidar_1_1_y_dlidar_driver.html#a6d6e04efa9d7e5d4aea41ee53d4ea8af',1,'ydlidar::YDlidarDriver']]]
+  ['grabscandata',['grabScanData',['../classydlidar_1_1_y_dlidar_driver.html#a0ea6373032e62fc4b54ad5a882d1e435',1,'ydlidar::YDlidarDriver']]]
 ];

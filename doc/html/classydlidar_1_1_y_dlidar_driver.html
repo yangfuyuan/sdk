@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>YDLDIAR SDK: ydlidar::YDlidarDriver Class Reference</title>
+<title>YDLIDAR SDK SCREEN INTERACTION: ydlidar::YDlidarDriver Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -24,8 +24,8 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="app(2).png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">YDLDIAR SDK
-   &#160;<span id="projectnumber">V1.3.2</span>
+   <div id="projectname">YDLIDAR SDK SCREEN INTERACTION
+   &#160;<span id="projectnumber">V1.0.0</span>
    </div>
   </td>
  </tr>
@@ -105,10 +105,10 @@ Collaboration diagram for ydlidar::YDlidarDriver:</div>
 <div class="dyncontent">
 <div class="center"><img src="classydlidar_1_1_y_dlidar_driver__coll__graph.png" border="0" usemap="#ydlidar_1_1_y_dlidar_driver_coll__map" alt="Collaboration graph"/></div>
 <map name="ydlidar_1_1_y_dlidar_driver_coll__map" id="ydlidar_1_1_y_dlidar_driver_coll__map">
-<area shape="rect" id="node2" href="structnode__info.html" title="node_info" alt="" coords="5,5,84,32"/>
-<area shape="rect" id="node3" href="class_locker.html" title="Locker" alt="" coords="134,5,195,32"/>
-<area shape="rect" id="node4" href="class_event.html" title="Event" alt="" coords="219,5,275,32"/>
-<area shape="rect" id="node5" href="class_thread.html" title="Thread" alt="" coords="313,5,376,32"/>
+<area shape="rect" id="node2" href="structtouch__info.html" title="touch_info" alt="" coords="5,5,88,32"/>
+<area shape="rect" id="node3" href="class_locker.html" title="Locker" alt="" coords="140,5,201,32"/>
+<area shape="rect" id="node4" href="class_event.html" title="Event" alt="" coords="225,5,281,32"/>
+<area shape="rect" id="node5" href="class_thread.html" title="Thread" alt="" coords="321,5,383,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -171,6 +171,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送掉电保护命令 <br />
  <a href="#a6e7dc7cd2a73d24a763cebde840a5d30">More...</a><br /></td></tr>
 <tr class="separator:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9ec366039e47431275df90156515fee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ab9ec366039e47431275df90156515fee">setScreenBox</a> (const float &amp;max_x, const float &amp;max_y, const float &amp;min_x, const float &amp;min_y)</td></tr>
+<tr class="memdesc:ab9ec366039e47431275df90156515fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置屏幕所在区域大小 <br />
+ <a href="#ab9ec366039e47431275df90156515fee">More...</a><br /></td></tr>
+<tr class="separator:ab9ec366039e47431275df90156515fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65b86426571e815049fdbb1f82a68a98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a65b86426571e815049fdbb1f82a68a98">setLaserPose</a> (const <a class="el" href="struct_laser_pose.html">LaserPose</a> &amp;pose)</td></tr>
+<tr class="memdesc:a65b86426571e815049fdbb1f82a68a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达在屏幕坐标系中的位置 <br />
+ <a href="#a65b86426571e815049fdbb1f82a68a98">More...</a><br /></td></tr>
+<tr class="separator:a65b86426571e815049fdbb1f82a68a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fe6f8b842a2aff2c3ae13f8423b03f4"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9fe6f8b842a2aff2c3ae13f8423b03f4">getHealth</a> (<a class="el" href="structdevice__health.html">device_health</a> &amp;health, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
 <tr class="memdesc:a9fe6f8b842a2aff2c3ae13f8423b03f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取雷达设备健康状态 <br />
  <a href="#a9fe6f8b842a2aff2c3ae13f8423b03f4">More...</a><br /></td></tr>
@@ -187,14 +195,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a7aa354e88eeb6984be4d18eae6367a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">关闭扫描 <br />
  <a href="#a7aa354e88eeb6984be4d18eae6367a0b">More...</a><br /></td></tr>
 <tr class="separator:a7aa354e88eeb6984be4d18eae6367a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d6e04efa9d7e5d4aea41ee53d4ea8af"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a6d6e04efa9d7e5d4aea41ee53d4ea8af">grabScanData</a> (<a class="el" href="structnode__info.html">node_info</a> *nodebuffer, size_t &amp;count, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a6d6e04efa9d7e5d4aea41ee53d4ea8af"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取激光数据 <br />
- <a href="#a6d6e04efa9d7e5d4aea41ee53d4ea8af">More...</a><br /></td></tr>
-<tr class="separator:a6d6e04efa9d7e5d4aea41ee53d4ea8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6494501f3fee2f6dc410f869bbc18cb9"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a6494501f3fee2f6dc410f869bbc18cb9">ascendScanData</a> (<a class="el" href="structnode__info.html">node_info</a> *nodebuffer, size_t count)</td></tr>
-<tr class="memdesc:a6494501f3fee2f6dc410f869bbc18cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">补偿激光角度 <br />
-把角度限制在0到360度之间  <a href="#a6494501f3fee2f6dc410f869bbc18cb9">More...</a><br /></td></tr>
-<tr class="separator:a6494501f3fee2f6dc410f869bbc18cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ea6373032e62fc4b54ad5a882d1e435"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a0ea6373032e62fc4b54ad5a882d1e435">grabScanData</a> (<a class="el" href="structtouch__info.html">touch_info</a> *pointbuffer, size_t &amp;count, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
+<tr class="memdesc:a0ea6373032e62fc4b54ad5a882d1e435"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取激光在屏幕box中的数据 <br />
+ <a href="#a0ea6373032e62fc4b54ad5a882d1e435">More...</a><br /></td></tr>
+<tr class="separator:a0ea6373032e62fc4b54ad5a882d1e435"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dd4086c5685163f7c7487ea0f5af08c"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a3dd4086c5685163f7c7487ea0f5af08c">reset</a> (uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
 <tr class="memdesc:a3dd4086c5685163f7c7487ea0f5af08c"><td class="mdescLeft">&#160;</td><td class="mdescRight">重置激光雷达 <br />
  <a href="#a3dd4086c5685163f7c7487ea0f5af08c">More...</a><br /></td></tr>
@@ -287,10 +291,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a1c8d40889885386e6c5a7827b7747696"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置扫描一圈固定激光点数 <br />
  <a href="#a1c8d40889885386e6c5a7827b7747696">More...</a><br /></td></tr>
 <tr class="separator:a1c8d40889885386e6c5a7827b7747696"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a797de2678c6c81c84a8126cf184a0254"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a797de2678c6c81c84a8126cf184a0254">simpleScanData</a> (std::vector&lt; <a class="el" href="structscan_dot.html">scanDot</a> &gt; *scan_data, <a class="el" href="structnode__info.html">node_info</a> *buffer, size_t count)</td></tr>
-<tr class="memdesc:a797de2678c6c81c84a8126cf184a0254"><td class="mdescLeft">&#160;</td><td class="mdescRight">解析激光信息数据到scanDot数据类型 <br />
- <a href="#a797de2678c6c81c84a8126cf184a0254">More...</a><br /></td></tr>
-<tr class="separator:a797de2678c6c81c84a8126cf184a0254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -313,14 +313,14 @@ std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a 
 std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a8a57494e849e7735fe8bf46d00b63077">isHeartbeat</a></td></tr>
 <tr class="memdesc:a8a57494e849e7735fe8bf46d00b63077"><td class="mdescLeft">&#160;</td><td class="mdescRight">掉电保护状态 <br /></td></tr>
 <tr class="separator:a8a57494e849e7735fe8bf46d00b63077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaefa47c69cbb0439b1259bdc6ccb29e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaefa47c69cbb0439b1259bdc6ccb29e"></a>
-<a class="el" href="structnode__info.html">node_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aeaefa47c69cbb0439b1259bdc6ccb29e">scan_node_buf</a> [2048]</td></tr>
-<tr class="memdesc:aeaefa47c69cbb0439b1259bdc6ccb29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">激光点信息 <br /></td></tr>
-<tr class="separator:aeaefa47c69cbb0439b1259bdc6ccb29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106fc563bb42f19e84e8d9db1e7856fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a106fc563bb42f19e84e8d9db1e7856fe"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a106fc563bb42f19e84e8d9db1e7856fe">scan_node_count</a></td></tr>
-<tr class="memdesc:a106fc563bb42f19e84e8d9db1e7856fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">激光点数 <br /></td></tr>
-<tr class="separator:a106fc563bb42f19e84e8d9db1e7856fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaf4f452a66b0e121cd870fe4a335c48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaf4f452a66b0e121cd870fe4a335c48"></a>
+<a class="el" href="structtouch__info.html">touch_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aeaf4f452a66b0e121cd870fe4a335c48">touch_point_buf</a> [2048]</td></tr>
+<tr class="memdesc:aeaf4f452a66b0e121cd870fe4a335c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">触摸点信息 <br /></td></tr>
+<tr class="separator:aeaf4f452a66b0e121cd870fe4a335c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0075ca3d993cc843ede9699dc429f87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0075ca3d993cc843ede9699dc429f87"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aa0075ca3d993cc843ede9699dc429f87">touch_point_count</a></td></tr>
+<tr class="memdesc:aa0075ca3d993cc843ede9699dc429f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">触摸点数 <br /></td></tr>
+<tr class="separator:aa0075ca3d993cc843ede9699dc429f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd2b3835a0e450d9b88d28d8f574148d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd2b3835a0e450d9b88d28d8f574148d"></a>
 <a class="el" href="class_event.html">Event</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#afd2b3835a0e450d9b88d28d8f574148d">_dataEvent</a></td></tr>
 <tr class="memdesc:afd2b3835a0e450d9b88d28d8f574148d"><td class="mdescLeft">&#160;</td><td class="mdescRight">数据同步事件 <br /></td></tr>
@@ -329,6 +329,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <a class="el" href="class_locker.html">Locker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1bb836661c8c39c2b71c9a0de8755c5c">_lock</a></td></tr>
 <tr class="memdesc:a1bb836661c8c39c2b71c9a0de8755c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程锁 <br /></td></tr>
 <tr class="separator:a1bb836661c8c39c2b71c9a0de8755c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff046cd2ad9fdda73dc1916ae1fa6f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afff046cd2ad9fdda73dc1916ae1fa6f0"></a>
+<a class="el" href="class_locker.html">Locker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#afff046cd2ad9fdda73dc1916ae1fa6f0">_plock</a></td></tr>
+<tr class="memdesc:afff046cd2ad9fdda73dc1916ae1fa6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">参数线程锁 <br /></td></tr>
+<tr class="separator:afff046cd2ad9fdda73dc1916ae1fa6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fbd1b3471c1aa4959d74524b9a92410"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fbd1b3471c1aa4959d74524b9a92410"></a>
 <a class="el" href="class_thread.html">Thread</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9fbd1b3471c1aa4959d74524b9a92410">_thread</a></td></tr>
 <tr class="memdesc:a9fbd1b3471c1aa4959d74524b9a92410"><td class="mdescLeft">&#160;</td><td class="mdescRight">线程id <br /></td></tr>
@@ -340,14 +344,14 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a2d2b317fa6381009222e03670812e917"><td class="mdescLeft">&#160;</td><td class="mdescRight">创建解析雷达数据线程 <br />
  <a href="#a2d2b317fa6381009222e03670812e917">More...</a><br /></td></tr>
 <tr class="separator:a2d2b317fa6381009222e03670812e917"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf78903693f58c7f739dfa493573b3b1"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aaf78903693f58c7f739dfa493573b3b1">waitPackage</a> (<a class="el" href="structnode__info.html">node_info</a> *node, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:aaf78903693f58c7f739dfa493573b3b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">解包激光数据 <br />
- <a href="#aaf78903693f58c7f739dfa493573b3b1">More...</a><br /></td></tr>
-<tr class="separator:aaf78903693f58c7f739dfa493573b3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a574996217284ce34191a2f3675a9f17b"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a574996217284ce34191a2f3675a9f17b">waitScanData</a> (<a class="el" href="structnode__info.html">node_info</a> *nodebuffer, size_t &amp;count, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a574996217284ce34191a2f3675a9f17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送数据到雷达 <br />
- <a href="#a574996217284ce34191a2f3675a9f17b">More...</a><br /></td></tr>
-<tr class="separator:a574996217284ce34191a2f3675a9f17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c992874d39c8c66d4581d27dbbd147e"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a7c992874d39c8c66d4581d27dbbd147e">waitPackage</a> (<a class="el" href="structtouch__info.html">touch_info</a> *point, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
+<tr class="memdesc:a7c992874d39c8c66d4581d27dbbd147e"><td class="mdescLeft">&#160;</td><td class="mdescRight">解包激光数据 <br />
+ <a href="#a7c992874d39c8c66d4581d27dbbd147e">More...</a><br /></td></tr>
+<tr class="separator:a7c992874d39c8c66d4581d27dbbd147e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478ae4aeeb112a4da439c7af24a53f2a"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a478ae4aeeb112a4da439c7af24a53f2a">waitScanData</a> (<a class="el" href="structtouch__info.html">touch_info</a> *pointbuffer, size_t &amp;count, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
+<tr class="memdesc:a478ae4aeeb112a4da439c7af24a53f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">等待激光数据 <br />
+ <a href="#a478ae4aeeb112a4da439c7af24a53f2a">More...</a><br /></td></tr>
+<tr class="separator:a478ae4aeeb112a4da439c7af24a53f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab462b22dc3a4d39fef4f722345a87d5e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab462b22dc3a4d39fef4f722345a87d5e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ab462b22dc3a4d39fef4f722345a87d5e">cacheScanData</a> ()</td></tr>
 <tr class="memdesc:ab462b22dc3a4d39fef4f722345a87d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">激光数据解析线程 <br />
@@ -388,6 +392,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a67fe00d7458cdb52b4160d745b8ecd32"><td class="mdescLeft">&#160;</td><td class="mdescRight">清除串口DTR <br />
 <br /></td></tr>
 <tr class="separator:a67fe00d7458cdb52b4160d745b8ecd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89983ccfe1dc49e15897e53df7a5fa3f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a89983ccfe1dc49e15897e53df7a5fa3f">inBox</a> (const float &amp;x, const float &amp;y)</td></tr>
+<tr class="memdesc:a89983ccfe1dc49e15897e53df7a5fa3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">判断点是否在屏幕中 <br />
+ <a href="#a89983ccfe1dc49e15897e53df7a5fa3f">More...</a><br /></td></tr>
+<tr class="separator:a89983ccfe1dc49e15897e53df7a5fa3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a13a4f2dc4067b43794b2c47c06d5d27a"></a>
@@ -493,51 +501,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6494501f3fee2f6dc410f869bbc18cb9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::ascendScanData </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structnode__info.html">node_info</a> *&#160;</td>
-          <td class="paramname"><em>nodebuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>补偿激光角度 <br />
-把角度限制在0到360度之间 </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nodebuffer</td><td>激光点信息 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>一圈激光点数 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>补偿之前，必须使用::grabScanData函数获取激光数据成功 </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a2c5eeecccaa6ed874635de1617e8d7d8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1114,15 +1077,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a6d6e04efa9d7e5d4aea41ee53d4ea8af"></a>
+<a class="anchor" id="a0ea6373032e62fc4b54ad5a882d1e435"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">result_t ydlidar::YDlidarDriver::grabScanData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structnode__info.html">node_info</a> *&#160;</td>
-          <td class="paramname"><em>nodebuffer</em>, </td>
+          <td class="paramtype"><a class="el" href="structtouch__info.html">touch_info</a> *&#160;</td>
+          <td class="paramname"><em>pointbuffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1144,12 +1107,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>获取激光数据 <br />
+<p>获取激光在屏幕box中的数据 <br />
 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nodebuffer</td><td>激光点信息 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>一圈激光点数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointbuffer</td><td>激光点在屏幕上的坐标信息 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>box中有效激光点数 </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
   </table>
   </dd>
@@ -1163,6 +1126,50 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>获取之前，必须使用::startScan函数开启扫描 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a89983ccfe1dc49e15897e53df7a5fa3f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ydlidar::YDlidarDriver::inBox </td>
+          <td>(</td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>判断点是否在屏幕中 <br />
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>激光屏幕坐标x值 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td>激光屏幕坐标y值 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1439,6 +1446,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>只有S4B雷达支持带信号质量, 别的型号雷达暂不支持 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a65b86426571e815049fdbb1f82a68a98"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ydlidar::YDlidarDriver::setLaserPose </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_laser_pose.html">LaserPose</a> &amp;&#160;</td>
+          <td class="paramname"><em>pose</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>设置雷达在屏幕坐标系中的位置 <br />
+</p>
+<dl class="section return"><dt>Returns</dt><dd>无 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_laser_pose.html">LaserPose</a></td><td>雷达位置 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2028,27 +2061,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a797de2678c6c81c84a8126cf184a0254"></a>
+<a class="anchor" id="ab9ec366039e47431275df90156515fee"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ydlidar::YDlidarDriver::simpleScanData </td>
+          <td class="memname">void ydlidar::YDlidarDriver::setScreenBox </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="structscan_dot.html">scanDot</a> &gt; *&#160;</td>
-          <td class="paramname"><em>scan_data</em>, </td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>max_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structnode__info.html">node_info</a> *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>max_y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>min_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramname"><em>min_y</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2058,17 +2097,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>解析激光信息数据到scanDot数据类型 <br />
+<p>设置屏幕所在区域大小 <br />
 </p>
+<dl class="section return"><dt>Returns</dt><dd>无 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">scan_data</td><td>解析后激光数据 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">buffer</td><td>解析前激光信息数据 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>一圈激光点数 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_x</td><td>屏幕最大X轴值 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_y</td><td>屏幕最大Y轴值 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_x</td><td>屏幕最小X轴值 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">min_y</td><td>屏幕最小Y轴值 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>解析之前，必须使用::ascendScanData函数获取激光数据成功 </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>左上角是屏幕坐标原点, X轴朝下, Y轴朝右</dd></dl>
+<p>||-------------&mdash;\ X ||-------------&mdash;/ </p><table class="doxtable">
+<tr>
+<th></th></tr>
+<tr>
+</tr>
+</table>
+<p>\/ Y </p>
 
 </div>
 </div>
@@ -2256,7 +2304,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="aaf78903693f58c7f739dfa493573b3b1"></a>
+<a class="anchor" id="a7c992874d39c8c66d4581d27dbbd147e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -2266,8 +2314,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">result_t ydlidar::YDlidarDriver::waitPackage </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structnode__info.html">node_info</a> *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
+          <td class="paramtype"><a class="el" href="structtouch__info.html">touch_info</a> *&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2292,7 +2340,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>解包后激光点信息 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">point</td><td>解包后激光点在屏幕坐标系中的信息 </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
   </table>
   </dd>
@@ -2354,7 +2402,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a574996217284ce34191a2f3675a9f17b"></a>
+<a class="anchor" id="a478ae4aeeb112a4da439c7af24a53f2a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -2364,8 +2412,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">result_t ydlidar::YDlidarDriver::waitScanData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structnode__info.html">node_info</a> *&#160;</td>
-          <td class="paramname"><em>nodebuffer</em>, </td>
+          <td class="paramtype"><a class="el" href="structtouch__info.html">touch_info</a> *&#160;</td>
+          <td class="paramname"><em>pointbuffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2392,12 +2440,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>发送数据到雷达 <br />
+<p>等待激光数据 <br />
 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nodebuffer</td><td>激光信息指针 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>激光点数大小 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointbuffer</td><td>激光点在屏幕上的坐标信息 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">count</td><td>激光在屏幕坐标系中的大小 </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
   </table>
   </dd>

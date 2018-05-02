@@ -22,23 +22,20 @@ using namespace ydlidar;
 
 class YDLIDAR_API CYdLidar
 {
-    PropertyBuilderByName(float,MaxRange,private)
-    PropertyBuilderByName(float,MinRange,private)
-    PropertyBuilderByName(float,MaxAngle,private)
-    PropertyBuilderByName(float,MinAngle,private)
+    PropertyBuilderByName(float,Max_x,private)
+    PropertyBuilderByName(float,Min_x,private)
+    PropertyBuilderByName(float,Max_y,private)
+    PropertyBuilderByName(float,Min_y,private)
+    PropertyBuilderByName(LaserPose, pose, private)
     PropertyBuilderByName(int,ScanFrequency,private)
 
     PropertyBuilderByName(bool,Intensities,private)
-    PropertyBuilderByName(bool,FixedResolution,private)
     PropertyBuilderByName(bool,Exposure,private)
     PropertyBuilderByName(bool,HeartBeat,private)
-    PropertyBuilderByName(bool,Reversion, private)
-
     PropertyBuilderByName(int,SerialBaudrate,private)
     PropertyBuilderByName(int,SampleRate,private)
 
     PropertyBuilderByName(std::string,SerialPort,private)
-    PropertyBuilderByName(std::vector<float>,IgnoreArray,private)
 
 
 public:
@@ -48,7 +45,7 @@ public:
     bool initialize();  //!< Attempts to connect and turns the laser on. Raises an exception on error.
 
     // Return true if laser data acquistion succeeds, If it's not
-    bool doProcessSimple(LaserScan &outscan, bool &hardwareError);
+    bool doProcessSimple(std::vector<touch_info> &outPoints, bool &hardwareError);
 
     //Turn on the motor enable
 	bool  turnOn();  //!< See base class docs
@@ -91,8 +88,6 @@ protected:
 
 private:
     bool isScanning;
-    int node_counts ;
-    double each_angle;
     int show_error;
     YDlidarDriver *lidarPtr;
 

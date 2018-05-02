@@ -1,4 +1,4 @@
-#ifndef YDLIDAR_DRIVER_H
+﻿#ifndef YDLIDAR_DRIVER_H
 #define YDLIDAR_DRIVER_H
 #include <stdlib.h>
 #include <atomic>
@@ -79,6 +79,21 @@ typedef enum {
 #pragma pack(1)
 #endif
 
+
+struct touch_info {
+    uint64_t    stamp;      /**< 当前触点时间戳. */
+    uint16_t    touchid;    /**< 屏幕box中有多少个触点. */
+    bool        isvalid;     /**< 当前点是否在设定的屏幕范围内. */
+    bool        new_frame;  /**<是否是新的一帧激光. */
+    float       screen_x;   /**<屏幕坐标系X(mm). */
+    float       screen_y;   /**<屏幕坐标系Y(mm). */
+    float       laser_x;    /**<雷达坐标系X(mm). */
+    float       laser_y;   /**<雷达坐标系Y(mm). */
+} __attribute__((packed)) ;
+
+
+
+
 struct node_info {
 	uint8_t    sync_quality;
 	uint16_t   angle_q6_checkbit;
@@ -113,23 +128,23 @@ struct node_packages {
 
 
 struct device_info{
-	uint8_t   model; ///< 雷达型号
-	uint16_t  firmware_version; ///< 固件版本号
-	uint8_t   hardware_version; ///< 硬件版本号
-	uint8_t   serialnum[16];    ///< 系列号
+    uint8_t   model; /**< 雷达型号. */
+    uint16_t  firmware_version; /**< 固件版本号. */
+    uint8_t   hardware_version; /**< 硬件版本号. */
+    uint8_t   serialnum[16];    /**< 系列号. */
 } __attribute__((packed)) ;
 
 struct device_health {
-	uint8_t   status; ///< 健康状体
-	uint16_t  error_code; ///< 错误代码
+    uint8_t   status; /**< 健康状体. */
+    uint16_t  error_code; /**< 错误代码. */
 } __attribute__((packed))  ;
 
 struct sampling_rate {
-	uint8_t rate;	///< 采样频率
+    uint8_t rate;	/**< 采样频率. */
 } __attribute__((packed))  ;
 
 struct scan_frequency {
-	uint32_t frequency;	///< 扫描频率
+    uint32_t frequency;	/**< 扫描频率. */
 } __attribute__((packed))  ;
 
 struct scan_rotation {
@@ -137,11 +152,11 @@ struct scan_rotation {
 } __attribute__((packed))  ;
 
 struct scan_exposure {
-	uint8_t exposure;	///< 低光功率模式
+    uint8_t exposure;	/**< 低光功率模式. */
 } __attribute__((packed))  ;
 
 struct scan_heart_beat {
-    uint8_t enable;	///< 掉电保护状态
+    uint8_t enable;	/**< 掉电保护状态. */
 } __attribute__((packed));
 
 struct scan_points {
@@ -167,46 +182,11 @@ struct lidar_ans_header {
 	uint8_t  type;
 } __attribute__((packed));
 
-struct scanDot {
-	uint8_t   quality;
-	float angle;
-	float dist;
-};
 
-
-//! A struct for returning configuration from the YDLIDAR
-struct LaserConfig {
-	//! Start angle for the laser scan [rad].  0 is forward and angles are measured clockwise when viewing YDLIDAR from the top.
-	float min_angle;
-	//! Stop angle for the laser scan [rad].   0 is forward and angles are measured clockwise when viewing YDLIDAR from the top.
-	float max_angle;
-	//! Scan resolution [rad].
-	float ang_increment;
-	//! Scan resoltuion [s]
-	float time_increment;
-	//! Time between scans
-	float scan_time;
-	//! Minimum range [m]
-	float min_range;
-	//! Maximum range [m]
-	float max_range;
-	//! Range Resolution [m]
-	float range_res;
-};
-
-
-//! A struct for returning laser readings from the YDLIDAR
-struct LaserScan {
-	//! Array of ranges
-	std::vector<float> ranges;
-	//! Array of intensities
-	std::vector<float> intensities;
-	//! Self reported time stamp in nanoseconds
-	uint64_t self_time_stamp;
-	//! System time when first range was measured in nanoseconds
-	uint64_t system_time_stamp;
-	//! Configuration of scan
-	LaserConfig config;
+struct LaserPose {
+    float   x;      /**< 雷达在屏幕坐标系中的X位置(mm). */
+    float   y;      /**< 雷达在屏幕坐标系中的Y位置(mm). */
+    float   theta;  /**< 雷达在屏幕坐标系中的朝向(度). */
 };
 
 using namespace std;
@@ -310,6 +290,33 @@ namespace ydlidar{
     	*/
         result_t sendHeartBeat();
 
+        /**
+        * @brief 设置屏幕所在区域大小 \n
+        * @return 无
+        * @param[in] max_x    屏幕最大X轴值
+        * @param[in] max_y    屏幕最大Y轴值
+        * @param[in] min_x    屏幕最小X轴值
+        * @param[in] min_y    屏幕最小Y轴值
+        * @note左上角是屏幕坐标原点, X轴朝下, Y轴朝右
+        *
+        *   ||----------------\ X
+        *   ||----------------/
+        *   ||
+        *   ||
+        *   ||
+        *   ||
+        *   \/
+        *    Y
+        */
+        void setScreenBox(const float& max_x, const float& max_y, const float& min_x, const float& min_y);
+
+        /**
+        * @brief 设置雷达在屏幕坐标系中的位置 \n
+        * @return 无
+        * @param[in] LaserPose   雷达位置
+        */
+        void setLaserPose(const LaserPose& pose);
+
 		/**
 		* @brief 获取雷达设备健康状态 \n
     	* @return 返回执行结果
@@ -349,29 +356,18 @@ namespace ydlidar{
 
 		
 		/**
-		* @brief 获取激光数据 \n
-    	* @param[in] nodebuffer 激光点信息
-		* @param[in] count      一圈激光点数
+        * @brief 获取激光在屏幕box中的数据 \n
+        * @param[in] pointbuffer 激光点在屏幕上的坐标信息
+        * @param[in] count      box中有效激光点数
     	* @param[in] timeout    超时时间  
     	* @return 返回执行结果
     	* @retval RESULT_OK       获取成功
     	* @retval RESULT_FAILE    获取失败
 		* @note 获取之前，必须使用::startScan函数开启扫描
     	*/
-		result_t grabScanData(node_info * nodebuffer, size_t & count, uint32_t timeout = DEFAULT_TIMEOUT) ;
+        result_t grabScanData(touch_info * pointbuffer, size_t & count, uint32_t timeout = DEFAULT_TIMEOUT) ;
 
 
-		/**
-		* @brief 补偿激光角度 \n
-		* 把角度限制在0到360度之间
-    	* @param[in] nodebuffer 激光点信息
-		* @param[in] count      一圈激光点数
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 补偿之前，必须使用::grabScanData函数获取激光数据成功
-    	*/
-		result_t ascendScanData(node_info * nodebuffer, size_t count);
 
 		/**	
 		* @brief 重置激光雷达 \n
@@ -623,14 +619,6 @@ namespace ydlidar{
     	*/
 		result_t setPointsForOneRingFlag(scan_points& points,uint32_t timeout = DEFAULT_TIMEOUT);
 
-		/**
-		* @brief 解析激光信息数据到scanDot数据类型 \n
-    	* @param[in] scan_data 解析后激光数据
-    	* @param[in] buffer    解析前激光信息数据		
-		* @param[in] count      一圈激光点数
-		* @note 解析之前，必须使用::ascendScanData函数获取激光数据成功
-    	*/
-		void simpleScanData(std::vector<scanDot> * scan_data , node_info *buffer, size_t count);
 
 	protected:
 
@@ -642,22 +630,22 @@ namespace ydlidar{
 
 		/**
 		* @brief 解包激光数据 \n
-    	* @param[in] node 解包后激光点信息
+        * @param[in] point 解包后激光点在屏幕坐标系中的信息
 		* @param[in] timeout     超时时间
     	*/
-		result_t waitPackage(node_info * node, uint32_t timeout = DEFAULT_TIMEOUT);
+        result_t waitPackage(touch_info * point, uint32_t timeout = DEFAULT_TIMEOUT);
 
 		/**
-		* @brief 发送数据到雷达 \n
-    	* @param[in] nodebuffer 激光信息指针
-    	* @param[in] count      激光点数大小	
+        * @brief 等待激光数据 \n
+        * @param[in] pointbuffer 激光点在屏幕上的坐标信息
+        * @param[in] count        激光在屏幕坐标系中的大小
 		* @param[in] timeout      超时时间	
 		* @return 返回执行结果
     	* @retval RESULT_OK       成功
 		* @retval RESULT_TIMEOUT  等待超时
     	* @retval RESULT_FAILE    失败	
     	*/
-		result_t waitScanData(node_info * nodebuffer, size_t & count, uint32_t timeout = DEFAULT_TIMEOUT);
+        result_t waitScanData(touch_info * pointbuffer, size_t & count, uint32_t timeout = DEFAULT_TIMEOUT);
 
 		/**
 		* @brief 激光数据解析线程 \n
@@ -736,6 +724,14 @@ namespace ydlidar{
     	*/
 		void clearDTR();
 
+        /**
+          *@brief 判断点是否在屏幕中 \n
+          * @param[in] x 	激光屏幕坐标x值
+          * @param[in] y    激光屏幕坐标y值
+          *
+          */
+        bool inBox(const float & x, const float& y);
+
 
 	public:
 		std::atomic<bool>     isConnected;  ///< 串口连接状体
@@ -758,10 +754,11 @@ namespace ydlidar{
 			YDLIDAR_G4C=9, /**< G4C雷达型号代号. */ 
 
 		};
-		node_info      scan_node_buf[2048];  ///< 激光点信息
-		size_t         scan_node_count;      ///< 激光点数
+        touch_info     touch_point_buf[2048];  ///< 触摸点信息
+        size_t         touch_point_count;      ///< 触摸点数
 		Event          _dataEvent;			 ///< 数据同步事件
 		Locker         _lock;				///< 线程锁
+        Locker         _plock;				///< 参数线程锁
 		Thread 	       _thread;				///< 线程id
 
 	private:
@@ -792,7 +789,14 @@ namespace ydlidar{
         uint16_t LastSampleAngleCal;
         bool CheckSunResult;
         uint16_t Valu8Tou16;
+        uint16_t touchid;///< 触点ID
 
+        float screen_max_x;///< 屏幕X轴最大值
+        float screen_max_y;///< 屏幕Y轴最大值
+        float screen_min_x;///< 屏幕X轴最小值
+        float screen_min_y;///< 屏幕Y轴最小值
+
+        LaserPose laser_pose; ///< 雷达在屏幕坐标系的位置
 	};
 }
 

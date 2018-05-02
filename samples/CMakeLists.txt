@@ -25,4 +25,5 @@ ADD_EXECUTABLE(${PROJECT_NAME}
                main.cpp)
 
 # Add the required libraries for linking:
-TARGET_LINK_LIBRARIES(${PROJECT_NAME}  ${YDLIDAR_LIBRARIES})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}  ${YDLIDAR_LIBRARIES} -lX11)
+

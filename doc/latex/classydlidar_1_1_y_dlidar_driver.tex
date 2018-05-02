@@ -60,6 +60,12 @@ void \hyperlink{classydlidar_1_1_y_dlidar_driver_ab2bf62735be18019864c12f0e462c4
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a6e7dc7cd2a73d24a763cebde840a5d30}{send\+Heart\+Beat} ()
 \begin{DoxyCompactList}\small\item\em 发送掉电保护命令 ~\newline
 \end{DoxyCompactList}\item 
+void \hyperlink{classydlidar_1_1_y_dlidar_driver_ab9ec366039e47431275df90156515fee}{set\+Screen\+Box} (const float \&max\+\_\+x, const float \&max\+\_\+y, const float \&min\+\_\+x, const float \&min\+\_\+y)
+\begin{DoxyCompactList}\small\item\em 设置屏幕所在区域大小 ~\newline
+\end{DoxyCompactList}\item 
+void \hyperlink{classydlidar_1_1_y_dlidar_driver_a65b86426571e815049fdbb1f82a68a98}{set\+Laser\+Pose} (const \hyperlink{struct_laser_pose}{Laser\+Pose} \&pose)
+\begin{DoxyCompactList}\small\item\em 设置雷达在屏幕坐标系中的位置 ~\newline
+\end{DoxyCompactList}\item 
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a9fe6f8b842a2aff2c3ae13f8423b03f4}{get\+Health} (\hyperlink{structdevice__health}{device\+\_\+health} \&health, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
 \begin{DoxyCompactList}\small\item\em 获取雷达设备健康状态 ~\newline
 \end{DoxyCompactList}\item 
@@ -72,12 +78,9 @@ result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a62888da8520422b7daaae
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a7aa354e88eeb6984be4d18eae6367a0b}{stop} ()
 \begin{DoxyCompactList}\small\item\em 关闭扫描 ~\newline
 \end{DoxyCompactList}\item 
-result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a6d6e04efa9d7e5d4aea41ee53d4ea8af}{grab\+Scan\+Data} (\hyperlink{structnode__info}{node\+\_\+info} $\ast$nodebuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
-\begin{DoxyCompactList}\small\item\em 获取激光数据 ~\newline
+result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a0ea6373032e62fc4b54ad5a882d1e435}{grab\+Scan\+Data} (\hyperlink{structtouch__info}{touch\+\_\+info} $\ast$pointbuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
+\begin{DoxyCompactList}\small\item\em 获取激光在屏幕box中的数据 ~\newline
 \end{DoxyCompactList}\item 
-result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a6494501f3fee2f6dc410f869bbc18cb9}{ascend\+Scan\+Data} (\hyperlink{structnode__info}{node\+\_\+info} $\ast$nodebuffer, size\+\_\+t count)
-\begin{DoxyCompactList}\small\item\em 补偿激光角度 ~\newline
-把角度限制在0到360度之间 \end{DoxyCompactList}\item 
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a3dd4086c5685163f7c7487ea0f5af08c}{reset} (uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
 \begin{DoxyCompactList}\small\item\em 重置激光雷达 ~\newline
 \end{DoxyCompactList}\item 
@@ -146,9 +149,6 @@ result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_ab2d5434c9b640a38f9d3b
 \end{DoxyCompactList}\item 
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a1c8d40889885386e6c5a7827b7747696}{set\+Points\+For\+One\+Ring\+Flag} (\hyperlink{structscan__points}{scan\+\_\+points} \&points, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
 \begin{DoxyCompactList}\small\item\em 设置扫描一圈固定激光点数 ~\newline
-\end{DoxyCompactList}\item 
-void \hyperlink{classydlidar_1_1_y_dlidar_driver_a797de2678c6c81c84a8126cf184a0254}{simple\+Scan\+Data} (std\+::vector$<$ \hyperlink{structscan_dot}{scan\+Dot} $>$ $\ast$scan\+\_\+data, \hyperlink{structnode__info}{node\+\_\+info} $\ast$buffer, size\+\_\+t count)
-\begin{DoxyCompactList}\small\item\em 解析激光信息数据到scan\+Dot数据类型 ~\newline
 \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -168,18 +168,21 @@ std\+::atomic$<$ bool $>$ \hyperlink{classydlidar_1_1_y_dlidar_driver_a245115a8c
 std\+::atomic$<$ bool $>$ \hyperlink{classydlidar_1_1_y_dlidar_driver_a8a57494e849e7735fe8bf46d00b63077}{is\+Heartbeat}\hypertarget{classydlidar_1_1_y_dlidar_driver_a8a57494e849e7735fe8bf46d00b63077}{}\label{classydlidar_1_1_y_dlidar_driver_a8a57494e849e7735fe8bf46d00b63077}
 
 \begin{DoxyCompactList}\small\item\em 掉电保护状态 \end{DoxyCompactList}\item 
-\hyperlink{structnode__info}{node\+\_\+info} \hyperlink{classydlidar_1_1_y_dlidar_driver_aeaefa47c69cbb0439b1259bdc6ccb29e}{scan\+\_\+node\+\_\+buf} \mbox{[}2048\mbox{]}\hypertarget{classydlidar_1_1_y_dlidar_driver_aeaefa47c69cbb0439b1259bdc6ccb29e}{}\label{classydlidar_1_1_y_dlidar_driver_aeaefa47c69cbb0439b1259bdc6ccb29e}
+\hyperlink{structtouch__info}{touch\+\_\+info} \hyperlink{classydlidar_1_1_y_dlidar_driver_aeaf4f452a66b0e121cd870fe4a335c48}{touch\+\_\+point\+\_\+buf} \mbox{[}2048\mbox{]}\hypertarget{classydlidar_1_1_y_dlidar_driver_aeaf4f452a66b0e121cd870fe4a335c48}{}\label{classydlidar_1_1_y_dlidar_driver_aeaf4f452a66b0e121cd870fe4a335c48}
 
-\begin{DoxyCompactList}\small\item\em 激光点信息 \end{DoxyCompactList}\item 
-size\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a106fc563bb42f19e84e8d9db1e7856fe}{scan\+\_\+node\+\_\+count}\hypertarget{classydlidar_1_1_y_dlidar_driver_a106fc563bb42f19e84e8d9db1e7856fe}{}\label{classydlidar_1_1_y_dlidar_driver_a106fc563bb42f19e84e8d9db1e7856fe}
+\begin{DoxyCompactList}\small\item\em 触摸点信息 \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_aa0075ca3d993cc843ede9699dc429f87}{touch\+\_\+point\+\_\+count}\hypertarget{classydlidar_1_1_y_dlidar_driver_aa0075ca3d993cc843ede9699dc429f87}{}\label{classydlidar_1_1_y_dlidar_driver_aa0075ca3d993cc843ede9699dc429f87}
 
-\begin{DoxyCompactList}\small\item\em 激光点数 \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em 触摸点数 \end{DoxyCompactList}\item 
 \hyperlink{class_event}{Event} \hyperlink{classydlidar_1_1_y_dlidar_driver_afd2b3835a0e450d9b88d28d8f574148d}{\+\_\+data\+Event}\hypertarget{classydlidar_1_1_y_dlidar_driver_afd2b3835a0e450d9b88d28d8f574148d}{}\label{classydlidar_1_1_y_dlidar_driver_afd2b3835a0e450d9b88d28d8f574148d}
 
 \begin{DoxyCompactList}\small\item\em 数据同步事件 \end{DoxyCompactList}\item 
 \hyperlink{class_locker}{Locker} \hyperlink{classydlidar_1_1_y_dlidar_driver_a1bb836661c8c39c2b71c9a0de8755c5c}{\+\_\+lock}\hypertarget{classydlidar_1_1_y_dlidar_driver_a1bb836661c8c39c2b71c9a0de8755c5c}{}\label{classydlidar_1_1_y_dlidar_driver_a1bb836661c8c39c2b71c9a0de8755c5c}
 
 \begin{DoxyCompactList}\small\item\em 线程锁 \end{DoxyCompactList}\item 
+\hyperlink{class_locker}{Locker} \hyperlink{classydlidar_1_1_y_dlidar_driver_afff046cd2ad9fdda73dc1916ae1fa6f0}{\+\_\+plock}\hypertarget{classydlidar_1_1_y_dlidar_driver_afff046cd2ad9fdda73dc1916ae1fa6f0}{}\label{classydlidar_1_1_y_dlidar_driver_afff046cd2ad9fdda73dc1916ae1fa6f0}
+
+\begin{DoxyCompactList}\small\item\em 参数线程锁 \end{DoxyCompactList}\item 
 \hyperlink{class_thread}{Thread} \hyperlink{classydlidar_1_1_y_dlidar_driver_a9fbd1b3471c1aa4959d74524b9a92410}{\+\_\+thread}\hypertarget{classydlidar_1_1_y_dlidar_driver_a9fbd1b3471c1aa4959d74524b9a92410}{}\label{classydlidar_1_1_y_dlidar_driver_a9fbd1b3471c1aa4959d74524b9a92410}
 
 \begin{DoxyCompactList}\small\item\em 线程id \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -189,11 +192,11 @@ size\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a106fc563bb42f19e84e8d9d
 result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a2d2b317fa6381009222e03670812e917}{create\+Thread} ()
 \begin{DoxyCompactList}\small\item\em 创建解析雷达数据线程 ~\newline
 \end{DoxyCompactList}\item 
-result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_aaf78903693f58c7f739dfa493573b3b1}{wait\+Package} (\hyperlink{structnode__info}{node\+\_\+info} $\ast$node, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
+result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a7c992874d39c8c66d4581d27dbbd147e}{wait\+Package} (\hyperlink{structtouch__info}{touch\+\_\+info} $\ast$point, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
 \begin{DoxyCompactList}\small\item\em 解包激光数据 ~\newline
 \end{DoxyCompactList}\item 
-result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a574996217284ce34191a2f3675a9f17b}{wait\+Scan\+Data} (\hyperlink{structnode__info}{node\+\_\+info} $\ast$nodebuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
-\begin{DoxyCompactList}\small\item\em 发送数据到雷达 ~\newline
+result\+\_\+t \hyperlink{classydlidar_1_1_y_dlidar_driver_a478ae4aeeb112a4da439c7af24a53f2a}{wait\+Scan\+Data} (\hyperlink{structtouch__info}{touch\+\_\+info} $\ast$pointbuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\hyperlink{classydlidar_1_1_y_dlidar_driver_a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442}{D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT})
+\begin{DoxyCompactList}\small\item\em 等待激光数据 ~\newline
 \end{DoxyCompactList}\item 
 int \hyperlink{classydlidar_1_1_y_dlidar_driver_ab462b22dc3a4d39fef4f722345a87d5e}{cache\+Scan\+Data} ()\hypertarget{classydlidar_1_1_y_dlidar_driver_ab462b22dc3a4d39fef4f722345a87d5e}{}\label{classydlidar_1_1_y_dlidar_driver_ab462b22dc3a4d39fef4f722345a87d5e}
 
@@ -225,6 +228,9 @@ void \hyperlink{classydlidar_1_1_y_dlidar_driver_a88de43cf13058344fc83389cb9df7e
 void \hyperlink{classydlidar_1_1_y_dlidar_driver_a67fe00d7458cdb52b4160d745b8ecd32}{clear\+D\+TR} ()\hypertarget{classydlidar_1_1_y_dlidar_driver_a67fe00d7458cdb52b4160d745b8ecd32}{}\label{classydlidar_1_1_y_dlidar_driver_a67fe00d7458cdb52b4160d745b8ecd32}
 
 \begin{DoxyCompactList}\small\item\em 清除串口\+D\+TR ~\newline
+\end{DoxyCompactList}\item 
+bool \hyperlink{classydlidar_1_1_y_dlidar_driver_a89983ccfe1dc49e15897e53df7a5fa3f}{in\+Box} (const float \&x, const float \&y)
+\begin{DoxyCompactList}\small\item\em 判断点是否在屏幕中 ~\newline
 \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -283,39 +289,6 @@ A constructor. A more elaborate description of the constructor. \index{ydlidar\+
 A destructor. A more elaborate description of the destructor. 
 
 \subsection{Member Function Documentation}
-\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!ascend\+Scan\+Data@{ascend\+Scan\+Data}}
-\index{ascend\+Scan\+Data@{ascend\+Scan\+Data}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
-\subsubsection[{\texorpdfstring{ascend\+Scan\+Data(node\+\_\+info $\ast$nodebuffer, size\+\_\+t count)}{ascendScanData(node_info *nodebuffer, size_t count)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::ascend\+Scan\+Data (
-\begin{DoxyParamCaption}
-\item[{{\bf node\+\_\+info} $\ast$}]{nodebuffer, }
-\item[{size\+\_\+t}]{count}
-\end{DoxyParamCaption}
-)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a6494501f3fee2f6dc410f869bbc18cb9}{}\label{classydlidar_1_1_y_dlidar_driver_a6494501f3fee2f6dc410f869bbc18cb9}
-
-
-补偿激光角度 ~\newline
-把角度限制在0到360度之间 
-
-
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em nodebuffer} & 激光点信息 \\
-\hline
-\mbox{\tt in}  & {\em count} & 一圈激光点数 \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-返回执行结果 
-\end{DoxyReturn}
-
-\begin{DoxyRetVals}{Return values}
-{\em R\+E\+S\+U\+L\+T\+\_\+\+OK} & 成功 \\
-\hline
-{\em R\+E\+S\+U\+L\+T\+\_\+\+F\+A\+I\+LE} & 失败 \\
-\hline
-\end{DoxyRetVals}
-\begin{DoxyNote}{Note}
-补偿之前，必须使用\+::grab\+Scan\+Data函数获取激光数据成功 
-\end{DoxyNote}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!connect@{connect}}
 \index{connect@{connect}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
 \subsubsection[{\texorpdfstring{connect(const char $\ast$port\+\_\+path, uint32\+\_\+t baudrate)}{connect(const char *port_path, uint32_t baudrate)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::connect (
@@ -722,23 +695,23 @@ A destructor. A more elaborate description of the destructor.
 \end{DoxyReturn}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!grab\+Scan\+Data@{grab\+Scan\+Data}}
 \index{grab\+Scan\+Data@{grab\+Scan\+Data}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
-\subsubsection[{\texorpdfstring{grab\+Scan\+Data(node\+\_\+info $\ast$nodebuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{grabScanData(node_info *nodebuffer, size_t &count, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::grab\+Scan\+Data (
+\subsubsection[{\texorpdfstring{grab\+Scan\+Data(touch\+\_\+info $\ast$pointbuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{grabScanData(touch_info *pointbuffer, size_t &count, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::grab\+Scan\+Data (
 \begin{DoxyParamCaption}
-\item[{{\bf node\+\_\+info} $\ast$}]{nodebuffer, }
+\item[{{\bf touch\+\_\+info} $\ast$}]{pointbuffer, }
 \item[{size\+\_\+t \&}]{count, }
 \item[{uint32\+\_\+t}]{timeout = {\ttfamily {\bf D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT}}}
 \end{DoxyParamCaption}
-)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a6d6e04efa9d7e5d4aea41ee53d4ea8af}{}\label{classydlidar_1_1_y_dlidar_driver_a6d6e04efa9d7e5d4aea41ee53d4ea8af}
+)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a0ea6373032e62fc4b54ad5a882d1e435}{}\label{classydlidar_1_1_y_dlidar_driver_a0ea6373032e62fc4b54ad5a882d1e435}
 
 
-获取激光数据 ~\newline
+获取激光在屏幕box中的数据 ~\newline
 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em nodebuffer} & 激光点信息 \\
+\mbox{\tt in}  & {\em pointbuffer} & 激光点在屏幕上的坐标信息 \\
 \hline
-\mbox{\tt in}  & {\em count} & 一圈激光点数 \\
+\mbox{\tt in}  & {\em count} & box中有效激光点数 \\
 \hline
 \mbox{\tt in}  & {\em timeout} & 超时时间 \\
 \hline
@@ -756,6 +729,26 @@ A destructor. A more elaborate description of the destructor.
 \begin{DoxyNote}{Note}
 获取之前，必须使用\+::start\+Scan函数开启扫描 
 \end{DoxyNote}
+\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!in\+Box@{in\+Box}}
+\index{in\+Box@{in\+Box}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
+\subsubsection[{\texorpdfstring{in\+Box(const float \&x, const float \&y)}{inBox(const float &x, const float &y)}}]{\setlength{\rightskip}{0pt plus 5cm}bool ydlidar\+::\+Y\+Dlidar\+Driver\+::in\+Box (
+\begin{DoxyParamCaption}
+\item[{const float \&}]{x, }
+\item[{const float \&}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a89983ccfe1dc49e15897e53df7a5fa3f}{}\label{classydlidar_1_1_y_dlidar_driver_a89983ccfe1dc49e15897e53df7a5fa3f}
+
+
+判断点是否在屏幕中 ~\newline
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em x} & 激光屏幕坐标x值 \\
+\hline
+\mbox{\tt in}  & {\em y} & 激光屏幕坐标y值 \\
+\hline
+\end{DoxyParams}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!isconnected@{isconnected}}
 \index{isconnected@{isconnected}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
 \subsubsection[{\texorpdfstring{isconnected() const }{isconnected() const }}]{\setlength{\rightskip}{0pt plus 5cm}const bool ydlidar\+::\+Y\+Dlidar\+Driver\+::isconnected (
@@ -958,6 +951,26 @@ A destructor. A more elaborate description of the destructor.
 \begin{DoxyNote}{Note}
 只有\+S4\+B雷达支持带信号质量, 别的型号雷达暂不支持 
 \end{DoxyNote}
+\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!set\+Laser\+Pose@{set\+Laser\+Pose}}
+\index{set\+Laser\+Pose@{set\+Laser\+Pose}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
+\subsubsection[{\texorpdfstring{set\+Laser\+Pose(const Laser\+Pose \&pose)}{setLaserPose(const LaserPose &pose)}}]{\setlength{\rightskip}{0pt plus 5cm}void ydlidar\+::\+Y\+Dlidar\+Driver\+::set\+Laser\+Pose (
+\begin{DoxyParamCaption}
+\item[{const {\bf Laser\+Pose} \&}]{pose}
+\end{DoxyParamCaption}
+)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a65b86426571e815049fdbb1f82a68a98}{}\label{classydlidar_1_1_y_dlidar_driver_a65b86426571e815049fdbb1f82a68a98}
+
+
+设置雷达在屏幕坐标系中的位置 ~\newline
+
+
+\begin{DoxyReturn}{Returns}
+无 
+\end{DoxyReturn}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em \hyperlink{struct_laser_pose}{Laser\+Pose}} & 雷达位置 \\
+\hline
+\end{DoxyParams}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!set\+Low\+Exposure@{set\+Low\+Exposure}}
 \index{set\+Low\+Exposure@{set\+Low\+Exposure}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
 \subsubsection[{\texorpdfstring{set\+Low\+Exposure(scan\+\_\+exposure \&low\+\_\+exposure, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{setLowExposure(scan_exposure &low_exposure, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::set\+Low\+Exposure (
@@ -1388,33 +1401,53 @@ A destructor. A more elaborate description of the destructor.
 \begin{DoxyNote}{Note}
 停止扫描后再执行当前操作, 当前操作是开关量, (G4, G4C, F4\+P\+RO)支持 
 \end{DoxyNote}
-\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!simple\+Scan\+Data@{simple\+Scan\+Data}}
-\index{simple\+Scan\+Data@{simple\+Scan\+Data}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
-\subsubsection[{\texorpdfstring{simple\+Scan\+Data(std\+::vector$<$ scan\+Dot $>$ $\ast$scan\+\_\+data, node\+\_\+info $\ast$buffer, size\+\_\+t count)}{simpleScanData(std::vector< scanDot > *scan_data, node_info *buffer, size_t count)}}]{\setlength{\rightskip}{0pt plus 5cm}void ydlidar\+::\+Y\+Dlidar\+Driver\+::simple\+Scan\+Data (
+\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!set\+Screen\+Box@{set\+Screen\+Box}}
+\index{set\+Screen\+Box@{set\+Screen\+Box}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
+\subsubsection[{\texorpdfstring{set\+Screen\+Box(const float \&max\+\_\+x, const float \&max\+\_\+y, const float \&min\+\_\+x, const float \&min\+\_\+y)}{setScreenBox(const float &max_x, const float &max_y, const float &min_x, const float &min_y)}}]{\setlength{\rightskip}{0pt plus 5cm}void ydlidar\+::\+Y\+Dlidar\+Driver\+::set\+Screen\+Box (
 \begin{DoxyParamCaption}
-\item[{std\+::vector$<$ {\bf scan\+Dot} $>$ $\ast$}]{scan\+\_\+data, }
-\item[{{\bf node\+\_\+info} $\ast$}]{buffer, }
-\item[{size\+\_\+t}]{count}
+\item[{const float \&}]{max\+\_\+x, }
+\item[{const float \&}]{max\+\_\+y, }
+\item[{const float \&}]{min\+\_\+x, }
+\item[{const float \&}]{min\+\_\+y}
 \end{DoxyParamCaption}
-)}\hypertarget{classydlidar_1_1_y_dlidar_driver_a797de2678c6c81c84a8126cf184a0254}{}\label{classydlidar_1_1_y_dlidar_driver_a797de2678c6c81c84a8126cf184a0254}
+)}\hypertarget{classydlidar_1_1_y_dlidar_driver_ab9ec366039e47431275df90156515fee}{}\label{classydlidar_1_1_y_dlidar_driver_ab9ec366039e47431275df90156515fee}
 
 
-解析激光信息数据到scan\+Dot数据类型 ~\newline
+设置屏幕所在区域大小 ~\newline
 
 
+\begin{DoxyReturn}{Returns}
+无 
+\end{DoxyReturn}
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em scan\+\_\+data} & 解析后激光数据 \\
+\mbox{\tt in}  & {\em max\+\_\+x} & 屏幕最大\+X轴值 \\
 \hline
-\mbox{\tt in}  & {\em buffer} & 解析前激光信息数据 \\
+\mbox{\tt in}  & {\em max\+\_\+y} & 屏幕最大\+Y轴值 \\
 \hline
-\mbox{\tt in}  & {\em count} & 一圈激光点数 \\
+\mbox{\tt in}  & {\em min\+\_\+x} & 屏幕最小\+X轴值 \\
+\hline
+\mbox{\tt in}  & {\em min\+\_\+y} & 屏幕最小\+Y轴值 \\
 \hline
 \end{DoxyParams}
 \begin{DoxyNote}{Note}
-解析之前，必须使用\+::ascend\+Scan\+Data函数获取激光数据成功 
+左上角是屏幕坐标原点, X轴朝下, Y轴朝右
 \end{DoxyNote}
-\index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!start\+Motor@{start\+Motor}}
+$\vert$$\vert$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---\textbackslash{} X $\vert$$\vert$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---/ \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*1{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}{\bf }\\\cline{1-1}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}{\bf }\\\cline{1-1}
+\endhead
+\\\cline{1-1}
+\end{longtabu}
+
+
+\textbackslash{}/ Y \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!start\+Motor@{start\+Motor}}
 \index{start\+Motor@{start\+Motor}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
 \subsubsection[{\texorpdfstring{start\+Motor()}{startMotor()}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::start\+Motor (
 \begin{DoxyParamCaption}
@@ -1553,12 +1586,12 @@ A destructor. A more elaborate description of the destructor.
 \end{DoxyNote}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!wait\+Package@{wait\+Package}}
 \index{wait\+Package@{wait\+Package}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
-\subsubsection[{\texorpdfstring{wait\+Package(node\+\_\+info $\ast$node, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{waitPackage(node_info *node, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::wait\+Package (
+\subsubsection[{\texorpdfstring{wait\+Package(touch\+\_\+info $\ast$point, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{waitPackage(touch_info *point, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::wait\+Package (
 \begin{DoxyParamCaption}
-\item[{{\bf node\+\_\+info} $\ast$}]{node, }
+\item[{{\bf touch\+\_\+info} $\ast$}]{point, }
 \item[{uint32\+\_\+t}]{timeout = {\ttfamily {\bf D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT}}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_aaf78903693f58c7f739dfa493573b3b1}{}\label{classydlidar_1_1_y_dlidar_driver_aaf78903693f58c7f739dfa493573b3b1}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a7c992874d39c8c66d4581d27dbbd147e}{}\label{classydlidar_1_1_y_dlidar_driver_a7c992874d39c8c66d4581d27dbbd147e}
 
 
 解包激光数据 ~\newline
@@ -1566,7 +1599,7 @@ A destructor. A more elaborate description of the destructor.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em node} & 解包后激光点信息 \\
+\mbox{\tt in}  & {\em point} & 解包后激光点在屏幕坐标系中的信息 \\
 \hline
 \mbox{\tt in}  & {\em timeout} & 超时时间 \\
 \hline
@@ -1608,23 +1641,23 @@ A destructor. A more elaborate description of the destructor.
 \end{DoxyNote}
 \index{ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}!wait\+Scan\+Data@{wait\+Scan\+Data}}
 \index{wait\+Scan\+Data@{wait\+Scan\+Data}!ydlidar\+::\+Y\+Dlidar\+Driver@{ydlidar\+::\+Y\+Dlidar\+Driver}}
-\subsubsection[{\texorpdfstring{wait\+Scan\+Data(node\+\_\+info $\ast$nodebuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{waitScanData(node_info *nodebuffer, size_t &count, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::wait\+Scan\+Data (
+\subsubsection[{\texorpdfstring{wait\+Scan\+Data(touch\+\_\+info $\ast$pointbuffer, size\+\_\+t \&count, uint32\+\_\+t timeout=\+D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+U\+T)}{waitScanData(touch_info *pointbuffer, size_t &count, uint32_t timeout=DEFAULT_TIMEOUT)}}]{\setlength{\rightskip}{0pt plus 5cm}result\+\_\+t ydlidar\+::\+Y\+Dlidar\+Driver\+::wait\+Scan\+Data (
 \begin{DoxyParamCaption}
-\item[{{\bf node\+\_\+info} $\ast$}]{nodebuffer, }
+\item[{{\bf touch\+\_\+info} $\ast$}]{pointbuffer, }
 \item[{size\+\_\+t \&}]{count, }
 \item[{uint32\+\_\+t}]{timeout = {\ttfamily {\bf D\+E\+F\+A\+U\+L\+T\+\_\+\+T\+I\+M\+E\+O\+UT}}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a574996217284ce34191a2f3675a9f17b}{}\label{classydlidar_1_1_y_dlidar_driver_a574996217284ce34191a2f3675a9f17b}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classydlidar_1_1_y_dlidar_driver_a478ae4aeeb112a4da439c7af24a53f2a}{}\label{classydlidar_1_1_y_dlidar_driver_a478ae4aeeb112a4da439c7af24a53f2a}
 
 
-发送数据到雷达 ~\newline
+等待激光数据 ~\newline
 
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em nodebuffer} & 激光信息指针 \\
+\mbox{\tt in}  & {\em pointbuffer} & 激光点在屏幕上的坐标信息 \\
 \hline
-\mbox{\tt in}  & {\em count} & 激光点数大小 \\
+\mbox{\tt in}  & {\em count} & 激光在屏幕坐标系中的大小 \\
 \hline
 \mbox{\tt in}  & {\em timeout} & 超时时间 \\
 \hline

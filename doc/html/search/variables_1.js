@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ang_5fincrement',['ang_increment',['../struct_laser_config.html#a67279ae0f648a129521576f52c321932',1,'LaserConfig']]]
+  ['description',['description',['../structserial_1_1_port_info.html#a2ba37dd33d47b554aef5c15c1fe8b872',1,'serial::PortInfo']]]
 ];

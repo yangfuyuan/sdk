@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['enable',['enable',['../structscan__heart__beat.html#a2b75f0058448601c590dda44d962d5c9',1,'scan_heart_beat']]],
-  ['error_5fcode',['error_code',['../structdevice__health.html#a8815828d6de33cb43e8b72da48f51f23',1,'device_health']]],
-  ['exposure',['exposure',['../structscan__exposure.html#a49591ef660667fcd1c3e1c2f3d764004',1,'scan_exposure']]]
+  ['hardware_5fid',['hardware_id',['../structserial_1_1_port_info.html#a7d55368e1a4e6ccc9da6f4d339524837',1,'serial::PortInfo']]],
+  ['hardware_5fversion',['hardware_version',['../structdevice__info.html#add77e9b0edbc4a0dbd8f91b0cac9ea13',1,'device_info']]]
 ];

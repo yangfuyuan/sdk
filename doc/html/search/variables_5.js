@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['firmware_5fversion',['firmware_version',['../structdevice__info.html#af3d369a410577d85ec6b59ffeeaade48',1,'device_info']]],
-  ['frequency',['frequency',['../structscan__frequency.html#ae4f2152e77416cff02f44452355f2808',1,'scan_frequency']]]
+  ['inter_5fbyte_5ftimeout',['inter_byte_timeout',['../structserial_1_1_timeout.html#ada15f2a0ae478cbb62ef79d1633b2b81',1,'serial::Timeout']]],
+  ['isconnected',['isConnected',['../classydlidar_1_1_y_dlidar_driver.html#a4457578961d36ce22035d778c0fd7f06',1,'ydlidar::YDlidarDriver']]],
+  ['isheartbeat',['isHeartbeat',['../classydlidar_1_1_y_dlidar_driver.html#a8a57494e849e7735fe8bf46d00b63077',1,'ydlidar::YDlidarDriver']]],
+  ['isscanning',['isScanning',['../classydlidar_1_1_y_dlidar_driver.html#a245115a8c8a4f98d988fbee06810d0a4',1,'ydlidar::YDlidarDriver']]],
+  ['isvalid',['isvalid',['../structtouch__info.html#ad9c0bc30d781171b7f61a57de7df0ec9',1,'touch_info']]]
 ];

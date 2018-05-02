@@ -6,7 +6,6 @@ var searchData=
   ['scan_5fheart_5fbeat',['scan_heart_beat',['../structscan__heart__beat.html',1,'']]],
   ['scan_5fpoints',['scan_points',['../structscan__points.html',1,'']]],
   ['scan_5frotation',['scan_rotation',['../structscan__rotation.html',1,'']]],
-  ['scandot',['scanDot',['../structscan_dot.html',1,'']]],
   ['scopedlocker',['ScopedLocker',['../class_scoped_locker.html',1,'']]],
   ['scopedreadlock',['ScopedReadLock',['../classserial_1_1_serial_1_1_scoped_read_lock.html',1,'serial::Serial']]],
   ['scopedwritelock',['ScopedWriteLock',['../classserial_1_1_serial_1_1_scoped_write_lock.html',1,'serial::Serial']]],
