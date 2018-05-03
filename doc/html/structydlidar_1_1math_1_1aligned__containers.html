@@ -105,27 +105,27 @@ Public Types</h2></td></tr>
 <tr class="memitem:aef4fb79137cd55476ba34110fbdd6dbb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef4fb79137cd55476ba34110fbdd6dbb"></a>
 typedef std::pair&lt; TYPE1, TYPE2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pair_t</b></td></tr>
 <tr class="separator:aef4fb79137cd55476ba34110fbdd6dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7829b440f024e7e7fc04701fbdf8717e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7829b440f024e7e7fc04701fbdf8717e"></a>
-typedef std::vector&lt; TYPE1, Eigen::aligned_allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vector_t</b></td></tr>
-<tr class="separator:a7829b440f024e7e7fc04701fbdf8717e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b0c8692304b7c0fdf240e0f12dad884"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b0c8692304b7c0fdf240e0f12dad884"></a>
-typedef std::deque&lt; TYPE1, Eigen::aligned_allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>deque_t</b></td></tr>
-<tr class="separator:a7b0c8692304b7c0fdf240e0f12dad884"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac44d039f65074789a31dff58c3524fcd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac44d039f65074789a31dff58c3524fcd"></a>
-typedef std::list&lt; TYPE1, Eigen::aligned_allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>list_t</b></td></tr>
-<tr class="separator:ac44d039f65074789a31dff58c3524fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a976b6317e5cf1543320994c2c063aa5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a976b6317e5cf1543320994c2c063aa5c"></a>
-typedef std::map&lt; TYPE1, TYPE2, std::less&lt; TYPE1 &gt;, Eigen::aligned_allocator&lt; std::pair&lt; const TYPE1, TYPE2 &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
-<tr class="separator:a976b6317e5cf1543320994c2c063aa5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaa5b890b2477258b989b1724205c953"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaa5b890b2477258b989b1724205c953"></a>
-typedef std::multimap&lt; TYPE1, TYPE2, std::less&lt; TYPE1 &gt;, Eigen::aligned_allocator&lt; std::pair&lt; const TYPE1, TYPE2 &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>multimap_t</b></td></tr>
-<tr class="separator:acaa5b890b2477258b989b1724205c953"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0386d8e705bc5c4a02135a9e8bdda8be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0386d8e705bc5c4a02135a9e8bdda8be"></a>
+typedef std::vector&lt; TYPE1, std::allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vector_t</b></td></tr>
+<tr class="separator:a0386d8e705bc5c4a02135a9e8bdda8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a00664fbb18337f5b2ec97660002cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8a00664fbb18337f5b2ec97660002cf"></a>
+typedef std::deque&lt; TYPE1, std::allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>deque_t</b></td></tr>
+<tr class="separator:af8a00664fbb18337f5b2ec97660002cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3779fa9f0fdfa2b2751cd8bc256687cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3779fa9f0fdfa2b2751cd8bc256687cd"></a>
+typedef std::list&lt; TYPE1, std::allocator&lt; TYPE1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>list_t</b></td></tr>
+<tr class="separator:a3779fa9f0fdfa2b2751cd8bc256687cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a441eb6cc71b2eed1869ed7c362b3aed4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a441eb6cc71b2eed1869ed7c362b3aed4"></a>
+typedef std::map&lt; TYPE1, TYPE2, std::less&lt; TYPE1 &gt;, std::allocator&lt; std::pair&lt; const TYPE1, TYPE2 &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="separator:a441eb6cc71b2eed1869ed7c362b3aed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910ae5619fd48f94f7479ab51887a118"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a910ae5619fd48f94f7479ab51887a118"></a>
+typedef std::multimap&lt; TYPE1, TYPE2, std::less&lt; TYPE1 &gt;, std::allocator&lt; std::pair&lt; const TYPE1, TYPE2 &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>multimap_t</b></td></tr>
+<tr class="separator:a910ae5619fd48f94f7479ab51887a118"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class TYPE1, class TYPE2 = TYPE1&gt;<br />
 struct ydlidar::math::aligned_containers&lt; TYPE1, TYPE2 &gt;</h3>
 
-<p>Helper types for STL containers with Eigen memory allocators. (in #include &lt;mrpt/utils/aligned_containers.h&gt;) </p>
+<p>Helper types for STL containers with std memory allocators. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/yang/tmp/sdk/include/<a class="el" href="kmeans_8h_source.html">kmeans.h</a></li>
 </ul>

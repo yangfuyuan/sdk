@@ -28,8 +28,45 @@ Upgrade Log
 
 Dependencies:
 
+1.python 
+
 2.pymouse(samples)
+
+linux:
+   1.pip install pymouse
+
+
+windows:
 
 Install required dependencies:
 
-   1.pip install pymouse
+   1.pip install pywin32
+  
+   2.pip install pyhook ##failed, go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook
+
+   3.pip install pymouse
+
+Here is how to install pyHook:
+
+   1.You can find the download link here http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook
+
+   2.If you have python 32bit you want pyhook 32 bit (Download #1 for Python 2.7).
+
+   3.If you have python 64bit you want pyHook 64 bit (Download #2 for Python 2.7).
+
+   4.Extract the zip file.
+
+   5.In the command prompt navigate to the folder where you extracted the .zip.
+
+   6.Type the command 'pip install pyHook-1.5.1-cp27-none-win32.whl' for the 32 bit version or 'pip install pyHook-1.5.1-cp27-none-win_amd64.whl'
+
+
+Error:
+
+   1. ModuleNotFoundError: No module named 'windows'
+
+   Under pymoused __init__，
+	elif sys.platform == 'win32':
+		from windows import PyMouse, PyMouseEvent
+   Change to 'from pymouse.windows import PyMouse, PyMouseEvent
+

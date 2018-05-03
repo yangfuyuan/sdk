@@ -102,10 +102,10 @@ int main(int argc, char * argv[]) {
 
 
     bool showHelp  = argc>1 && !strcmp(argv[1],"--help");
-	printf(" YDLIDAR C++ TEST\n");
-    if (argc<4 || showHelp ) {
-        printf("Usage: %s <serial_port> <baudrate> <intensities>\n\n",argv[0]);
-        printf("Example:%s /dev/ttyUSB0 115200 0\n\n",argv[0]);
+    printf(" YDLIDAR BIG SCRREN C++ TEST\n");
+    if (argc<3 || showHelp ) {
+        printf("Usage: %s <serial_port> <baudrate>\n\n",argv[0]);
+        printf("Example:%s /dev/ttyUSB0 115200\n\n",argv[0]);
         if (!showHelp) {
             return -1;
         } else {
@@ -117,7 +117,6 @@ int main(int argc, char * argv[]) {
     typedef CArrayDouble<2>  CPointType;
     const std::string port = string(argv[1]);
     const int baud =  atoi(argv[2]);
-    const int intensities =  atoi(argv[3]);
 
     signal(SIGINT, Stop);
     signal(SIGTERM, Stop);
@@ -138,7 +137,6 @@ int main(int argc, char * argv[]) {
 
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
-    laser.setIntensities(intensities);
 
 
     laser.setMax_x(width/resolution_x);
@@ -230,7 +228,7 @@ int main(int argc, char * argv[]) {
             if(track) {
                 char* buf;
                 if (cnt >5 ) {
-                    if (asprintf(&buf, "scripts/pmouse.py click %i %i", x, y) < 0) {
+                    if (asprintf(&buf, "python scripts/pmouse.py click %i %i", x, y) < 0) {
 
                     } else {
                         string str(buf);
@@ -240,7 +238,7 @@ int main(int argc, char * argv[]) {
                     }
 
                 } else {
-                    if (asprintf(&buf, "scripts/pmouse.py move %i %i", x, y) < 0) {
+                    if (asprintf(&buf, "python scripts/pmouse.py move %i %i", x, y) < 0) {
 
                     } else {
                         string str(buf);

@@ -15,6 +15,10 @@
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
 
+#ifndef M_PI
+#define M_PI 3.1415926
+#endif
+
 #define LIDAR_CMD_STOP                      0x65
 #define LIDAR_CMD_SCAN                      0x60
 #define LIDAR_CMD_FORCE_SCAN                0x61

@@ -93,9 +93,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>2018-05-02 version:1.0.0</p>
 <p>1.Output screen corrdinates.</p>
 <p>Dependencies:</p>
-<p>1.Eigen3 2.pymouse(samples)</p>
+<p>1.python</p>
+<p>2.pymouse(samples)</p>
+<p>linux: 1.pip install pymouse</p>
+<p>windows:</p>
 <p>Install required dependencies:</p>
-<p>1.pip install pymouse </p>
+<p>1.pip install pywin32</p>
+<p>2.pip install pyhook ##failed, go to <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook">http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
+<p>3.pip install pymouse</p>
+<p>Here is how to install pyHook:</p>
+<p>1.You can find the download link here <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook">http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
+<p>2.If you have python 32bit you want pyhook 32 bit (Download #1 for Python 2.7).</p>
+<p>3.If you have python 64bit you want pyHook 64 bit (Download #2 for Python 2.7).</p>
+<p>4.Extract the zip file.</p>
+<p>5.In the command prompt navigate to the folder where you extracted the .zip.</p>
+<p>6.Type the command 'pip install pyHook-1.5.1-cp27-none-win32.whl' for the 32 bit version or 'pip install pyHook-1.5.1-cp27-none-win_amd64.whl'</p>
+<p>Error:</p>
+<ol type="1">
+<li>ModuleNotFoundError: No module named 'windows'</li>
+</ol>
+<p>Under pymoused __init__， elif sys.platform == 'win32': from windows import PyMouse, PyMouseEvent Change to 'from pymouse.windows import PyMouse, PyMouseEvent </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
