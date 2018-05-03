@@ -6,20 +6,141 @@
    | See: http://www.mrpt.org/Authors - All rights reserved.                   |
    | Released under BSD License. See details in http://www.mrpt.org/License    |
    +---------------------------------------------------------------------------+ */
-#ifndef  mrpt_math_kmeans_H
-#define  mrpt_math_kmeans_H
+#ifndef  ydlidar_math_kmeans_H
+#define  ydlidar_math_kmeans_H
 
-#include <mrpt/math/CMatrixTemplateNumeric.h>
-#include <mrpt/math/CMatrixFixedNumeric.h>
 
-namespace mrpt
+#include <Eigen/Core>
+
+#include <assert.h>
+#include <stddef.h>
+#include <vector>
+#include <deque>
+#include <list>
+#include <map>
+#include <stdint.h>
+#include <string.h>
+
+
+
+
+using namespace Eigen;
+
+namespace ydlidar
 {
 	namespace math
 	{
+
+    /** CArrayNumeric is an array for numeric types supporting several mathematical operations (actually, just a wrapper on Eigen::Matrix<T,N,1>)
+      * \sa CArrayFloat, CArrayDouble, CArray
+      */
+    template <typename T, std::size_t N>
+    class CArrayNumeric : public Eigen::Matrix<T,N,1>
+    {
+        public:
+        typedef T                    value_type;
+        typedef Eigen::Matrix<T,N,1> Base;
+
+        CArrayNumeric() {}  //!< Default constructor
+        /** Constructor from initial values ptr[0]-ptr[N-1] */
+        CArrayNumeric(const T*ptr) : Eigen::Matrix<T,N,1>(ptr) {}
+
+        /** Initialization from a vector-like source, that is, anything implementing operator[]. */
+        template <class ARRAYLIKE>
+        explicit CArrayNumeric(const ARRAYLIKE &obj) : Eigen::Matrix<T,N,1>(obj) {}
+
+        template<typename OtherDerived>
+        inline CArrayNumeric<T,N> & operator= (const Eigen::MatrixBase <OtherDerived>& other) {
+            Base::operator=(other);
+            return *this;
+        }
+
+    };
+
+    // --------------  Partial specializations of CArrayNumeric -----------
+
+    /** A partial specialization of CArrayNumeric for float numbers.
+      * \sa CArrayNumeric, CArray */
+    template <std::size_t N>
+    class CArrayFloat : public CArrayNumeric<float,N>
+    {
+    public:
+        typedef CArrayNumeric<float,N> Base;
+        typedef CArrayFloat<N> mrpt_autotype;
+
+        CArrayFloat() {}  //!< Default constructor
+        CArrayFloat(const float*ptr) : CArrayNumeric<float,N>(ptr) {} //!< Constructor from initial values ptr[0]-ptr[N-1]
+
+
+        /** Initialization from a vector-like source, that is, anything implementing operator[]. */
+        template <class ARRAYLIKE>
+        explicit CArrayFloat(const ARRAYLIKE &obj) : CArrayNumeric<float,N>(obj) {}
+    };
+
+    /** A partial specialization of CArrayNumeric for double numbers.
+      * \sa CArrayNumeric, CArray */
+    template <std::size_t N>
+    class CArrayDouble : public CArrayNumeric<double,N>
+    {
+    public:
+        typedef CArrayNumeric<double,N> Base;
+        typedef CArrayDouble<N> mrpt_autotype;
+
+        CArrayDouble() {}  //!< Default constructor
+        CArrayDouble(const double*ptr) : CArrayNumeric<double,N>(ptr) {} //!< Constructor from initial values ptr[0]-ptr[N-1]
+
+
+        /** Initialization from a vector-like source, that is, anything implementing operator[]. */
+        template <class ARRAYLIKE>
+        explicit CArrayDouble(const ARRAYLIKE &obj) : CArrayNumeric<double,N>(obj) {}
+    };
+
+    /** A partial specialization of CArrayNumeric for int numbers.
+      * \sa CArrayNumeric, CArray */
+    template <std::size_t N>
+    class CArrayInt : public CArrayNumeric<int,N>
+    {
+    public:
+        typedef CArrayNumeric<int,N> Base;
+        typedef CArrayInt<N> mrpt_autotype;
+
+        CArrayInt() {}  //!< Default constructor
+        CArrayInt(const int*ptr) : CArrayNumeric<int,N>(ptr) {} //!< Constructor from initial values ptr[0]-ptr[N-1]
+    };
+
+    /** A partial specialization of CArrayNumeric for unsigned int numbers.
+      * \sa CArrayNumeric, CArray */
+    template <std::size_t N>
+    class CArrayUInt : public CArrayNumeric<unsigned int,N>
+    {
+    public:
+        typedef CArrayNumeric<unsigned int,N> Base;
+        typedef CArrayUInt<N> mrpt_autotype;
+
+        CArrayUInt() {}  //!< Default constructor
+        CArrayUInt(const unsigned int*ptr) : CArrayNumeric<unsigned int,N>(ptr) {} //!< Constructor from initial values ptr[0]-ptr[N-1]
+    };
+
+    // Fwrd. decl:
+    template<class T> class aligned_allocator;
+
+
+    /** Helper types for STL containers with Eigen memory allocators.  (in #include <mrpt/utils/aligned_containers.h>)  */
+    template <class TYPE1,class TYPE2=TYPE1>
+    struct aligned_containers
+    {
+        typedef std::pair<TYPE1,TYPE2> pair_t;
+        typedef std::vector<TYPE1, Eigen::aligned_allocator<TYPE1> > vector_t;
+        typedef std::deque<TYPE1, Eigen::aligned_allocator<TYPE1> > deque_t;
+        typedef std::list<TYPE1, Eigen::aligned_allocator<TYPE1> > list_t;
+        typedef std::map<TYPE1,TYPE2,std::less<TYPE1>,Eigen::aligned_allocator<std::pair<const TYPE1,TYPE2> > > map_t;
+        typedef std::multimap<TYPE1,TYPE2,std::less<TYPE1>,Eigen::aligned_allocator<std::pair<const TYPE1,TYPE2> > > multimap_t;
+    };
+
 		namespace detail {
 			// Auxiliary method: templatized for working with float/double's.
 			template <typename SCALAR>
-			double BASE_IMPEXP internal_kmeans(
+            double  internal_kmeans(
 				const bool use_kmeansplusplus_method,
 				const size_t nPoints,
 				const size_t k,
@@ -41,9 +162,8 @@ namespace mrpt
 				const size_t attempts
 				)
 			{
-				MRPT_UNUSED_PARAM(use_kmeansplusplus_method);
-				MRPT_START
-				ASSERT_(k>=1)
+                assert(k>=1);
+
 				const size_t N = points.size();
 				assignments.resize(N);
 				if (out_centers) out_centers->clear();
@@ -53,34 +173,35 @@ namespace mrpt
 				size_t dims=0;
 				const typename LIST_OF_VECTORS1::const_iterator it_first=points.begin();
 				const typename LIST_OF_VECTORS1::const_iterator it_end  =points.end();
-				typedef typename LIST_OF_VECTORS1::value_type TInnerVector;
-				typedef typename LIST_OF_VECTORS2::value_type TInnerVectorCenters;
-				std::vector<typename TInnerVector::value_type> raw_vals;
-				typename TInnerVector::value_type *trg_ptr=NULL;
+                typedef typename LIST_OF_VECTORS1::value_type TInnerVector;
+                typedef typename LIST_OF_VECTORS2::value_type TInnerVectorCenters;
+
+                std::vector<typename TInnerVector::value_type> raw_vals;
+                typename TInnerVector::value_type *trg_ptr=NULL;
 				for (typename LIST_OF_VECTORS1::const_iterator it=it_first;it!=it_end;++it)
 				{
 					if (it==it_first)
 					{
 						dims = it->size();
-						ASSERTMSG_(dims>0,"Dimensionality of points can't be zero.")
+                        assert(dims>0);
 						raw_vals.resize(N*dims);
 						trg_ptr = &raw_vals[0];
 					}
 					else
 					{
-						ASSERTMSG_(size_t(dims)==size_t(it->size()),"All points must have the same dimensionality.")
+                        assert(size_t(dims)==size_t(it->size()));
 					}
 
-					::memcpy(trg_ptr, &(*it)[0], dims*sizeof(typename TInnerVector::value_type));
+                    ::memcpy(trg_ptr, &(*it)[0], dims*sizeof(typename TInnerVector::value_type));
 					trg_ptr+=dims;
 				}
 				// Call the internal implementation:
-				std::vector<typename TInnerVectorCenters::value_type> centers(dims*k);
+                std::vector<typename TInnerVectorCenters::value_type> centers(dims*k);
 				const double ret = detail::internal_kmeans(false,N,k,points.begin()->size(),&raw_vals[0],attempts,&centers[0],&assignments[0]);
 				// Centers:
 				if (out_centers)
 				{
-					const typename TInnerVectorCenters::value_type *center_ptr = &centers[0];
+                    const typename TInnerVectorCenters::value_type *center_ptr = &centers[0];
 					for (size_t i=0;i<k;i++)
 					{
 						TInnerVectorCenters c;
@@ -90,7 +211,6 @@ namespace mrpt
 					}
 				}
 				return ret;
-				MRPT_END
 			}
 		} // end detail namespace
 

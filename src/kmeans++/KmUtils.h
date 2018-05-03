@@ -22,7 +22,7 @@
 #ifndef KM_UTILS_H__
 #define KM_UTILS_H__
 
-#include <mrpt/config.h> // For HAVE_MALLOC_H
+
 
 // Includes
 /* Jerome Monceaux : bilock@gmail.com

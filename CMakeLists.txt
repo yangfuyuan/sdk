@@ -1,5 +1,8 @@
 
 add_definitions(-std=c++11) # Use C++11
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(include)
 include_directories(src)
 
@@ -9,6 +12,8 @@ FILE(GLOB SDK_SRC
   "src/*.h"
   "src/impl/windows/*.cpp"
   "src/impl/windows/*.h"
+  "src/kmeans++/*.cpp"
+  "src/kmeans++/*.h"
 )
 	
 ELSE()
@@ -17,6 +22,8 @@ FILE(GLOB SDK_SRC
   "src/*.h"
   "src/impl/unix/*.cpp"
   "src/impl/unix/*.h"
+  "src/kmeans++/*.cpp"
+  "src/kmeans++/*.h"
 )
 
 	

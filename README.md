@@ -26,6 +26,10 @@ Upgrade Log
 
    1.Output screen corrdinates.
 
+Dependencies:
+
+1.Eigen3
+2.pymouse(samples)
 
 Install required dependencies:
 
