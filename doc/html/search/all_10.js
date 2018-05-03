@@ -6,5 +6,6 @@ var searchData=
   ['read_5ftimeout_5fmultiplier',['read_timeout_multiplier',['../structserial_1_1_timeout.html#a64412753eb2edf1621716dd9f1a4e71e',1,'serial::Timeout']]],
   ['readline',['readline',['../classserial_1_1_serial.html#a010b18ec545dfe1a7bb1c95be4bdaa54',1,'serial::Serial::readline(std::string &amp;buffer, size_t size=65536, std::string eol=&quot;\n&quot;)'],['../classserial_1_1_serial.html#a04177f637cc02f92ec0492d377528b2a',1,'serial::Serial::readline(size_t size=65536, std::string eol=&quot;\n&quot;)']]],
   ['readlines',['readlines',['../classserial_1_1_serial.html#a2ff222081c30ee4343498c6cc5c14b10',1,'serial::Serial']]],
-  ['reset',['reset',['../classydlidar_1_1_y_dlidar_driver.html#a3dd4086c5685163f7c7487ea0f5af08c',1,'ydlidar::YDlidarDriver']]]
+  ['reset',['reset',['../classydlidar_1_1_y_dlidar_driver.html#a3dd4086c5685163f7c7487ea0f5af08c',1,'ydlidar::YDlidarDriver']]],
+  ['reversion',['reversion',['../struct_laser_pose.html#a1c77bcb0aa458b48fbc127adab5cd415',1,'LaserPose']]]
 ];

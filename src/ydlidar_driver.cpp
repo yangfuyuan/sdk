@@ -630,12 +630,6 @@ namespace ydlidar{
         if(angle< 0)
             angle +=360;
 
-//        if(model ==5 || model == 9) {
-//            angle += 180;
-//            if(angle > 360){
-//                angle -= 360;
-//            }
-//        }
 
         float dis =  (float)node.distance_q2/4.0f;
         (*point).laser_x = dis*cos(angle*M_PI/180.f);
@@ -644,9 +638,11 @@ namespace ydlidar{
         {
 
             ScopedLocker l(_plock);
+            int r = laser_pose.reversion?1:-1;
 
-            (*point).screen_x = laser_pose.x + (*point).laser_x*cos(laser_pose.theta*M_PI/180.0) - (*point).laser_y*sin(laser_pose.theta*M_PI/180.0);
-            (*point).screen_y = laser_pose.y + (*point).laser_y*cos(laser_pose.theta*M_PI/180.0) + (*point).laser_x*sin(laser_pose.theta*M_PI/180.0);
+            (*point).screen_x = laser_pose.x + (*point).laser_x*cos(laser_pose.theta*M_PI/180.0) + r*(*point).laser_y*sin(laser_pose.theta*M_PI/180.0);
+            (*point).screen_y = laser_pose.y - r*(*point).laser_y*cos(laser_pose.theta*M_PI/180.0) + (*point).laser_x*sin(laser_pose.theta*M_PI/180.0);
+
 
             if(inBox((*point).screen_x, (*point).screen_y)) {
                 touchid++;

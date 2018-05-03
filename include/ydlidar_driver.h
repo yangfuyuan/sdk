@@ -82,7 +82,7 @@ typedef enum {
 
 struct touch_info {
     uint64_t    stamp;      /**< 当前触点时间戳. */
-    uint16_t    touchid;    /**< 屏幕box中有多少个触点. */
+    uint16_t    touchid;    /**< 屏幕box中当前触点ID. */
     bool        isvalid;     /**< 当前点是否在设定的屏幕范围内. */
     bool        new_frame;  /**<是否是新的一帧激光. */
     float       screen_x;   /**<屏幕坐标系X(mm). */
@@ -187,6 +187,7 @@ struct LaserPose {
     float   x;      /**< 雷达在屏幕坐标系中的X位置(mm). */
     float   y;      /**< 雷达在屏幕坐标系中的Y位置(mm). */
     float   theta;  /**< 雷达在屏幕坐标系中的朝向(度). */
+    bool    reversion; /**< 雷达表面朝向(false: 朝外, true:朝里). */
 };
 
 using namespace std;
@@ -297,7 +298,7 @@ namespace ydlidar{
         * @param[in] max_y    屏幕最大Y轴值
         * @param[in] min_x    屏幕最小X轴值
         * @param[in] min_y    屏幕最小Y轴值
-        * @note左上角是屏幕坐标原点, X轴朝下, Y轴朝右
+        * @note左上角是屏幕坐标原点, X轴右, Y轴朝下
         *
         *   ||----------------\ X
         *   ||----------------/
@@ -797,6 +798,8 @@ namespace ydlidar{
         float screen_min_y;///< 屏幕Y轴最小值
 
         LaserPose laser_pose; ///< 雷达在屏幕坐标系的位置
+
+         bool  reversion;///< 雷达反转安装
 	};
 }
 

@@ -89,8 +89,8 @@ int main(int argc, char * argv[]) {
         width = 1920;
         height = 1080;
     }
-    float resolution_x =10; //电脑屏幕映射到操作屏上的分辨率, X轴上
-    float resolution_y =10; //电脑屏幕映射到操作屏上的分辨率, Y轴上
+    float resolution_x =1920/960.0; //电脑屏幕映射到操作屏上的分辨率, X轴上
+    float resolution_y =1; //电脑屏幕映射到操作屏上的分辨率, Y轴上
 
     double pre_x, pre_y;
 
@@ -104,9 +104,10 @@ int main(int argc, char * argv[]) {
     laser.setMin_x(0);
     laser.setMin_y(0);
     LaserPose pose;
-    pose.x = width/(2*resolution_x);
-    pose.y = -260;
-    pose.theta = -90;
+    pose.x = -100;//width/(2*resolution_x);//G4在9k时盲区是<260mm, 8k<=240mm, 4k<=100mm
+    pose.y = height/(2*resolution_y);
+    pose.theta = 150;
+    pose.reversion = true;//雷达朝向  朝里还是朝外, 朝里是true, 朝外是false
     laser.setpose(pose);
 
 
@@ -164,8 +165,8 @@ int main(int argc, char * argv[]) {
             for(auto it = centers.begin(); it != centers.end(); it++) {
                 x = (*it)[0]*resolution_x;
                 y = (*it)[1]*resolution_y;
-
-                if((pow(pre_x - x,2) + pow(pre_y-y, 2)) < 100) {
+                //std::cout<<"center_x: "<<x<<"center_y: "<<y<<std::endl;
+                if((pow(pre_x - x,2) + pow(pre_y-y, 2)) < pow(8*resolution_x, 2)) {
                     cnt++;
                     x = pre_x;
                     y = pre_y;
