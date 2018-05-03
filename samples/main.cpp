@@ -132,6 +132,8 @@ int main(int argc, char * argv[]) {
     float resolution_x =10; //电脑屏幕映射到操作屏上的分辨率, X轴上
     float resolution_y =10; //电脑屏幕映射到操作屏上的分辨率, Y轴上
 
+    double cluster_rad = 10;//mm//区分多触点半径
+
     double pre_x, pre_y;
 
     laser.setSerialPort(port);
@@ -185,14 +187,19 @@ int main(int argc, char * argv[]) {
         std::vector<touch_info> outPoints;
         int x, y;
         if(laser.doProcessSimple(outPoints, hardError )){
-            const size_t nClusters = 1;
+            size_t nClusters = 1;
             aligned_containers<CPointType>::vector_t  points;
+            std::vector<touch_info>::const_iterator it_first = outPoints.begin();
             for (auto it = outPoints.begin(); it != outPoints.end(); it++) {
                 touch_info point = *it;
                 CPointType v;
                 v[0] = point.screen_x;
                 v[1] = point.screen_y;
                 points.push_back(v);
+                if(pow((*it_first).screen_x - point.screen_x,2) + pow((*it_first).screen_y - point.screen_y, 2) > pow(cluster_rad*resolution_x, 2)){
+                    nClusters++;
+                    it_first = it;
+                }
 
             }
 
@@ -201,21 +208,26 @@ int main(int argc, char * argv[]) {
 
             vector<int>				assignments;
             const double cost = kmeanspp(nClusters, points, assignments, &centers);
+            bool track = false;
 
             for(auto it = centers.begin(); it != centers.end(); it++) {
                 x = (*it)[0]*resolution_x;
                 y = (*it)[1]*resolution_y;
                 //std::cout<<"center_x: "<<x<<"center_y: "<<y<<std::endl;
-                if((pow(pre_x - x,2) + pow(pre_y-y, 2)) < pow(8*resolution_x, 2)) {
+                if((pow(pre_x - x,2) + pow(pre_y-y, 2)) < pow(cluster_rad*resolution_x, 2)) {
                     cnt++;
                     x = pre_x;
                     y = pre_y;
+                    track = true;
+                    break;
                 }else{
                     pre_x = x;
                     pre_y = y;
                     cnt=0;
                 }
-
+                track = true;
+            }
+            if(track) {
                 char* buf;
                 if (cnt >5 ) {
                     if (asprintf(&buf, "scripts/pmouse.py click %i %i", x, y) < 0) {
