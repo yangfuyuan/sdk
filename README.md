@@ -26,3 +26,7 @@ Upgrade Log
 
    1.Output screen corrdinates.
 
+
+Install required dependencies:
+
+   1.pip install pymouse
