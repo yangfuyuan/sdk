@@ -16,6 +16,44 @@ using namespace ydlidar::math;
 CYdLidar laser;
 static bool running = false;
 
+
+#include <stdio.h> /* needed for vsnprintf */
+#include <stdlib.h> /* needed for malloc-free */
+#include <stdarg.h> /* needed for va_list */
+
+#ifndef _vscprintf
+/* For some reason, MSVC fails to honour this #ifndef. */
+/* Hence function renamed to _vscprintf_so(). */
+int _vscprintf_so(const char * format, va_list pargs) {
+    int retval;
+    va_list argcopy;
+    va_copy(argcopy, pargs);
+    retval = vsnprintf(NULL, 0, format, argcopy);
+    va_end(argcopy);
+    return retval;}
+#endif // _vscprintf
+
+#ifndef vasprintf
+int vasprintf(char **strp, const char *fmt, va_list ap) {
+    int len = _vscprintf_so(fmt, ap);
+    if (len == -1) return -1;
+    char *str = (char*)malloc((size_t) len + 1);
+    if (!str) return -1;
+    int r = vsnprintf(str, len + 1, fmt, ap); /* "secure" version of vsprintf */
+    if (r == -1) return free(str), -1;
+    *strp = str;
+    return r;}
+#endif // vasprintf
+
+#ifndef asprintf
+int asprintf(char *strp[], const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    int r = vasprintf(strp, fmt, ap);
+    va_end(ap);
+    return r;}
+#endif // asprintf
+
 #ifdef _WIN32
 #include <Windows.h>
 
@@ -84,13 +122,15 @@ int main(int argc, char * argv[]) {
     signal(SIGINT, Stop);
     signal(SIGTERM, Stop);
 
+
+
     int width, height;
     if(GetScreenSize(&width, &height) != 0){
         width = 1920;
         height = 1080;
     }
-    float resolution_x =1920/960.0; //电脑屏幕映射到操作屏上的分辨率, X轴上
-    float resolution_y =1; //电脑屏幕映射到操作屏上的分辨率, Y轴上
+    float resolution_x =10; //电脑屏幕映射到操作屏上的分辨率, X轴上
+    float resolution_y =10; //电脑屏幕映射到操作屏上的分辨率, Y轴上
 
     double pre_x, pre_y;
 
@@ -104,10 +144,10 @@ int main(int argc, char * argv[]) {
     laser.setMin_x(0);
     laser.setMin_y(0);
     LaserPose pose;
-    pose.x = -100;//width/(2*resolution_x);//G4在9k时盲区是<260mm, 8k<=240mm, 4k<=100mm
-    pose.y = height/(2*resolution_y);
-    pose.theta = 150;
-    pose.reversion = true;//雷达朝向  朝里还是朝外, 朝里是true, 朝外是false
+    pose.x = width/(2*resolution_x);//G4在9k时盲区是<260mm, 8k<=240mm, 4k<=100mm
+    pose.y = -260 ;//height/(2*resolution_y);
+    pose.theta = -90;
+    pose.reversion = false;//雷达朝向  朝里还是朝外, 朝里是true, 朝外是false
     laser.setpose(pose);
 
 
@@ -121,7 +161,7 @@ int main(int argc, char * argv[]) {
   //                      |
   //                      |______
 
-//|-------540----------|////                ------
+//|-------960----------|////                ------
 //                //雷达安装位置//               |
 //                                             | 260
 //|----------------1920----------------------| |

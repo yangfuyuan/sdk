@@ -1,10 +1,6 @@
-#include "CYdLidar.h"
 #include "common.h"
 #include <map>
-
-#ifndef _countof
-#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
-#endif
+#include "CYdLidar.h"
 
 
 using namespace std;
@@ -66,7 +62,7 @@ bool  CYdLidar::doProcessSimple(std::vector<touch_info> &outPoints, bool &hardwa
 	}
 
     touch_info nodes[2048];
-    size_t   count = 2048;
+    size_t   count = _countof(nodes);
     //  wait Scan data:
     result_t op_result = lidarPtr->grabScanData(nodes, count);
     outPoints.clear();

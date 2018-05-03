@@ -10,8 +10,6 @@
 #define  ydlidar_math_kmeans_H
 
 
-#include <Eigen/Core>
-
 #include <assert.h>
 #include <stddef.h>
 #include <vector>
@@ -22,38 +20,29 @@
 #include <string.h>
 
 
-
-
-using namespace Eigen;
-
 namespace ydlidar
 {
 	namespace math
 	{
 
-    /** CArrayNumeric is an array for numeric types supporting several mathematical operations (actually, just a wrapper on Eigen::Matrix<T,N,1>)
+    /** CArrayNumeric is an array for numeric types supporting several mathematical operations (actually, just a wrapper on std::array<T,N>)
       * \sa CArrayFloat, CArrayDouble, CArray
       */
     template <typename T, std::size_t N>
-    class CArrayNumeric : public Eigen::Matrix<T,N,1>
+    class CArrayNumeric : public std::array<T,N>
     {
         public:
         typedef T                    value_type;
-        typedef Eigen::Matrix<T,N,1> Base;
+        typedef std::array<T,N> Base;
+
 
         CArrayNumeric() {}  //!< Default constructor
         /** Constructor from initial values ptr[0]-ptr[N-1] */
-        CArrayNumeric(const T*ptr) : Eigen::Matrix<T,N,1>(ptr) {}
+        CArrayNumeric(const T*ptr) :std::array<T,N>(ptr) {}
 
         /** Initialization from a vector-like source, that is, anything implementing operator[]. */
         template <class ARRAYLIKE>
-        explicit CArrayNumeric(const ARRAYLIKE &obj) : Eigen::Matrix<T,N,1>(obj) {}
-
-        template<typename OtherDerived>
-        inline CArrayNumeric<T,N> & operator= (const Eigen::MatrixBase <OtherDerived>& other) {
-            Base::operator=(other);
-            return *this;
-        }
+        explicit CArrayNumeric(const ARRAYLIKE &obj) :std::array<T,N>(obj) {}
 
     };
 
@@ -125,16 +114,16 @@ namespace ydlidar
     template<class T> class aligned_allocator;
 
 
-    /** Helper types for STL containers with Eigen memory allocators.  (in #include <mrpt/utils/aligned_containers.h>)  */
+    /** Helper types for STL containers with std memory allocators.  */
     template <class TYPE1,class TYPE2=TYPE1>
     struct aligned_containers
     {
         typedef std::pair<TYPE1,TYPE2> pair_t;
-        typedef std::vector<TYPE1, Eigen::aligned_allocator<TYPE1> > vector_t;
-        typedef std::deque<TYPE1, Eigen::aligned_allocator<TYPE1> > deque_t;
-        typedef std::list<TYPE1, Eigen::aligned_allocator<TYPE1> > list_t;
-        typedef std::map<TYPE1,TYPE2,std::less<TYPE1>,Eigen::aligned_allocator<std::pair<const TYPE1,TYPE2> > > map_t;
-        typedef std::multimap<TYPE1,TYPE2,std::less<TYPE1>,Eigen::aligned_allocator<std::pair<const TYPE1,TYPE2> > > multimap_t;
+        typedef std::vector<TYPE1, std::allocator<TYPE1> > vector_t;
+        typedef std::deque<TYPE1,  std::allocator<TYPE1> > deque_t;
+        typedef std::list<TYPE1, std::allocator<TYPE1> > list_t;
+        typedef std::map<TYPE1,TYPE2,std::less<TYPE1>, std::allocator<std::pair<const TYPE1,TYPE2> > > map_t;
+        typedef std::multimap<TYPE1,TYPE2,std::less<TYPE1>, std::allocator<std::pair<const TYPE1,TYPE2> > > multimap_t;
     };
 
 		namespace detail {
@@ -204,10 +193,12 @@ namespace ydlidar
                     const typename TInnerVectorCenters::value_type *center_ptr = &centers[0];
 					for (size_t i=0;i<k;i++)
 					{
-						TInnerVectorCenters c;
-						c.resize(dims);
-						for (size_t j=0;j<dims;j++) c[j]= *center_ptr++;
-						out_centers->push_back(c);
+                        TInnerVectorCenters c;
+                        for (size_t j=0;j<dims;j++) {
+                            if(j < c.size())
+                                c[j] = *center_ptr++;
+                        }
+                        out_centers->push_back(c);
 					}
 				}
 				return ret;

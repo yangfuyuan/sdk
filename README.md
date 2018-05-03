@@ -28,7 +28,6 @@ Upgrade Log
 
 Dependencies:
 
-1.Eigen3
 2.pymouse(samples)
 
 Install required dependencies:
