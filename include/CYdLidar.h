@@ -17,8 +17,8 @@
 }\
 
 
-#ifndef countof
-#define countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#ifndef _countof
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
 
 #ifndef M_PI
