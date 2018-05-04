@@ -14,7 +14,13 @@ How to build YDLIDAR SDK samples
 How to run YDLIDAR SDK samples
 =====================================================================
     --$ cd samples
-    --$ ./ydlidar_test /dev/ttyUSB0 230400 0
+
+linux:
+
+    --$ ./ydlidar_test /dev/ttyUSB0 230400
+
+windows:
+    --$ ydlidar_test.exe /dev/ttyUSB0 230400
 
 You should see YDLIDAR's scan result in the console
 
