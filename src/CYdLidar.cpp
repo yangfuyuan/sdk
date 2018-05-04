@@ -2,10 +2,6 @@
 #include "common.h"
 #include <map>
 
-#ifndef _countof
-#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
-#endif
-
 
 using namespace std;
 using namespace ydlidar;
