@@ -46,6 +46,7 @@ int main(int argc, char * argv[])
   laser.setSerialPort(port);
   laser.setSerialBaudrate(baud);
   laser.setIntensities(intensities);
+  laser.setFixedResolution(false);
 
   laser.initialize();
     while(!running){
