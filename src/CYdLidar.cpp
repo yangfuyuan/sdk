@@ -433,7 +433,7 @@ bool CYdLidar::checkStatus()
     bool ret = getDeviceHealth();
 
     int m_type;
-    if (!getDeviceInfo(m_type)&&!ret){
+    if (!ret ||!getDeviceInfo(m_type)){
         checkmodel[m_SerialBaudrate] = true;
         map<int,bool>::iterator it;
         for (it=checkmodel.begin(); it!=checkmodel.end(); ++it) {
