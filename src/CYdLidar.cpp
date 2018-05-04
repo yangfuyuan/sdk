@@ -64,7 +64,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
 	}
 
     node_info nodes[node_counts];
-    size_t   count = _countof(nodes);
+    size_t   count = countof(nodes);
 
     size_t all_nodes_counts = node_counts;
 

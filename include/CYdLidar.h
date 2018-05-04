@@ -4,7 +4,11 @@
 #include "ydlidar_driver.h"
 #include <math.h>
 
-
+#if !defined(__cplusplus)
+#ifndef __cplusplus
+#error "The YDLIDAR SDK requires a C++ compiler to be built"
+#endif
+#endif
 #define PropertyBuilderByName(type, name, access_permission)\
     access_permission:\
         type m_##name;\
@@ -16,8 +20,8 @@
         return m_##name;\
 }\
 
-#ifndef _countof
-#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#ifndef countof
+#define countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
 
 #ifndef M_PI
