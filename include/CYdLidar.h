@@ -16,6 +16,14 @@
         return m_##name;\
 }\
 
+#ifndef _countof
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#endif
+
+#ifndef M_PI
+#define M_PI 3.1415926
+#endif
+
 #define DEG2RAD(x) ((x)*M_PI/180.)
 
 class YDLIDAR_API CYdLidar
