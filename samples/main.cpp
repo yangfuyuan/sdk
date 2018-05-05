@@ -46,6 +46,10 @@ int main(int argc, char * argv[])
   laser.setSerialPort(port);
   laser.setSerialBaudrate(baud);
   laser.setIntensities(intensities);
+  laser.setMaxRange(16.0);
+  laser.setMinRange(0.26);
+  laser.setMaxAngle(180);
+  laser.setMinAngle(-180);
   laser.setFixedResolution(false);
 
   laser.initialize();
@@ -54,6 +58,11 @@ int main(int argc, char * argv[])
 		LaserScan scan;
 
 		if(laser.doProcessSimple(scan, hardError )){
+            for(int i =0; i < scan.ranges.size(); i++ ){
+                float angle = scan.config.min_angle + i*scan.config.ang_increment;
+                float dis = scan.ranges[i];
+
+            }
 			fprintf(stderr,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
 
 		}
