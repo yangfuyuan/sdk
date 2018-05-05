@@ -4,7 +4,6 @@
 #include <string>
 #include <signal.h>
 #include <memory>
-#include <unistd.h>
 #include <array>
 #include "kmeans.h"
 
@@ -16,6 +15,10 @@ using namespace ydlidar::math;
 CYdLidar laser;
 static bool running = false;
 
+
+#if defined(_MSC_VER)
+#pragma comment(lib, "ydlidar_driver.lib")
+#endif
 
 #include <stdio.h> /* needed for vsnprintf */
 #include <stdlib.h> /* needed for malloc-free */
@@ -248,7 +251,6 @@ int main(int argc, char * argv[]) {
                 }
             }
         }
-        usleep(50*1000);
   }
   laser.turnOff();
   laser.disconnecting();
