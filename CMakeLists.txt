@@ -10,8 +10,7 @@ FILE(GLOB SDK_SRC
   "src/*.h"
   "src/impl/windows/*.cpp"
   "src/impl/windows/*.h"
-  "src/kmeans++/*.cpp"
-  "src/kmeans++/*.h"
+  "include/*.h"
 )
 	
 ELSE()
@@ -20,8 +19,7 @@ FILE(GLOB SDK_SRC
   "src/*.h"
   "src/impl/unix/*.cpp"
   "src/impl/unix/*.h"
-  "src/kmeans++/*.cpp"
-  "src/kmeans++/*.h"
+  "include/*.h"
 )
 
 	
