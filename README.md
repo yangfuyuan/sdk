@@ -14,12 +14,8 @@ How to build YDLIDAR SDK samples
     $ mkdir build
     $ cd build
     $ cmake ../sdk
-
-linux:
-    $ make
-
-windows:
-    $ vs open Project.sln
+    $ make			###linux
+    $ vs open Project.sln	###windows
     
 How to run YDLIDAR SDK samples
 =====================================================================
