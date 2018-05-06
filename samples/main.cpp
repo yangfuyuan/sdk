@@ -927,8 +927,8 @@ int main(int argc, char * argv[]) {
         width = 1920;
         height = 1080;
     }
-    float resolution_x =10; //电脑屏幕映射到操作屏上的分辨率, X轴上
-    float resolution_y =10; //电脑屏幕映射到操作屏上的分辨率, Y轴上
+    float resolution_x =1; //电脑屏幕映射到操作屏上的分辨率, X轴上
+    float resolution_y =1; //电脑屏幕映射到操作屏上的分辨率, Y轴上
 
     double cluster_rad = 10;//mm//区分多触点半径
 
