@@ -7,20 +7,35 @@ Visit EAI Website for more details about [YDLIDAR](http://www.ydlidar.com/) .
 
 How to build YDLIDAR SDK samples
 =====================================================================
-    1) Clone this project to your computer folder
-    2) Running cmake to build ydlidar_test
+    $ git clone https://github.com/yangfuyuan/sdk
+    $ cd sdk
+    $ git checkout big-screen
+    $ cd ..
+    $ mkdir build
+    $ cd build
+    $ cmake ../sdk
+
+linux:
+    $ make
+
+windows:
+    $ vs open Project.sln
     
 How to run YDLIDAR SDK samples
 =====================================================================
-    --$ cd samples
+    $ cd samples
 
 linux:
 
-    --$ ./ydlidar_test
+    $ ./ydlidar_test
+    $请输入端口号:/dev/ttyUSB0
+    $请输入雷达波特率:230400
 
 windows:
 
-    --$ ydlidar_test.exe
+    $ ydlidar_test.exe
+    $请输入端口号:/dev/ttyUSB0
+    $请输入雷达波特率:230400
 
 You should see YDLIDAR's scan result in the console
 
