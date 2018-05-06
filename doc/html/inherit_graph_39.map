@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classydlidar_1_1math_1_1_c_array_numeric.html" title="ydlidar::math::CArrayNumeric\l\&lt; double, N \&gt;" alt="" coords="104,5,299,47"/>
+<area shape="rect" id="node4" href="$classydlidar_1_1math_1_1_c_array_numeric.html" title="ydlidar::math::CArrayNumeric\l\&lt; float, N \&gt;" alt="" coords="104,71,299,112"/>
+<area shape="rect" id="node6" href="$classydlidar_1_1math_1_1_c_array_numeric.html" title="ydlidar::math::CArrayNumeric\l\&lt; int, N \&gt;" alt="" coords="104,136,299,177"/>
+<area shape="rect" id="node8" href="$classydlidar_1_1math_1_1_c_array_numeric.html" title="ydlidar::math::CArrayNumeric\l\&lt; unsigned int, N \&gt;" alt="" coords="104,201,299,243"/>
+<area shape="rect" id="node10" href="$classydlidar_1_1math_1_1_c_array_numeric.html" title="ydlidar::math::CArrayNumeric\l\&lt; T, N \&gt;" alt="" coords="104,267,299,308"/>
+<area shape="rect" id="node3" href="$classydlidar_1_1math_1_1_c_array_double.html" title="ydlidar::math::CArrayDouble\&lt; N \&gt;" alt="" coords="347,13,568,39"/>
+<area shape="rect" id="node5" href="$classydlidar_1_1math_1_1_c_array_float.html" title="ydlidar::math::CArrayFloat\&lt; N \&gt;" alt="" coords="353,78,562,105"/>
+<area shape="rect" id="node7" href="$classydlidar_1_1math_1_1_c_array_int.html" title="ydlidar::math::CArrayInt\&lt; N \&gt;" alt="" coords="360,143,555,170"/>
+<area shape="rect" id="node9" href="$classydlidar_1_1math_1_1_c_array_u_int.html" title="ydlidar::math::CArrayUInt\&lt; N \&gt;" alt="" coords="355,209,560,235"/>
+</map>

@@ -1,0 +1,67 @@
+\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager}{}\section{SL\+:\+:Input\+\_\+\+Lite\+:\+:Input\+Manager Class Reference}
+\label{class_s_l_1_1_input___lite_1_1_input_manager}\index{S\+L\+::\+Input\+\_\+\+Lite\+::\+Input\+Manager@{S\+L\+::\+Input\+\_\+\+Lite\+::\+Input\+Manager}}
+
+
+Inheritance diagram for SL\+:\+:Input\+\_\+\+Lite\+:\+:Input\+Manager\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{class_s_l_1_1_input___lite_1_1_input_manager__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for SL\+:\+:Input\+\_\+\+Lite\+:\+:Input\+Manager\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{class_s_l_1_1_input___lite_1_1_input_manager__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool {\bfseries Push\+Event} (const \hyperlink{struct_s_l_1_1_input___lite_1_1_key_event}{Key\+Event} \&e) override\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a30db2aa7338bb433604926ff4d669ea1}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a30db2aa7338bb433604926ff4d669ea1}
+
+\item 
+virtual bool {\bfseries Push\+Event} (const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_button_event}{Mouse\+Button\+Event} \&e) override\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_af7b785157d207b53344adf50ecdd6945}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_af7b785157d207b53344adf50ecdd6945}
+
+\item 
+virtual bool {\bfseries Push\+Event} (const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_scroll_event}{Mouse\+Scroll\+Event} \&pos) override\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_aa13962a396ea3a4b5be7bd8eb59cf646}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_aa13962a396ea3a4b5be7bd8eb59cf646}
+
+\item 
+virtual bool {\bfseries Push\+Event} (const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_position_offset_event}{Mouse\+Position\+Offset\+Event} \&pos) override\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a9d7728002915e6cee3043b3ea2007ea4}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a9d7728002915e6cee3043b3ea2007ea4}
+
+\item 
+virtual bool {\bfseries Push\+Event} (const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_position_absolute_event}{Mouse\+Position\+Absolute\+Event} \&pos) override\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a7da31dca0732457098ea4452b9c38652}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a7da31dca0732457098ea4452b9c38652}
+
+\item 
+void {\bfseries start} ()\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a281a69871f8af566aa228890fff1daaf}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a281a69871f8af566aa228890fff1daaf}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::function$<$ void(const \hyperlink{struct_s_l_1_1_input___lite_1_1_key_event}{Key\+Event} \&)$>$ {\bfseries On\+Key\+Event}\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_abb565d47b0c2be57d949d58ebfb25ad2}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_abb565d47b0c2be57d949d58ebfb25ad2}
+
+\item 
+std\+::function$<$ void(const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_button_event}{Mouse\+Button\+Event} \&)$>$ {\bfseries On\+Mouse\+Button\+Event}\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a9acec2bd9dbb7becba6ffa7d7c4d4134}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a9acec2bd9dbb7becba6ffa7d7c4d4134}
+
+\item 
+std\+::function$<$ void(const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_scroll_event}{Mouse\+Scroll\+Event} \&)$>$ {\bfseries On\+Mouse\+Scroll}\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_ab1094f8733da4d16a447db7de2fb6ae3}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_ab1094f8733da4d16a447db7de2fb6ae3}
+
+\item 
+std\+::function$<$ void(const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_position_offset_event}{Mouse\+Position\+Offset\+Event} \&)$>$ {\bfseries On\+Mouse\+Position\+Offset}\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a00d65c62f147a2c91cf4ec6fa474c64c}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a00d65c62f147a2c91cf4ec6fa474c64c}
+
+\item 
+std\+::function$<$ void(const \hyperlink{struct_s_l_1_1_input___lite_1_1_mouse_position_absolute_event}{Mouse\+Position\+Absolute\+Event} \&)$>$ {\bfseries On\+Mouse\+Position\+Absolute}\hypertarget{class_s_l_1_1_input___lite_1_1_input_manager_a647c5aea6c79217ca87ec04d1c99d874}{}\label{class_s_l_1_1_input___lite_1_1_input_manager_a647c5aea6c79217ca87ec04d1c99d874}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/yang/tmp/sdk/input\+\_\+lite/include/Input\+Manager.\+h\item 
+/home/yang/tmp/sdk/input\+\_\+lite/src/Input\+Manager.\+cpp\end{DoxyCompactItemize}

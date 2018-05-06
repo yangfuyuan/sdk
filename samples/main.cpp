@@ -3,27 +3,26 @@
 #include <iostream>
 #include <string>
 #include <signal.h>
+#include <chrono>
+#include <thread>
 #include <memory>
 #include <array>
 #include "kmeans.h"
 #include "input_lite/include/InputManager.h"
 #include "input_lite/include/Input_Lite.h"
 
-#include <chrono>
-#include <iostream>
-#include <string>
-#include <thread>
+
 
 
 #if defined(_MSC_VER)
 #pragma comment(lib, "ydlidar_driver.lib")
 #endif
 
-using namespace SL::Input_Lite;
 using namespace std;
 using namespace ydlidar;
 using namespace ydlidar::math::detail;
 using namespace ydlidar::math;
+using namespace SL::Input_Lite;
 
 
 CYdLidar laser;
@@ -33,16 +32,15 @@ static bool running = false;
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#elif __APPLE__
-#include <Carbon/Carbon.h>
-#include <Windows.h>
-
 inline int GetScreenSize( int* x, int* y )
 {
     *x = GetSystemMetrics( SM_CXSCREEN );
     *y = GetSystemMetrics( SM_CYSCREEN );
     return 0;
 }
+#elif __APPLE__
+#include <Carbon/Carbon.h>
+#include <Windows.h>
 
 #else
 #include <X11/Xlib.h>
@@ -919,7 +917,6 @@ int main(int argc, char * argv[]) {
 
 
     typedef CArrayDouble<2>  CPointType;
-
     signal(SIGINT, Stop);
     signal(SIGTERM, Stop);
 
@@ -1020,7 +1017,7 @@ int main(int argc, char * argv[]) {
             bool iswheel =false;//是否是滚轮事件
             bool scale_in = false;
 
-            //聚类后的几个单点  在做处理
+            //聚类后的几个单点  再做处理
             for(auto it = centers.begin(); it != centers.end(); it++) {
                 x = (*it)[0]*resolution_x;
                 y = (*it)[1]*resolution_y;
@@ -1036,7 +1033,6 @@ int main(int argc, char * argv[]) {
 
             //处理后的单点, 做鼠标操作
             if(centers.size()) {
-
                 if (centers.size() == 2 && pre_count ==2) {
                      iswheel = true;
                      double dis = sqrt((pow(centers[0][0] - centers[1][0],2) + pow(centers[0][1] - centers[1][1],2)));
@@ -1103,6 +1099,7 @@ int main(int argc, char * argv[]) {
                      select = true;
 
                 } else if(iswheel){
+                    //鼠标滚轮事件
                     if(scale_in) {
                         SendInput(MouseScrollEvent{-1});
                     } else {

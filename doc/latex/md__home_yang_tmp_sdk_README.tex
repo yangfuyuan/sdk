@@ -8,53 +8,28 @@ Visit E\+AI Website for more details about Y\+D\+L\+I\+D\+AR.
 
 \section*{How to run Y\+D\+L\+I\+D\+AR S\+DK samples }
 
---\$ cd samples --\$ ./ydlidar\+\_\+test /dev/tty\+U\+S\+B0 230400 0
+--\$ cd samples
+
+linux\+: \begin{DoxyVerb}--$ ./ydlidar_test
+\end{DoxyVerb}
+
+
+windows\+: \begin{DoxyVerb}--$ ydlidar_test.exe
+\end{DoxyVerb}
+
 
 You should see Y\+D\+L\+I\+D\+AR\textquotesingle{}s scan result in the console
 
 \section*{Upgrade Log }
 
+2018-\/05-\/05 version\+:1.\+1.\+0
+
+1.\+increase mouse event c++ mutil-\/platform library.
+
+2.\+remove python mouse event.
+
+3.\+add simple right mouse button, left button, middle button demo.
+
 2018-\/05-\/02 version\+:1.\+0.\+0
 
-1.\+Output screen corrdinates.
-
-Dependencies\+:
-
-1.\+python
-
-2.\+pymouse(samples)
-
-linux\+: 1.\+pip install pymouse
-
-windows\+:
-
-Install required dependencies\+:
-
-1.\+pip install pywin32
-
-2.\+pip install pyhook \#\#failed, go to \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook}{\tt http\+://www.\+lfd.\+uci.\+edu/$\sim$gohlke/pythonlibs/\#pyhook}
-
-3.\+pip install pymouse
-
-Here is how to install py\+Hook\+:
-
-1.\+You can find the download link here \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook}{\tt http\+://www.\+lfd.\+uci.\+edu/$\sim$gohlke/pythonlibs/\#pyhook}
-
-2.\+If you have python 32bit you want pyhook 32 bit (Download \#1 for Python 2.\+7).
-
-3.\+If you have python 64bit you want py\+Hook 64 bit (Download \#2 for Python 2.\+7).
-
-4.\+Extract the zip file.
-
-5.\+In the command prompt navigate to the folder where you extracted the .zip.
-
-6.\+Type the command \textquotesingle{}pip install py\+Hook-\/1.\+5.\+1-\/cp27-\/none-\/win32.\+whl\textquotesingle{} for the 32 bit version or \textquotesingle{}pip install py\+Hook-\/1.\+5.\+1-\/cp27-\/none-\/win\+\_\+amd64.\+whl\textquotesingle{}
-
-Error\+:
-
-
-\begin{DoxyEnumerate}
-\item Module\+Not\+Found\+Error\+: No module named \textquotesingle{}windows\textquotesingle{}
-\end{DoxyEnumerate}
-
-Under pymoused \+\_\+\+\_\+init\+\_\+\+\_\+， elif sys.\+platform == \textquotesingle{}win32\textquotesingle{}\+: from windows import Py\+Mouse, Py\+Mouse\+Event Change to \textquotesingle{}from pymouse.\+windows import Py\+Mouse, Py\+Mouse\+Event 
+1.\+Output screen corrdinates. 

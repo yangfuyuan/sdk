@@ -1,4 +1,4 @@
-YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.0.0
+YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0
 =====================================================================
 
 SDK test application for YDLIDAR
@@ -17,10 +17,11 @@ How to run YDLIDAR SDK samples
 
 linux:
 
-    --$ ./ydlidar_test /dev/ttyUSB0 230400
+    --$ ./ydlidar_test
 
 windows:
-    --$ ydlidar_test.exe COM3 230400
+
+    --$ ydlidar_test.exe
 
 You should see YDLIDAR's scan result in the console
 
@@ -28,51 +29,16 @@ You should see YDLIDAR's scan result in the console
 Upgrade Log
 =====================================================================
 
+2018-05-05 version:1.1.0
+
+   1.increase mouse event c++ mutil-platform library.
+
+   2.remove python mouse event.
+
+   3.add simple right mouse button, left button, middle button demo.
+
+
 2018-05-02 version:1.0.0
 
    1.Output screen corrdinates.
-
-Dependencies:
-
-1.python 
-
-2.pymouse(samples)
-
-linux:
-   1.pip install pymouse
-
-
-windows:
-
-Install required dependencies:
-
-   1.pip install pywin32
-  
-   2.pip install pyhook ##failed, go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook
-
-   3.pip install pymouse
-
-Here is how to install pyHook:
-
-   1.You can find the download link here http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook
-
-   2.If you have python 32bit you want pyhook 32 bit (Download #1 for Python 2.7).
-
-   3.If you have python 64bit you want pyHook 64 bit (Download #2 for Python 2.7).
-
-   4.Extract the zip file.
-
-   5.In the command prompt navigate to the folder where you extracted the .zip.
-
-   6.Type the command 'pip install pyHook-1.5.1-cp27-none-win32.whl' for the 32 bit version or 'pip install pyHook-1.5.1-cp27-none-win_amd64.whl'
-
-
-Error:
-
-   1. ModuleNotFoundError: No module named 'windows'
-
-   Under pymoused __init__，
-	elif sys.platform == 'win32':
-		from windows import PyMouse, PyMouseEvent
-   Change to 'from pymouse.windows import PyMouse, PyMouseEvent
 

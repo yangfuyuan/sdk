@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>YDLIDAR SDK SCREEN INTERACTION: YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.0.0</title>
+<title>YDLIDAR SDK SCREEN INTERACTION: YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="app(2).png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK SCREEN INTERACTION
-   &#160;<span id="projectnumber">V1.0.0</span>
+   &#160;<span id="projectnumber">V1.1.0</span>
    </div>
   </td>
  </tr>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.0.0 </div>  </div>
+<div class="title">YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0 </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>SDK test application for YDLIDAR</p>
@@ -87,32 +87,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>How to build YDLIDAR SDK samples </h1>
 <p>1) Clone this project to your computer folder 2) Clone this project to your computer folder 2) Running cmake to build ydlidar_test</p>
 <h1>How to run YDLIDAR SDK samples </h1>
-<p>&ndash;$ cd samples &ndash;$ ./ydlidar_test /dev/ttyUSB0 230400 0</p>
-<p>You should see YDLIDAR's scan result in the console</p>
+<p>&ndash;$ cd samples</p>
+<p>linux: </p><pre class="fragment">--$ ./ydlidar_test
+</pre><p>windows: </p><pre class="fragment">--$ ydlidar_test.exe
+</pre><p>You should see YDLIDAR's scan result in the console</p>
 <h1>Upgrade Log </h1>
+<p>2018-05-05 version:1.1.0</p>
+<p>1.increase mouse event c++ mutil-platform library.</p>
+<p>2.remove python mouse event.</p>
+<p>3.add simple right mouse button, left button, middle button demo.</p>
 <p>2018-05-02 version:1.0.0</p>
-<p>1.Output screen corrdinates.</p>
-<p>Dependencies:</p>
-<p>1.python</p>
-<p>2.pymouse(samples)</p>
-<p>linux: 1.pip install pymouse</p>
-<p>windows:</p>
-<p>Install required dependencies:</p>
-<p>1.pip install pywin32</p>
-<p>2.pip install pyhook ##failed, go to <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook">http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
-<p>3.pip install pymouse</p>
-<p>Here is how to install pyHook:</p>
-<p>1.You can find the download link here <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook">http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
-<p>2.If you have python 32bit you want pyhook 32 bit (Download #1 for Python 2.7).</p>
-<p>3.If you have python 64bit you want pyHook 64 bit (Download #2 for Python 2.7).</p>
-<p>4.Extract the zip file.</p>
-<p>5.In the command prompt navigate to the folder where you extracted the .zip.</p>
-<p>6.Type the command 'pip install pyHook-1.5.1-cp27-none-win32.whl' for the 32 bit version or 'pip install pyHook-1.5.1-cp27-none-win_amd64.whl'</p>
-<p>Error:</p>
-<ol type="1">
-<li>ModuleNotFoundError: No module named 'windows'</li>
-</ol>
-<p>Under pymoused __init__， elif sys.platform == 'win32': from windows import PyMouse, PyMouseEvent Change to 'from pymouse.windows import PyMouse, PyMouseEvent </p>
+<p>1.Output screen corrdinates. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
