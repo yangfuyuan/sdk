@@ -33,7 +33,18 @@ windows:
     $请输入端口号:COM3
     $请输入雷达波特率:230400
 
-You should see YDLIDAR's scan result in the console
+You should see YDLIDAR's scan result in the console:
+
+    Yd Lidar running correctly ! The health status: good
+    [YDLIDAR] Connection established in [/dev/ttyUSB0]:
+    Firmware version: 2.0.9
+    Hardware version: 2
+    Model: G4
+    Serial: 2018041400000102
+    [YDLIDAR INFO] Current Sampling Rate : 9K
+    [YDLIDAR INFO] Current Scan Frequency : 7.400000Hz
+    [YDLIDAR INFO] Now YDLIDAR is scanning ......
+
 
 
 Upgrade Log
