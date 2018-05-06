@@ -69,27 +69,27 @@ Upgrade Log
 
 	雷达安装角度Theta = -90;//雷达坐标系相对屏幕坐标系逆时针旋转了90度.
 
-CYdLidar laser;
+	CYdLidar laser;
 
-laser.setMax_x(1920);
+	laser.setMax_x(1920);
     
-laser.setMax_y(1080);
+	laser.setMax_y(1080);
     
-laser.setMin_x(0);
+	laser.setMin_x(0);
     
-laser.setMin_y(0);
+	laser.setMin_y(0);
 
-LaserPose pose;
+	LaserPose pose;
 
-pose.x = 900;
+	pose.x = 900;
 
-pose.y = -100;
+	pose.y = -100;
 
-pose.theta = -90;
+	pose.theta = -90;
 
-pose.reversion = false; //雷达表面朝外
+	pose.reversion = false; //雷达表面朝外
 
-laser.setpose(pose);
+	laser.setpose(pose);
 
 上图安装方式2:
 
@@ -107,27 +107,27 @@ laser.setpose(pose);
 
 	雷达安装角度Theta = -180;//雷达坐标系相对屏幕坐标系逆时针旋转了90度.
 
-CYdLidar laser;
+	CYdLidar laser;
 
-laser.setMax_x(1920);
+	laser.setMax_x(1920);
     
-laser.setMax_y(1080);
+	laser.setMax_y(1080);
     
-laser.setMin_x(0);
+	laser.setMin_x(0);
     
-laser.setMin_y(0);
+	laser.setMin_y(0);
 
-LaserPose pose;
+	LaserPose pose;
 
-pose.x = -100;
+	pose.x = -100;
 
-pose.y = 500;
+	pose.y = 500;
 
-pose.theta = -180;
+	pose.theta = -180;
 
-pose.reversion = false; //雷达表面朝外
+	pose.reversion = false; //雷达表面朝外
 
-laser.setpose(pose);
+	laser.setpose(pose);
 
 
 ####备注:雷达安装位置和角度根据实际情况设定, 注意实际屏幕和操作屏幕的换算比例. 如果安装角度是120度, 直接把雷达安装角度设置为120, 不用更改雷达零点.
