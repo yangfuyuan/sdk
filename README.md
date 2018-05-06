@@ -20,7 +20,7 @@ linux:
     --$ ./ydlidar_test /dev/ttyUSB0 230400
 
 windows:
-    --$ ydlidar_test.exe /dev/ttyUSB0 230400
+    --$ ydlidar_test.exe COM3 230400
 
 You should see YDLIDAR's scan result in the console
 

@@ -211,7 +211,7 @@ namespace ydlidar
     class KmTree {
      public:
       // Constructs a tree out of the given n data points living in R^d.
-      KmTree(int n, int d, Scalar *points): n_(n), d_(d), points_(points){
+      explicit KmTree(int n, int d, Scalar *points): n_(n), d_(d), points_(points){
           int node_size = sizeof(Node) + d_ * 3 * sizeof(Scalar);
           node_data_ = (char*)malloc((2*n-1) * node_size);
           point_indices_ = (int*)malloc(n * sizeof(int));
@@ -549,7 +549,7 @@ namespace ydlidar
 
 
     // Returns the number of seconds since the program began execution.
-    static double GetSeconds() {
+    inline double GetSeconds() {
       return double(clock()) / CLOCKS_PER_SEC;
     }
 
@@ -557,7 +557,7 @@ namespace ydlidar
     // Performs one full execution of k-means, logging any relevant information, and tracking meta
     // statistics for the run. If min or max values are negative, they are treated as unset.
     // best_centers and best_assignment can be 0, in which case they are not set.
-    static void RunKMeansOnce(const KmTree &tree, int n, int k, int d, Scalar *points, Scalar *centers,
+    inline void RunKMeansOnce(const KmTree &tree, int n, int k, int d, Scalar *points, Scalar *centers,
                               Scalar *min_cost, Scalar *max_cost, Scalar *total_cost,
                               double start_time, double *min_time, double *max_time,
                               double *total_time, Scalar *best_centers, int *best_assignment) {

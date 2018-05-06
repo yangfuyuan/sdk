@@ -25,6 +25,7 @@ FILE(GLOB SDK_SRC
 	
 ENDIF()
 
+add_subdirectory(input_lite)
 add_subdirectory(samples)
 
 add_library(ydlidar_driver SHARED ${SDK_SRC})
