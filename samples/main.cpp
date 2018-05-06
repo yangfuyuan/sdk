@@ -1033,6 +1033,7 @@ int main(int argc, char * argv[]) {
 
             //处理后的单点, 做鼠标操作
             if(centers.size()) {
+                //如果前一次和当前都有两个触点, 认为是滚轮事件
                 if (centers.size() == 2 && pre_count ==2) {
                      iswheel = true;
                      double dis = sqrt((pow(centers[0][0] - centers[1][0],2) + pow(centers[0][1] - centers[1][1],2)));
@@ -1072,7 +1073,7 @@ int main(int argc, char * argv[]) {
 
                 isempty = false;
 
-                if (cnt >8 &&select) {//同一位置检测到大于5次, 认为是右击事件
+                if (cnt >8 &&select) {//同一位置检测到大于8次, 认为是右击事件
                     //移动鼠标到(x, y)
                     MousePositionAbsoluteEvent event;
                     event.X = x;
