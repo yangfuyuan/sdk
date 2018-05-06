@@ -1,9 +1,9 @@
 YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0
 =====================================================================
 
-SDK test application for YDLIDAR[sample](https://github.com/yangfuyuan/sdk/tree/big-screen)
+SDK [test](https://github.com/yangfuyuan/sdk/tree/big-screen) application for YDLIDAR
 
-Visit EAI Website for more details about YDLIDAR[YDLIDAR](http://www.ydlidar.com/) .
+Visit EAI Website for more details about [YDLIDAR](http://www.ydlidar.com/) .
 
 How to build YDLIDAR SDK samples
 =====================================================================
