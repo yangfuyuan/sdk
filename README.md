@@ -30,7 +30,7 @@ linux:
 windows:
 
     $ ydlidar_test.exe
-    $请输入端口号:/dev/ttyUSB0
+    $请输入端口号:COM3
     $请输入雷达波特率:230400
 
 You should see YDLIDAR's scan result in the console
