@@ -638,10 +638,10 @@ namespace ydlidar{
         {
 
             ScopedLocker l(_plock);
-            int r = laser_pose.reversion?1:-1;
+            int coeff = laser_pose.reversion?-1:1;
 
-            (*point).screen_x = laser_pose.x + (*point).laser_x*cos(laser_pose.theta*M_PI/180.0) + r*(*point).laser_y*sin(laser_pose.theta*M_PI/180.0);
-            (*point).screen_y = laser_pose.y - r*(*point).laser_y*cos(laser_pose.theta*M_PI/180.0) + (*point).laser_x*sin(laser_pose.theta*M_PI/180.0);
+            (*point).screen_x = laser_pose.x + (*point).laser_x*cos(laser_pose.theta*M_PI/180.0) - coeff*(*point).laser_y*sin(laser_pose.theta*M_PI/180.0);
+            (*point).screen_y = laser_pose.y + coeff*(*point).laser_y*cos(laser_pose.theta*M_PI/180.0) + (*point).laser_x*sin(laser_pose.theta*M_PI/180.0);
 
 
             if(inBox((*point).screen_x, (*point).screen_y)) {
