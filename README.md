@@ -9,7 +9,7 @@ How to build YDLIDAR SDK samples
 =====================================================================
     $ git clone https://github.com/yangfuyuan/sdk
     $ cd sdk
-    $ git checkout non-singleton
+    $ git checkout master
     $ cd ..
     $ mkdir build
     $ cd build
