@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.2
+YDLIDAR SDK PACKAGE V1.3.3
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
@@ -51,6 +51,12 @@ You should see YDLIDAR's scan result in the console:
 
 Upgrade Log
 =====================================================================
+
+2018-05-14 version:1.3.3
+
+   1.add the heart function constraint.
+
+   2.add packet type with scan frequency support.
 
 2018-04-16 version:1.3.2
 
