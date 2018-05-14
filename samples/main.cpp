@@ -40,6 +40,8 @@ int main(int argc, char * argv[])
     laser.setMinRange(0.26);
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
+    laser.setHeartBeat(false);
+    laser.setReversion(false);
     laser.setFixedResolution(false);
 
     laser.initialize();

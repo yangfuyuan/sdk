@@ -393,6 +393,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
     unsigned int maxv = (unsigned int)(devinfo.firmware_version>>8);
     unsigned int midv = (unsigned int)(devinfo.firmware_version&0xff)/10;
     unsigned int minv = (unsigned int)(devinfo.firmware_version&0xff)%10;
+    fprintf(stderr, "firmware: %i\n", devinfo.firmware_version);
 
 	printf("[YDLIDAR] Connection established in [%s]:\n"
 			   "Firmware version: %u.%u.%u\n"
