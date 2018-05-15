@@ -71,7 +71,7 @@ Lidar point data structure
 
    if(data[i].scan_frequence != 0) {
 
-      current_frequence = data[i].scan_frequence;
+      current_frequence = data[i].scan_frequence/10.0;
    }
 
    current_time_stamp = data[i].stamp;
@@ -82,7 +82,7 @@ Lidar point data structure
 
    current_intensity = (float)(data[i].sync_quality >> 2);
 
-   ###note:current_frequence = data[0].scan_frequence.
+   ###note:current_frequence = data[0].scan_frequence/10.0.
    ###if the current_frequence value equals zero, it is an invalid value.
 
 
