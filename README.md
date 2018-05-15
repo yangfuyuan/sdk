@@ -34,6 +34,7 @@ windows:
     $Please enter the lidar baud rate:230400
 
 =====================================================================
+
 You should see YDLIDAR's scan result in the console:
 
     Yd Lidar running correctly ! The health status: good
@@ -53,6 +54,8 @@ You should see YDLIDAR's scan result in the console:
 Lidar point data structure
 =====================================================================
 
+data structure
+
    struct node_info {
 
        uint8_t    sync_quality;//!intensity
@@ -67,7 +70,7 @@ Lidar point data structure
  
     } __attribute__((packed)) ;
 
-###example:
+example:
 
     if(data[i].scan_frequence != 0) {
 
@@ -86,7 +89,7 @@ Lidar point data structure
 
     ###if the current_frequence value equals zero, it is an invalid value.
 
-###code 
+code 
         
         void ParseScan(node_info* data, const size_t& size) {
 
@@ -118,7 +121,7 @@ Lidar point data structure
 
             } else {
 
-                printf("Current lidar does not support return scan frequency");
+                printf("Current lidar does not support return scan frequency\n");
 
             }
         }
