@@ -54,9 +54,9 @@ You should see YDLIDAR's scan result in the console:
 Lidar point data structure
 =====================================================================
 
-data structure
+data structure:
 
-   struct node_info {
+    struct node_info {
 
        uint8_t    sync_quality;//!intensity
 
@@ -89,7 +89,7 @@ example:
 
     ###if the current_frequence value equals zero, it is an invalid value.
 
-code 
+code:
         
         void ParseScan(node_info* data, const size_t& size) {
 
