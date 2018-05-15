@@ -87,6 +87,7 @@ Lidar point data structure
     ###if the current_frequence value equals zero, it is an invalid value.
 
 ###code 
+        
         void ParseScan(node_info* data, const size_t& size) {
 
             double current_frequence, current_distance, current_angle, current_intensity;
