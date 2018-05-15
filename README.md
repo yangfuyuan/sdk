@@ -34,6 +34,7 @@ windows:
     $Please enter the lidar baud rate:230400
 
 =====================================================================
+
 You should see YDLIDAR's scan result in the console:
 
     Yd Lidar running correctly ! The health status: good
@@ -53,7 +54,9 @@ You should see YDLIDAR's scan result in the console:
 Lidar point data structure
 =====================================================================
 
-   struct node_info {
+data structure:
+
+    struct node_info {
 
        uint8_t    sync_quality;//!intensity
 
@@ -65,26 +68,63 @@ Lidar point data structure
 
        uint8_t    scan_frequence;//! current_frequence = scan_frequence/10.0, If the current value equals zero, it is an invalid value
  
-   } __attribute__((packed)) ;
+    } __attribute__((packed)) ;
 
-##example:
+example:
 
-   if(data[i].scan_frequence != 0) {
+    if(data[i].scan_frequence != 0) {
 
-      current_frequence = data[i].scan_frequence/10.0;
-   }
+        current_frequence = data[i].scan_frequence/10.0;
+    }
 
-   current_time_stamp = data[i].stamp;
+    current_time_stamp = data[i].stamp;
 
-   current_distances = data[i].distance_q2/4.f;
+    current_distance = data[i].distance_q2/4.f;
 
-   current_distances = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
+    current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-   current_intensity = (float)(data[i].sync_quality >> 2);
+    current_intensity = (float)(data[i].sync_quality >> 2);
 
-   ###note:current_frequence = data[0].scan_frequence/10.0.
+    ###note:current_frequence = data[0].scan_frequence/10.0.
 
-   ###if the current_frequence value equals zero, it is an invalid value.
+    ###if the current_frequence value equals zero, it is an invalid value.
+
+code:
+        
+        void ParseScan(node_info* data, const size_t& size) {
+
+            double current_frequence, current_distance, current_angle, current_intensity;
+
+            uint64_t current_time_stamp;
+
+            for (size_t i = 0; i < size; i++ ) {
+
+                if( data[i].scan_frequence != 0) {
+
+                    current_frequence =  data[i].scan_frequence;//or current_frequence = data[0].scan_frequence
+
+                }
+
+                current_time_stamp = data[i].stamp;
+
+                current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
+
+                current_distance =  data[i].distance_q2/4.f;
+
+                current_intensity = (float)(data[i].sync_quality >> 2);
+
+            }
+
+            if (current_frequence != 0 ) {
+
+                printf("current lidar scan frequency: %f\n", current_frequence);
+
+            } else {
+
+                printf("Current lidar does not support return scan frequency\n");
+
+            }
+        }
 
 
 Upgrade Log
