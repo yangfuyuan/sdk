@@ -74,13 +74,16 @@ Lidar point data structure
       current_frequence = data[i].scan_frequence;
    }
 
+   current_time_stamp = data[i].stamp;
+
    current_distances = data[i].distance_q2/4.f;
 
    current_distances = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
    current_intensity = (float)(data[i].sync_quality >> 2);
 
-   ###note:current_frequence = data[0].scan_frequence, if the current_frequence value equals zero, it is an invalid value.
+   ###note:current_frequence = data[0].scan_frequence.
+   ###if the current_frequence value equals zero, it is an invalid value.
 
 
 
