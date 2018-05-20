@@ -37,6 +37,8 @@
 #endif
 
 #include "unix_serial.h"
+#include <lock.h>
+
 
 #ifndef TIOCINQ
 #ifdef FIONREAD
@@ -525,6 +527,12 @@ struct serial_struct {
 		if (is_open_ == true) {
 			return true;
 		}
+		pid = -1;
+        pid = getpid();
+        if( LOCK( port_.c_str(), pid)) {
+            fprintf( stderr, "Could not lock serial port for exclusive access\n");
+            return false;
+        }
 
 		fd_ = ::open (port_.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK | O_APPEND | O_NDELAY);
 
@@ -536,6 +544,8 @@ struct serial_struct {
 			case ENFILE:
 			case EMFILE:
 			default:
+			    UNLOCK(port_.c_str(), pid);
+				pid = -1;
 				return false;
 			}
 		}
@@ -551,10 +561,12 @@ struct serial_struct {
 		set_flowcontrol(&tio, flowcontrol_);
 
 		if (!setTermios(&tio)){
+			UNLOCK(port_.c_str(), pid);
 			return false;
 		}
 
 		if (!setBaudrate(baudrate_)){
+			UNLOCK(port_.c_str(), pid);
 			return false;
 		}
 
@@ -578,7 +590,9 @@ struct serial_struct {
 			if (fd_ != -1) {
                 ::close (fd_);
 			}
+			UNLOCK(port_.c_str(), pid);
 			fd_ = -1;
+			pid = -1;
 			is_open_ = false;
 		}
 	}

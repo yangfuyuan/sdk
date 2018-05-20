@@ -6,6 +6,7 @@ include_directories(src)
 IF (WIN32)
 FILE(GLOB SDK_SRC 
   "src/*.cpp"
+  "src/*.c"
   "src/*.h"
   "src/impl/windows/*.cpp"
   "src/impl/windows/*.h"
@@ -14,6 +15,7 @@ FILE(GLOB SDK_SRC
 ELSE()
 FILE(GLOB SDK_SRC 
   "src/*.cpp"
+  "src/*.c"
   "src/*.h"
   "src/impl/unix/*.cpp"
   "src/impl/unix/*.h"
