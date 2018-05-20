@@ -552,6 +552,7 @@ struct serial_struct {
 
 		termios tio;
 		if (!getTermios(&tio)){
+			UNLOCK(port_.c_str(), pid);
 			return false;
 		}
 		set_common_props(&tio);
