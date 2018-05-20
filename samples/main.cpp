@@ -4,7 +4,7 @@
 #include <string>
 #include <signal.h>
 #include <memory>
-#include <unistd.h>
+//#include <unistd.h>
 using namespace std;
 using namespace ydlidar;
 CYdLidar laser;
@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fflush(stdout);
 		}
-        usleep(50*1000);
+        //usleep(50*1000);
 	}
 
     laser.turnOff();
