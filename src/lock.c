@@ -496,10 +496,10 @@ int check_group_uucp()
     strcat(testLockAbsFileName, testLockFileDirName);
     strcat(testLockAbsFileName, "/");
     strcat(testLockAbsFileName, testLockFileName);
-    if ( NULL == mktemp(testLockAbsFileName) )
+    if ( NULL == mkstemp(testLockAbsFileName) )
     {
         free(testLockAbsFileName);
-        printf("check_group_uucp(): mktemp malformed string - \
+        printf("check_group_uucp(): mkstemp malformed string - \
             should not happen");
 
         return 1;
