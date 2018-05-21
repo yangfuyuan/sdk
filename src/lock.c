@@ -496,7 +496,7 @@ int check_group_uucp()
     strcat(testLockAbsFileName, testLockFileDirName);
     strcat(testLockAbsFileName, "/");
     strcat(testLockAbsFileName, testLockFileName);
-    if ( NULL == mkstemp(testLockAbsFileName) )
+    if ( -1 == mkstemp(testLockAbsFileName) )
     {
         free(testLockAbsFileName);
         printf("check_group_uucp(): mkstemp malformed string - \
@@ -509,7 +509,7 @@ int check_group_uucp()
     {
         printf("check_group_uucp(): error testing lock file "
             "creation Error details:");
-        printf(strerror(errno));
+        printf("%s\n",strerror(errno));
         free(testLockAbsFileName);
         return 1;
     }

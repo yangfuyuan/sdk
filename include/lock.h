@@ -217,7 +217,8 @@ extern "C" {
 #endif
 //int uucp_lock( const char *file);
 //int uucp_unlock(void);
-
+int check_group_uucp();
+int check_lock_pid( const char *file, int openpid );
 int lock_device( const char * );
 void unlock_device( const char * );
 int is_device_locked( const char * );
