@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.3
+YDLIDAR SDK PACKAGE V1.3.4
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
