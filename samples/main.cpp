@@ -39,6 +39,7 @@ int main(int argc, char * argv[])
     laser.setHeartBeat(false);
     laser.setReversion(false);
     laser.setIntensities(intensities);
+    laser.setAutoReconnect(true);//异常是否重新连接
     laser.initialize();
     while(!running){
 		bool hardError;
@@ -51,8 +52,10 @@ int main(int argc, char * argv[])
         //usleep(50*1000);
 	}
 
+
     laser.turnOff();
     laser.disconnecting();
+
     return 0;
 
 

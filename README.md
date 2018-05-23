@@ -130,6 +130,12 @@ code:
 Upgrade Log
 =====================================================================
 
+2018-05-23 version:1.3.4
+
+   1.add automatic reconnection if there is an exception
+
+   2.add serial file lock.
+
 2018-05-14 version:1.3.3
 
    1.add the heart function constraint.
