@@ -1,6 +1,6 @@
 <map id="ydlidar::YDlidarDriver" name="ydlidar::YDlidarDriver">
 <area shape="rect" id="node2" href="$structtouch__info.html" title="touch_info" alt="" coords="5,5,88,32"/>
-<area shape="rect" id="node3" href="$class_locker.html" title="Locker" alt="" coords="140,5,201,32"/>
-<area shape="rect" id="node4" href="$class_event.html" title="Event" alt="" coords="225,5,281,32"/>
-<area shape="rect" id="node5" href="$class_thread.html" title="Thread" alt="" coords="321,5,383,32"/>
+<area shape="rect" id="node3" href="$class_locker.html" title="Locker" alt="" coords="144,5,205,32"/>
+<area shape="rect" id="node4" href="$class_event.html" title="Event" alt="" coords="247,5,303,32"/>
+<area shape="rect" id="node5" href="$class_thread.html" title="Thread" alt="" coords="345,5,407,32"/>
 </map>

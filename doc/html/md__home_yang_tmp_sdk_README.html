@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>YDLIDAR SDK SCREEN INTERACTION: YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0</title>
+<title>YDLIDAR SDK SCREEN INTERACTION: YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.1</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,10 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="app(2).png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="ydliar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK SCREEN INTERACTION
-   &#160;<span id="projectnumber">V1.1.0</span>
+   &#160;<span id="projectnumber">V1.1.1</span>
    </div>
   </td>
  </tr>
@@ -79,25 +79,115 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0 </div>  </div>
+<div class="title">YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.1 </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>SDK test application for YDLIDAR</p>
-<p>Visit EAI Website for more details about YDLIDAR.</p>
+<div class="textblock"><p>SDK <a href="https://github.com/yangfuyuan/sdk/tree/big-screen">test</a> application for YDLIDAR</p>
+<p>Visit EAI Website for more details about <a href="http://www.ydlidar.com/">YDLIDAR</a> .</p>
 <h1>How to build YDLIDAR SDK samples </h1>
-<p>1) Clone this project to your computer folder 2) Clone this project to your computer folder 2) Running cmake to build ydlidar_test</p>
+<p>$ git clone <a href="https://github.com/yangfuyuan/sdk">https://github.com/yangfuyuan/sdk</a> $ cd sdk $ git checkout big-screen $ cd .. $ mkdir build $ cd build $ cmake ../sdk $ make ###linux $ vs open Project.sln ###windows</p>
 <h1>How to run YDLIDAR SDK samples </h1>
-<p>&ndash;$ cd samples</p>
-<p>linux: </p><pre class="fragment">--$ ./ydlidar_test
-</pre><p>windows: </p><pre class="fragment">--$ ydlidar_test.exe
-</pre><p>You should see YDLIDAR's scan result in the console</p>
-<h1>Upgrade Log </h1>
+<p>$ cd samples</p>
+<p>linux: </p><pre class="fragment">$ ./ydlidar_test
+$请输入端口号:/dev/ttyUSB0
+$请输入雷达波特率:230400
+</pre><p>windows: </p><pre class="fragment">$ ydlidar_test.exe
+$请输入端口号:COM3
+$请输入雷达波特率:230400
+</pre><p>You should see YDLIDAR's scan result in the console: </p><pre class="fragment">Yd Lidar running correctly ! The health status: good
+[YDLIDAR] Connection established in [/dev/ttyUSB0]:
+Firmware version: 2.0.9
+Hardware version: 2
+Model: G4
+Serial: 2018041400000102
+[YDLIDAR INFO] Current Sampling Rate : 9K
+[YDLIDAR INFO] Current Scan Frequency : 7.400000Hz
+[YDLIDAR INFO] Now YDLIDAR is scanning ......
+</pre><h1>Upgrade Log </h1>
+<p>2018-05-23 version:1.1.1</p>
+<p>1.add auto connection for an exception.</p>
+<p>2.add seril file lock.</p>
 <p>2018-05-05 version:1.1.0</p>
 <p>1.increase mouse event c++ mutil-platform library.</p>
 <p>2.remove python mouse event.</p>
 <p>3.add simple right mouse button, left button, middle button demo.</p>
 <p>2018-05-02 version:1.0.0</p>
-<p>1.Output screen corrdinates. </p>
+<p>1.Output screen corrdinates.</p>
+<h1>坐标系统 </h1>
+<p><a href="https://github.com/yangfuyuan
+    " target="_blank"></a> </p>
+<p>参数设定样例:</p>
+<p>上图安装方式1: </p><pre class="fragment">屏幕X轴最小值 = 0mm;
+
+屏幕 Y 轴最小值 = 0mm;
+
+屏幕X轴最大值 = 1920mm;
+
+屏幕Y轴最大值 = 1080mm;
+
+雷达安装位置X值 = 900mm;
+
+雷达安装位置Y值 = -100mm;
+
+雷达安装角度Theta = -90;//雷达坐标系相对屏幕坐标系逆时针旋转了90度.
+
+CYdLidar laser;
+
+laser.setMax_x(1920);
+
+laser.setMax_y(1080);
+
+laser.setMin_x(0);
+
+laser.setMin_y(0);
+
+LaserPose pose;
+
+pose.x = 900;
+
+pose.y = -100;
+
+pose.theta = -90;
+
+pose.reversion = false; //雷达表面朝外
+
+laser.setpose(pose);
+</pre><p>上图安装方式2: </p><pre class="fragment">屏幕X轴最小值 = 0mm;
+
+屏幕 Y 轴最小值 = 0mm;
+
+屏幕X轴最大值 = 1920mm;
+
+屏幕Y轴最大值 = 1080mm;
+
+雷达安装位置X值 = -100mm;
+
+雷达安装位置Y值 = 500mm;
+
+雷达安装角度Theta = -180;//雷达坐标系相对屏幕坐标系逆时针旋转了180度.
+
+CYdLidar laser;
+
+laser.setMax_x(1920);
+
+laser.setMax_y(1080);
+
+laser.setMin_x(0);
+
+laser.setMin_y(0);
+
+LaserPose pose;
+
+pose.x = -100;
+
+pose.y = 500;
+
+pose.theta = -180;
+
+pose.reversion = false; //雷达表面朝外
+
+laser.setpose(pose);
+</pre><h4>备注:雷达安装位置和角度根据实际情况设定, 注意实际屏幕和操作屏幕的换算比例. 如果安装角度是120度, 直接把雷达安装角度设置为120, 不用更改雷达零点.</h4>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
