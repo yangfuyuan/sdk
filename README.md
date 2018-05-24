@@ -1,4 +1,4 @@
-YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.0
+YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.1
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/big-screen) application for YDLIDAR
@@ -49,6 +49,12 @@ You should see YDLIDAR's scan result in the console:
 
 Upgrade Log
 =====================================================================
+
+2018-05-23 version:1.1.1
+
+   1.add auto connection for an exception.
+
+   2.add seril file lock.
 
 2018-05-05 version:1.1.0
 

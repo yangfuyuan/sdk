@@ -18,6 +18,7 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_Intensities = false;
     m_Exposure = false;
     m_HeartBeat = false;
+    m_AutoReconnect = false;
     m_Max_x = 1920;
     m_Min_x = 0;
     m_Max_y = 1080;
@@ -494,6 +495,7 @@ bool CYdLidar::checkStatus()
         isScanning = false;
         return false;
     }
+    lidarPtr->setAutoReconnect(m_AutoReconnect);
     printf("[YDLIDAR INFO] Now YDLIDAR is scanning ......\n");
     fflush(stdout);
     fflush(stderr);

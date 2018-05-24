@@ -47,6 +47,7 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(bool,Intensities,private)
     PropertyBuilderByName(bool,Exposure,private)
     PropertyBuilderByName(bool,HeartBeat,private)
+    PropertyBuilderByName(bool,AutoReconnect,private)
     PropertyBuilderByName(int,SerialBaudrate,private)
     PropertyBuilderByName(int,SampleRate,private)
 

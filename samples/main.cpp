@@ -941,6 +941,7 @@ int main(int argc, char * argv[]) {
 
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
+    laser.setAutoReconnect(true);//串口异常自动重新
 
 
     laser.setMax_x(width/resolution_x);
