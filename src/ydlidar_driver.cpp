@@ -746,6 +746,7 @@ namespace ydlidar{
 		}
 
 		if (i == (int)count){
+			delete[] tmpbuffer;
 			return RESULT_FAIL;
 		}
 
