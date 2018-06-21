@@ -94,6 +94,7 @@ namespace ydlidar{
 		}
 
 		if(_serial){
+			_serial->flush();
 			_serial->setDTR(1);
 		}
 
@@ -105,6 +106,7 @@ namespace ydlidar{
 		}
 
 		if(_serial){
+			_serial->flush();
 			_serial->setDTR(0);
 		}
 	}
@@ -323,6 +325,7 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){
+									sendCommand(LIDAR_CMD_STOP);
                                     _serial->close();
 
                                 }
@@ -332,7 +335,7 @@ namespace ydlidar{
                             }
                         }
                         while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
-                            delay(2000);
+                            delay(1000);
                         }
                         if(!isAutoReconnect) {
                             isScanning = false;
@@ -1087,6 +1090,7 @@ namespace ydlidar{
 		disableDataGrabbing();
 		{
 			ScopedLocker l(_lock);
+			sendCommand(LIDAR_CMD_STOP);
 			sendCommand(LIDAR_CMD_STOP);
 		}
 
