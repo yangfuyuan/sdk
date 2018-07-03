@@ -241,9 +241,9 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
                         pc.points.push_back(point);
                         double range = hypot(lx, ly);
                         double angle = atan2(ly, lx);
-                        int index = (angle - correction_scan_msg.config.min_angle) / correction_scan_msg.config.ang_increment;
-                        if( 0 <= index && index < counts) {
-                            correction_scan_msg.ranges[index] = range;
+                        int newindex = (angle - correction_scan_msg.config.min_angle) / correction_scan_msg.config.ang_increment;
+                        if( 0 <= newindex && newindex < counts) {
+                            correction_scan_msg.ranges[newindex] = range;
                             correction_scan_msg.intensities[pos] = intensity;
                         }
 
