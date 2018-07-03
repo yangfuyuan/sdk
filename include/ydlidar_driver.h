@@ -36,8 +36,11 @@
 #define LIDAR_ANS_TYPE_MEASUREMENT          0x81
 #define LIDAR_RESP_MEASUREMENT_SYNCBIT        (0x1<<0)
 #define LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT  2
+#define LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT  8
 #define LIDAR_RESP_MEASUREMENT_CHECKBIT       (0x1<<0)
 #define LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT    1
+#define LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT 2
+
 
 #define LIDAR_CMD_RUN_POSITIVE             0x06
 #define LIDAR_CMD_RUN_INVERSION            0x07
@@ -84,7 +87,7 @@ typedef enum {
 #endif
 
 struct node_info {
-    uint8_t    sync_quality;//!信号质量
+    uint16_t    sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
     uint16_t   distance_q2; //! 当前测距点距离
     uint64_t   stamp; //! 时间戳
@@ -187,7 +190,7 @@ struct LaserConfig {
 	float max_angle;
 	//! Scan resolution [rad].
 	float ang_increment;
-	//! Scan resoltuion [s]
+	//! Scan resoltuion [ns]
 	float time_increment;
 	//! Time between scans
 	float scan_time;

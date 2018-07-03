@@ -10,13 +10,13 @@ using namespace ydlidar;
 CYdLidar laser;
 static bool running = false;
 
-static void Stop(int signo)   
-{  
-    
+static void Stop(int signo)
+{
+
     printf("Received exit signal\n");
     running = true;
-     
-}  
+
+}
 
 int main(int argc, char * argv[])
 {
@@ -58,12 +58,15 @@ int main(int argc, char * argv[])
                 float dis = scan.ranges[i];
 
             }
+            fprintf(stderr,"min_angle: %f \n",scan.config.min_angle);
+            fprintf(stderr,"max_angle: %f \n",scan.config.max_angle);
+
 			fprintf(stderr,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
 
 		}
     //usleep(50*1000);
 
-		
+
 	}
   laser.turnOff();
   laser.disconnecting();

@@ -608,13 +608,13 @@ namespace ydlidar{
 
 		if(CheckSunResult == true){
 			if(m_intensities){
-				(*node).sync_quality = package.packageSample[package_Sample_Index].PakageSampleQuality;
+				(*node).sync_quality = (((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<<LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT)| (package.packageSample[package_Sample_Index].PakageSampleQuality));
 				(*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance;
 			}else{
 				(*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index];
 			}	  
-			if((*node).distance_q2/4 != 0){
-				AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q2/4)) )/155.3)/((*node).distance_q2/4)))*180.0/3.1415) * 64.0);
+			if(((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) != 0){
+				AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)) )/155.3)/((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)))*180.0/3.1415) * 64.0);
 			}else{
 				AngleCorrectForDistance = 0;		
 			}
@@ -720,10 +720,10 @@ namespace ydlidar{
 		scan_data->clear();
 		for (int pos = 0; pos < (int)count; ++pos) {
 			scanDot dot;
-			if (!buffer[pos].distance_q2) continue;
+			if (!(buffer[pos].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)) continue;
 			dot.quality = (buffer[pos].sync_quality>>LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 			dot.angle = (buffer[pos].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
-			dot.dist = buffer[pos].distance_q2/4.0f;
+			dot.dist = (buffer[pos].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT);
 			scan_data->push_back(dot);
 		}
 	}
@@ -734,7 +734,7 @@ namespace ydlidar{
 		int i = 0;
 
 		for (i = 0; i < (int)count; i++) {
-			if(nodebuffer[i].distance_q2 == 0) {
+			if((nodebuffer[i].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
 				continue;
 			} else {
 				while(i != 0) {
@@ -754,7 +754,7 @@ namespace ydlidar{
 		}
 
 		for (i = (int)count - 1; i >= 0; i--) {
-			if(nodebuffer[i].distance_q2 == 0) {
+			if((nodebuffer[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
 				continue;
 			} else {
 				while(i != ((int)count - 1)) {
@@ -770,7 +770,7 @@ namespace ydlidar{
 
 		float frontAngle = (nodebuffer[0].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
 		for (i = 1; i < (int)count; i++) {
-			if(nodebuffer[i].distance_q2 == 0) {
+			if((nodebuffer[i].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
 				float expect_angle =  frontAngle + i * inc_origin_angle;
 				if (expect_angle > 360.0f) expect_angle -= 360.0f;
 				uint16_t checkbit = nodebuffer[i].angle_q6_checkbit & LIDAR_RESP_MEASUREMENT_CHECKBIT;

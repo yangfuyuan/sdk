@@ -96,7 +96,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
             memset(angle_compensate_nodes, 0, all_nodes_counts*sizeof(node_info));
             unsigned int i = 0;
             for( ; i < count; i++) {
-                if (nodes[i].distance_q2 != 0) {
+                if ((nodes[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) != 0) {
                     float angle = (float)((nodes[i].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
                     if(m_Reversion){
                        angle=angle+180;
@@ -137,7 +137,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
 
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)angle_compensate_nodes[i].distance_q2/4.0f/1000;
+                range = (float)(angle_compensate_nodes[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)/1000.f;
                 intensity = (float)(angle_compensate_nodes[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 
                 if (i<all_nodes_counts/2) {
