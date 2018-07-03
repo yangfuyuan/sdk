@@ -48,16 +48,21 @@ var searchData=
   ['setscanfrequencydismic',['setScanFrequencyDisMic',['../classydlidar_1_1_y_dlidar_driver.html#a00e69cf360eeca890dbaf964ab6f67b7',1,'ydlidar::YDlidarDriver']]],
   ['setscanheartbeat',['setScanHeartbeat',['../classydlidar_1_1_y_dlidar_driver.html#ab2d5434c9b640a38f9d3b43b07c0b3eb',1,'ydlidar::YDlidarDriver']]],
   ['setstopbits',['setStopbits',['../classserial_1_1_serial.html#a0c690a31516cd11c521ba3aff4bafc4e',1,'serial::Serial']]],
+  ['setsyncodometry',['setSyncOdometry',['../classydlidar_1_1_y_dlidar_driver.html#ab34a96af22bfdc532553b956afd97a72',1,'ydlidar::YDlidarDriver']]],
   ['settimeout',['setTimeout',['../classserial_1_1_serial.html#a5b1a4e05b1690d29ba1ae14a9079434c',1,'serial::Serial::setTimeout(Timeout &amp;timeout)'],['../classserial_1_1_serial.html#a4b4be39af3e1c68bc6ac09cb55788c86',1,'serial::Serial::setTimeout(uint32_t inter_byte_timeout, uint32_t read_timeout_constant, uint32_t read_timeout_multiplier, uint32_t write_timeout_constant, uint32_t write_timeout_multiplier)']]],
   ['simplescandata',['simpleScanData',['../classydlidar_1_1_y_dlidar_driver.html#a797de2678c6c81c84a8126cf184a0254',1,'ydlidar::YDlidarDriver']]],
   ['simpletimeout',['simpleTimeout',['../structserial_1_1_timeout.html#aa4fbd72e16f47c9aea9fb3c32ca17828',1,'serial::Timeout']]],
-  ['stamp',['stamp',['../structnode__info.html#a92f30331da1d7d95f9998dcd3886574c',1,'node_info']]],
+  ['squarematrix',['SquareMatrix',['../classmatrix_1_1_square_matrix.html',1,'matrix']]],
+  ['squarematrix_2ehpp',['SquareMatrix.hpp',['../_square_matrix_8hpp.html',1,'']]],
+  ['squarematrix_3c_20double_2c_203_20_3e',['SquareMatrix&lt; double, 3 &gt;',['../classmatrix_1_1_square_matrix.html',1,'matrix']]],
+  ['stamp',['stamp',['../structodom__info.html#a464e597fa2c4251df9dff5f52c1421ba',1,'odom_info::stamp()'],['../structnode__info.html#a92f30331da1d7d95f9998dcd3886574c',1,'node_info::stamp()']]],
   ['startautoscan',['startAutoScan',['../classydlidar_1_1_y_dlidar_driver.html#a75b64716b6c354f814d0b423404e4104',1,'ydlidar::YDlidarDriver']]],
   ['startmotor',['startMotor',['../classydlidar_1_1_y_dlidar_driver.html#a2e686ef1ce60f3241352a798330f760b',1,'ydlidar::YDlidarDriver']]],
   ['startscan',['startScan',['../classydlidar_1_1_y_dlidar_driver.html#a62888da8520422b7daaae89c2935460b',1,'ydlidar::YDlidarDriver']]],
   ['status',['status',['../structdevice__health.html#ac3425f5555ecbb5a0da03b4cabe2777c',1,'device_health']]],
+  ['stdlib_5fimports_2ehpp',['stdlib_imports.hpp',['../stdlib__imports_8hpp.html',1,'']]],
   ['stop',['stop',['../classydlidar_1_1_y_dlidar_driver.html#a7aa354e88eeb6984be4d18eae6367a0b',1,'ydlidar::YDlidarDriver']]],
   ['stopbits_5ft',['stopbits_t',['../namespaceserial.html#af5b116611d6628a3aa8f788fdc09f469',1,'serial']]],
   ['stopmotor',['stopMotor',['../classydlidar_1_1_y_dlidar_driver.html#a6cdf0c5a7ddf2375c1392c3a0e65edfe',1,'ydlidar::YDlidarDriver']]],
-  ['system_5ftime_5fstamp',['system_time_stamp',['../struct_laser_scan.html#a1bb6b997ce698fbc516bc20ab3ba3399',1,'LaserScan']]]
+  ['system_5ftime_5fstamp',['system_time_stamp',['../struct_laser_scan.html#a1bb6b997ce698fbc516bc20ab3ba3399',1,'LaserScan::system_time_stamp()'],['../struct_point_cloud.html#ac43b424d8ade6051d2d6486082e48c58',1,'PointCloud::system_time_stamp()']]]
 ];

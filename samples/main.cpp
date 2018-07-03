@@ -1,5 +1,6 @@
 
 #include "CYdLidar.h"
+#include "timer.h"
 #include <iostream>
 #include <string>
 #include <signal.h>
@@ -45,14 +46,23 @@ int main(int argc, char * argv[])
     laser.setFixedResolution(false);
     laser.setAutoReconnect(true);
 
+    //雷达相对机器人安装位置
+    pose_info laser_pose;
+    laser_pose.x = 0;
+    laser_pose.y = 0;
+    laser_pose.phi = 0;
+    laser.setSensorPose(laser_pose);
+
     laser.initialize();
 
 
     while(!running){
 		bool hardError;
-		LaserScan scan;
+        LaserScan scan;//原始激光数据
+        LaserScan syncscan;//同步后激光数据
+        PointCloud pc;//同步后激光点云数据
 
-		if(laser.doProcessSimple(scan, hardError )){
+        if(laser.doProcessSimple(scan, syncscan, pc, hardError )){
             for(int i =0; i < scan.ranges.size(); i++ ){
                 float angle = scan.config.min_angle + i*scan.config.ang_increment;
                 float dis = scan.ranges[i];
@@ -64,8 +74,17 @@ int main(int argc, char * argv[])
 			fprintf(stderr,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
 
 		}
-    //usleep(50*1000);
 
+        {//做imu和odometry数据输入
+            odom_info odom;
+            odom.x = 0;
+            odom.y = 0;
+            odom.phi = 0;
+            odom.stamp = getTime();
+            laser.setSyncOdometry(odom);
+
+
+        }
 
 	}
   laser.turnOff();

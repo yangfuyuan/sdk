@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "ydlidar_driver.h"
 #include <math.h>
+#include "matrix/math.hpp"
 
 #if !defined(__cplusplus)
 #ifndef __cplusplus
@@ -60,7 +61,7 @@ public:
     bool initialize();  //!< Attempts to connect and turns the laser on. Raises an exception on error.
 
     // Return true if laser data acquistion succeeds, If it's not
-    bool doProcessSimple(LaserScan &outscan, bool &hardwareError);
+    bool doProcessSimple(LaserScan &outscan, LaserScan &syncscan, PointCloud &pointcloud, bool &hardwareError);
 
     //Turn on the motor enable
 	bool  turnOn();  //!< See base class docs
@@ -78,6 +79,18 @@ public:
 
     /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
     bool checkScanFrequency();
+
+    /**
+     * @brief setSyncOdometry
+     * @param odom
+     */
+    void setSyncOdometry(const odom_info& odom);
+
+    /**
+     * @brief setSensorPose
+     * @param pose
+     */
+    void setSensorPose(const pose_info& pose);
 
     //Turn off lidar connection
     void disconnecting(); //!< Closes the comms with the laser. Shouldn't have to be directly needed by the user
@@ -106,5 +119,12 @@ private:
     int node_counts ;
     double each_angle;
     int show_error;
+
+    matrix::SquareMatrix<double, 3> sensor_matrix;
+    matrix::SquareMatrix<double, 3> sensor_matrix_inv;
+    matrix::SquareMatrix<double, 3> robot_matrix;
+    matrix::Vector<double, 3> lidar_sensor_vector;
+    matrix::Vector<double, 3> current_sensor_vector;
+
 };	// End of class
 

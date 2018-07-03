@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.4
+YDLIDAR SDK PACKAGE V1.3.5
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk) application for YDLIDAR
@@ -7,30 +7,44 @@ Visit EAI Website for more details about [YDLIDAR](http://www.ydlidar.com/) .
 
 How to build YDLIDAR SDK samples
 =====================================================================
+
     $ git clone https://github.com/yangfuyuan/sdk
+
     $ cd sdk
+
     $ git checkout master
+
     $ cd ..
+
     $ mkdir build
+
     $ cd build
+
     $ cmake ../sdk
+
     $ make			###linux
+
     $ vs open Project.sln	###windows
-    
+
 How to run YDLIDAR SDK samples
 =====================================================================
+
     $ cd samples
 
 linux:
 
     $ ./ydlidar_test
+
     $Please enter the lidar port:/dev/ttyUSB0
+
     $Please enter the lidar baud rate:230400
 
 windows:
 
     $ ydlidar_test.exe
+
     $Please enter the lidar port:COM3
+    
     $Please enter the lidar baud rate:230400
 
 =====================================================================
@@ -56,9 +70,27 @@ Lidar point data structure
 
 data structure:
 
+    struct odom_info {
+
+      uint64_t   stamp; ///< 时间戳
+
+      double x;	      ///< x位置
+
+      double y;	     ///< y位置
+
+      double phi;	     ///< 角度方向
+
+      double v;       ///< 线速度
+
+      double w;       ///< 角速度
+
+    };
+
     struct node_info {
 
-       uint8_t    sync_quality;//!intensity
+       uint8_t    sync_flag;//new scan flag
+
+       uint16_t    sync_quality;//!intensity
 
        uint16_t   angle_q6_checkbit; //!angle
 
@@ -67,7 +99,9 @@ data structure:
        uint64_t   stamp; //! time stamp
 
        uint8_t    scan_frequence;//! current_frequence = scan_frequence/10.0, If the current value equals zero, it is an invalid value
- 
+
+       odom_info   current_odom; //! current odometry sync pose
+
     } __attribute__((packed)) ;
 
 example:
@@ -79,18 +113,18 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q2/4.f;
+    current_distance = data[i].distance_q2;
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality >> 2);
+    current_intensity = (float)(data[i].sync_quality);
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
     ###if the current_frequence value equals zero, it is an invalid value.
 
 code:
-        
+
         void ParseScan(node_info* data, const size_t& size) {
 
             double current_frequence, current_distance, current_angle, current_intensity;
@@ -109,9 +143,9 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q2/4.f;
+                current_distance =  data[i].distance_q2;
 
-                current_intensity = (float)(data[i].sync_quality >> 2);
+                current_intensity = (float)(data[i].sync_quality );
 
             }
 
@@ -133,11 +167,17 @@ code:
 Upgrade Log
 =====================================================================
 
+2018-05-23 version:1.3.5
+
+  1.add sync imu or odometry.
+
+  2.update scan protocol.
+
 2018-05-23 version:1.3.4
 
-1.add automatic reconnection if there is an exception
+  1.add automatic reconnection if there is an exception
 
-2.add serial file lock.
+  2.add serial file lock.
 
 2018-05-14 version:1.3.3
 
@@ -152,4 +192,3 @@ Upgrade Log
 2018-04-16 version:1.3.1
 
    1.Compensate for each laser point timestamp.
-

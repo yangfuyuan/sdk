@@ -2,6 +2,7 @@
 #define YDLIDAR_DRIVER_H
 #include <stdlib.h>
 #include <atomic>
+#include <list>
 #include "locker.h"
 #include "serial.h"
 #include "thread.h"
@@ -76,22 +77,52 @@ typedef enum {
 	CT_RingStart  = 1,
 	CT_Tail,
 }CT;
-#define Node_Default_Quality (10<<2)
+#define Node_Default_Quality (10)
 #define Node_Sync 1
 #define Node_NotSync 2
 #define PackagePaidBytes 10
 #define PH 0x55AA
 
+
+#define MAX_QUEUE_SIZE 20
+
 #if defined(_WIN32)
 #pragma pack(1)
 #endif
 
+
+struct pose_info
+{
+    uint64_t   stamp; //! 时间戳
+    double x;
+    double y;
+    double phi;
+};
+
+struct point_info {
+    double x;
+    double y;
+    double z;
+};
+
+struct odom_info
+{
+    uint64_t   stamp; ///< 时间戳
+    double x;	      ///< x位置
+    double y;	     ///< y位置
+    double phi;	     ///< 角度方向
+    double v;       ///< 线速度
+    double w;       ///< 角速度
+};
+
 struct node_info {
-    uint16_t    sync_quality;//!信号质量
+    uint8_t    sync_flag;
+    uint16_t   sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
     uint16_t   distance_q2; //! 当前测距点距离
     uint64_t   stamp; //! 时间戳
     uint8_t    scan_frequence;//! 特定版本此值才有效,无效值是0, 当前扫描频率current_frequence = scan_frequence/10.0
+    odom_info   current_odom; //! 当前里程计同步坐标
 } __attribute__((packed)) ;
 
 struct PackageNode {
@@ -225,6 +256,14 @@ struct LaserScan {
 	LaserConfig config;
 };
 
+
+struct PointCloud {
+    //! Array of points
+    std::vector<point_info> points;
+    //! System time when first range was measured in nanoseconds
+    uint64_t system_time_stamp;
+};
+
 using namespace std;
 using namespace serial;
 
@@ -290,6 +329,12 @@ namespace ydlidar{
     	* @retval false    失败
     	*/
         const bool isconnected() const;
+
+        /**
+         * @brief setSyncOdometry 同步激光和imu,里程计数据
+         * @param odom imu或者里程计数据
+         */
+        void setSyncOdometry(const odom_info& odom);
 
 		/**
 		* @brief 设置雷达是否带信号质量 \n
@@ -814,7 +859,8 @@ namespace ydlidar{
 		size_t         scan_node_count;      ///< 激光点数
 		Event          _dataEvent;			 ///< 数据同步事件
 		Locker         _lock;				///< 线程锁
-        Locker _serial_lock;                ///< 串口锁
+        Locker         _serial_lock;       ///< 串口锁
+        Locker         _odom_lock;        ///< 里程计同步锁
 		Thread 	       _thread;				///< 线程id
 
 	private:
@@ -849,6 +895,8 @@ namespace ydlidar{
         uint16_t Valu8Tou16;
 
         std::string serial_port;///< 雷达端口
+
+        std::list< odom_info> odom_queue;
 
 	};
 }

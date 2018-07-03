@@ -22,7 +22,7 @@ namespace ydlidar{
         //串口配置参数
 		m_intensities = false;
 		isHeartbeat = false;
-        isAutoReconnect = false;
+        isAutoReconnect = true;
         isAutoconnting = false;
 
 		_baudrate = 115200;
@@ -54,6 +54,7 @@ namespace ydlidar{
         isAutoReconnect = false;
 		_thread.join();
 
+        ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
 				_serial->close();
@@ -168,6 +169,13 @@ namespace ydlidar{
         return isConnected;
     }
 
+    void YDlidarDriver::setSyncOdometry(const odom_info &odom) {
+        ScopedLocker l(_odom_lock);
+        if( odom_queue.size() > MAX_QUEUE_SIZE)
+            odom_queue.pop_front();
+        odom_queue.push_back(odom);
+
+    }
 
 
 	result_t YDlidarDriver::sendCommand(uint8_t cmd, const void * payload, size_t payloadsize) {
@@ -360,8 +368,8 @@ namespace ydlidar{
                 }
 			}
 			for (size_t pos = 0; pos < count; ++pos) {
-				if (local_buf[pos].sync_quality & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
-					if ((local_scan[0].sync_quality & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
+                if (local_buf[pos].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
+                    if ((local_scan[0].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
 						_lock.lock();//timeout lock, wait resource copy 
 						memcpy(scan_node_buf, local_scan, scan_count*sizeof(node_info));
 						scan_node_count = scan_count;
@@ -379,7 +387,7 @@ namespace ydlidar{
 			//heartbeat function
             if (isHeartbeat) {
                 end_ts = getms();
-                if(end_ts - start_ts > DEFAULT_HEART_BEAT){
+                if (end_ts - start_ts > DEFAULT_HEART_BEAT) {
                     sendHeartBeat();
                     start_ts = end_ts;
                 }
@@ -601,20 +609,22 @@ namespace ydlidar{
 		}
 
 		if(package_CT == CT_Normal){
-			(*node).sync_quality = Node_Default_Quality + Node_NotSync;
+            (*node).sync_flag =  Node_NotSync;
 		} else{
-			(*node).sync_quality = Node_Default_Quality + Node_Sync;
+            (*node).sync_flag =  Node_Sync;
 		}
+        (*node).sync_quality = Node_Default_Quality;
+
 
 		if(CheckSunResult == true){
 			if(m_intensities){
 				(*node).sync_quality = (((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<<LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT)| (package.packageSample[package_Sample_Index].PakageSampleQuality));
-				(*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance;
+                (*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}else{
-				(*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index];
+                (*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index] >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}	  
-			if(((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) != 0){
-				AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)) )/155.3)/((*node).distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)))*180.0/3.1415) * 64.0);
+            if(((*node).distance_q2) != 0){
+                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q2)) )/155.3)/((*node).distance_q2)))*180.0/3.1415) * 64.0);
 			}else{
 				AngleCorrectForDistance = 0;		
 			}
@@ -628,7 +638,8 @@ namespace ydlidar{
 				} 
 			}
 		}else{
-			(*node).sync_quality = Node_Default_Quality + Node_NotSync;
+            (*node).sync_flag = Node_NotSync;
+            (*node).sync_quality = Node_Default_Quality;
 			(*node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
 			(*node).distance_q2 = 0;
 		}
@@ -641,7 +652,7 @@ namespace ydlidar{
 			nowPackageNum = packages.nowPackageNum;
 		}
 
-		if((*node).sync_quality&LIDAR_RESP_MEASUREMENT_SYNCBIT){
+        if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
 			m_ns = ns;
 			m_calc_ns = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
 		}
@@ -654,6 +665,30 @@ namespace ydlidar{
 		if((*node).stamp < m_calc_ns){
 			(*node).stamp = m_calc_ns;
 		}
+
+        {
+            ScopedLocker l(_odom_lock);
+            if (!odom_queue.empty()) {
+                int min = 1000000000;
+                for (std::list<odom_info>::const_iterator it = odom_queue.begin(); it != odom_queue.end(); ++it) {
+                    int diff = (*node).stamp - (*it).stamp;
+                    if (abs(diff) < min){
+                        min = diff;
+                        (*node).current_odom = *it;
+                    }
+                }
+
+            } else {
+                 (*node).current_odom.stamp = 0;
+                 (*node).current_odom.x = 0;
+                 (*node).current_odom.y = 0;
+                 (*node).current_odom.phi = 0;
+                 (*node).current_odom.v = 0;
+                 (*node).current_odom.w = 0;
+
+            }
+
+        }
 
 		package_Sample_Index++;
 
@@ -720,10 +755,10 @@ namespace ydlidar{
 		scan_data->clear();
 		for (int pos = 0; pos < (int)count; ++pos) {
 			scanDot dot;
-			if (!(buffer[pos].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)) continue;
-			dot.quality = (buffer[pos].sync_quality>>LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+            if (!(buffer[pos].distance_q2)) continue;
+            dot.quality = (buffer[pos].sync_quality);
 			dot.angle = (buffer[pos].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
-			dot.dist = (buffer[pos].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT);
+            dot.dist = (buffer[pos].distance_q2);
 			scan_data->push_back(dot);
 		}
 	}
@@ -734,7 +769,7 @@ namespace ydlidar{
 		int i = 0;
 
 		for (i = 0; i < (int)count; i++) {
-			if((nodebuffer[i].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
+            if((nodebuffer[i].distance_q2) == 0) {
 				continue;
 			} else {
 				while(i != 0) {
@@ -754,7 +789,7 @@ namespace ydlidar{
 		}
 
 		for (i = (int)count - 1; i >= 0; i--) {
-			if((nodebuffer[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
+            if((nodebuffer[i].distance_q2) == 0) {
 				continue;
 			} else {
 				while(i != ((int)count - 1)) {
@@ -770,7 +805,7 @@ namespace ydlidar{
 
 		float frontAngle = (nodebuffer[0].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
 		for (i = 1; i < (int)count; i++) {
-			if((nodebuffer[i].distance_q2 >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) == 0) {
+            if((nodebuffer[i].distance_q2) == 0) {
 				float expect_angle =  frontAngle + i * inc_origin_angle;
 				if (expect_angle > 360.0f) expect_angle -= 360.0f;
 				uint16_t checkbit = nodebuffer[i].angle_q6_checkbit & LIDAR_RESP_MEASUREMENT_CHECKBIT;

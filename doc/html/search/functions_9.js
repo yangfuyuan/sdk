@@ -30,6 +30,7 @@ var searchData=
   ['setscanfrequencydismic',['setScanFrequencyDisMic',['../classydlidar_1_1_y_dlidar_driver.html#a00e69cf360eeca890dbaf964ab6f67b7',1,'ydlidar::YDlidarDriver']]],
   ['setscanheartbeat',['setScanHeartbeat',['../classydlidar_1_1_y_dlidar_driver.html#ab2d5434c9b640a38f9d3b43b07c0b3eb',1,'ydlidar::YDlidarDriver']]],
   ['setstopbits',['setStopbits',['../classserial_1_1_serial.html#a0c690a31516cd11c521ba3aff4bafc4e',1,'serial::Serial']]],
+  ['setsyncodometry',['setSyncOdometry',['../classydlidar_1_1_y_dlidar_driver.html#ab34a96af22bfdc532553b956afd97a72',1,'ydlidar::YDlidarDriver']]],
   ['settimeout',['setTimeout',['../classserial_1_1_serial.html#a5b1a4e05b1690d29ba1ae14a9079434c',1,'serial::Serial::setTimeout(Timeout &amp;timeout)'],['../classserial_1_1_serial.html#a4b4be39af3e1c68bc6ac09cb55788c86',1,'serial::Serial::setTimeout(uint32_t inter_byte_timeout, uint32_t read_timeout_constant, uint32_t read_timeout_multiplier, uint32_t write_timeout_constant, uint32_t write_timeout_multiplier)']]],
   ['simplescandata',['simpleScanData',['../classydlidar_1_1_y_dlidar_driver.html#a797de2678c6c81c84a8126cf184a0254',1,'ydlidar::YDlidarDriver']]],
   ['simpletimeout',['simpleTimeout',['../structserial_1_1_timeout.html#aa4fbd72e16f47c9aea9fb3c32ca17828',1,'serial::Timeout']]],
