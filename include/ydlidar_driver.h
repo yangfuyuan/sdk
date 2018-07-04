@@ -36,8 +36,11 @@
 #define LIDAR_ANS_TYPE_MEASUREMENT          0x81
 #define LIDAR_RESP_MEASUREMENT_SYNCBIT        (0x1<<0)
 #define LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT  2
+#define LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT  8
 #define LIDAR_RESP_MEASUREMENT_CHECKBIT       (0x1<<0)
 #define LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT    1
+#define LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT    2
+
 
 #define LIDAR_CMD_RUN_POSITIVE             0x06
 #define LIDAR_CMD_RUN_INVERSION            0x07
@@ -73,7 +76,7 @@ typedef enum {
 	CT_RingStart  = 1,
 	CT_Tail,
 }CT;
-#define Node_Default_Quality (10<<2)
+#define Node_Default_Quality (10)
 #define Node_Sync 1
 #define Node_NotSync 2
 #define PackagePaidBytes 10
@@ -99,7 +102,8 @@ struct touch_info {
 
 
 struct node_info {
-	uint8_t    sync_quality;
+    uint8_t    sync_flag;
+    uint16_t    sync_quality;
 	uint16_t   angle_q6_checkbit;
 	uint16_t   distance_q2;
 	uint64_t   stamp;
@@ -764,7 +768,7 @@ namespace ydlidar{
         std::atomic<bool>     isScanning;   ///< 扫图状态
 		std::atomic<bool>     isHeartbeat;  ///< 掉电保护状态
         std::atomic<bool>     isAutoReconnect;  ///< 异常自动从新连接
-        std::atomic<bool> isAutoconnting; ///< 是否正在自动连接中
+        std::atomic<bool>     isAutoconnting; ///< 是否正在自动连接中
 
 		enum {
 			DEFAULT_TIMEOUT = 2000,    /**< 默认超时时间. */ 
@@ -786,7 +790,7 @@ namespace ydlidar{
         size_t         touch_point_count;      ///< 触摸点数
 		Event          _dataEvent;			 ///< 数据同步事件
 		Locker         _lock;				///< 线程锁
-        Locker          _serial_lock;       ///< 串口锁
+        Locker         _serial_lock;       ///< 串口锁
         Locker         _plock;				///< 参数线程锁
 		Thread 	       _thread;				///< 线程id
 
