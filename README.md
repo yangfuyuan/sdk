@@ -79,11 +79,11 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q2/4.f;
+    current_distance = data[i].distance_q2;
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality >> 2);
+    current_intensity = (float)(data[i].sync_quality);
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
@@ -109,9 +109,9 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q2/4.f;
+                current_distance =  data[i].distance_q2;
 
-                current_intensity = (float)(data[i].sync_quality >> 2);
+                current_intensity = (float)(data[i].sync_quality);
 
             }
 

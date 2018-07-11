@@ -137,8 +137,8 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
 
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)angle_compensate_nodes[i].distance_q2/4.0f/1000;
-                intensity = (float)(angle_compensate_nodes[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+                range = (float)angle_compensate_nodes[i].distance_q2/1000.f;
+                intensity = (float)(angle_compensate_nodes[i].sync_quality);
 
                 if (i<all_nodes_counts/2) {
                     index = all_nodes_counts/2-1-i;
