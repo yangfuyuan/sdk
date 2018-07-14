@@ -54,7 +54,7 @@ void CYdLidar::disconnecting()
 /*-------------------------------------------------------------
 						doProcessSimple
 -------------------------------------------------------------*/
-bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
+bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bool &hardwareError){
 	hardwareError			= false;
 
 	// Bound?
@@ -73,6 +73,12 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
     uint64_t tim_scan_start = getTime();
 	result_t op_result =  YDlidarDriver::singleton()->grabScanData(nodes, count);
     const uint64_t tim_scan_end = getTime();
+
+    std::vector<double> bearings;
+    std::vector<unsigned int> indices;
+    RangeData  rangedata;
+    int current_index = 0;
+    lines.clear();
 
 	// Fill in scan data:
 	if (op_result == RESULT_OK)
@@ -135,6 +141,16 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
             float intensity = 0.0;
             int index = 0;
 
+            scan_msg.system_time_stamp = tim_scan_start;
+            scan_msg.self_time_stamp = tim_scan_start;
+            scan_msg.config.min_angle = DEG2RAD(m_MinAngle);
+            scan_msg.config.max_angle = DEG2RAD(m_MaxAngle);
+            scan_msg.config.ang_increment = (scan_msg.config.max_angle - scan_msg.config.min_angle) / (double)counts;
+            scan_msg.config.time_increment = scan_time / (double)counts;
+            scan_msg.config.scan_time = scan_time;
+            scan_msg.config.min_range = m_MinRange;
+            scan_msg.config.max_range = m_MaxRange;
+
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
                 range = (float)(angle_compensate_nodes[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)/1000.f;
@@ -169,19 +185,22 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
                 int pos = index - node_start ;
                 if (0<= pos && pos < counts) {
                     scan_msg.ranges[pos] =  range;
-                    scan_msg.intensities[pos] = intensity;
-                }
-            }
+                    scan_msg.intensities[pos] = intensity;    
+                    double angle = scan_msg.config.min_angle + scan_msg.config.ang_increment*pos;
 
-            scan_msg.system_time_stamp = tim_scan_start;
-            scan_msg.self_time_stamp = tim_scan_start;
-            scan_msg.config.min_angle = DEG2RAD(m_MinAngle);
-            scan_msg.config.max_angle = DEG2RAD(m_MaxAngle);
-            scan_msg.config.ang_increment = (scan_msg.config.max_angle - scan_msg.config.min_angle) / (double)counts;
-            scan_msg.config.time_increment = scan_time / (double)counts;
-            scan_msg.config.scan_time = scan_time;
-            scan_msg.config.min_range = m_MinRange;
-            scan_msg.config.max_range = m_MaxRange;
+
+                    if( range >= scan_msg.config.min_range) {
+                        bearings.push_back(angle);
+                        indices.push_back(current_index);
+                        rangedata.ranges.push_back(range);
+                        rangedata.xs.push_back(range*cos(angle));
+                        rangedata.ys.push_back(range*sin(angle));
+                        current_index++;
+                    }
+                }
+            } 
+            line_feature_.setCachedRangeData(bearings, indices, rangedata);
+            line_feature_.extractLines(lines);
             outscan = scan_msg;
             delete[] angle_compensate_nodes;
             return true;
@@ -481,28 +500,31 @@ bool CYdLidar::checkHeartBeat() const
 {
     bool ret = false;
     scan_heart_beat beat;
-    result_t ans = YDlidarDriver::singleton()->setScanHeartbeat(beat);
-    if (m_HeartBeat) {
-        if (beat.enable&& ans == RESULT_OK) {
-            ans = YDlidarDriver::singleton()->setScanHeartbeat(beat);
+    if( m_HeartBeat ) {
+        Sync:
+        result_t ans = YDlidarDriver::singleton()->setScanHeartbeat(beat);
+        if( ans == RESULT_OK) {
+            if( beat.enable ) {
+                ans = YDlidarDriver::singleton()->setScanHeartbeat(beat);
+                if( ans == RESULT_OK) {
+                    if(!beat.enable) {
+                        YDlidarDriver::singleton()->setHeartBeat(true);
+                        ret = true;
+                        return ret;
+                    }
+                }
+                goto Sync;
+            } else  {
+                YDlidarDriver::singleton()->setHeartBeat(true);
+                ret = true;
+                return ret;
+            }
         }
-        if (!beat.enable&& ans == RESULT_OK ) {
-            YDlidarDriver::singleton()->setHeartBeat(true);
-            ret = true;
-        }
-    } else {
-        if (!beat.enable&& ans == RESULT_OK) {
-            ans = YDlidarDriver::singleton()->setScanHeartbeat(beat);
-        }
-        if (beat.enable && ans==RESULT_OK) {
-            YDlidarDriver::singleton()->setHeartBeat(false);
-            ret = true;
-        }
-
+        goto Sync;
+    }else {
+        YDlidarDriver::singleton()->setHeartBeat(false);
+        ret = true;
     }
-
-    return ret;
-
 }
 /*-------------------------------------------------------------
 						checkCOMMs

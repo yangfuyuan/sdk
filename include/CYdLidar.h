@@ -1,5 +1,6 @@
 ﻿
 #pragma once
+#include "line_feature.h"
 #include "utils.h"
 #include "ydlidar_driver.h"
 #include <math.h>
@@ -28,7 +29,11 @@
 #define M_PI 3.1415926
 #endif
 
+#ifndef DEG2RAD
 #define DEG2RAD(x) ((x)*M_PI/180.)
+#endif
+
+using namespace line_feature;
 
 class YDLIDAR_API CYdLidar
 {
@@ -60,7 +65,8 @@ public:
     bool initialize();  //!< Attempts to connect and turns the laser on. Raises an exception on error.
 
     // Return true if laser data acquistion succeeds, If it's not
-    bool doProcessSimple(LaserScan &outscan, bool &hardwareError);
+    bool doProcessSimple(LaserScan &outscan, std::vector<gline>& lines, bool &hardwareError);
+
 
     //Turn on the motor enable
 	bool  turnOn();  //!< See base class docs
@@ -106,5 +112,7 @@ private:
     int node_counts ;
     double each_angle;
     int show_error;
+
+     LineFeature    line_feature_;
 };	// End of class
 

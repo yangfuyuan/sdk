@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.4
+YDLIDAR SDK PACKAGE V1.3.5
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk) application for YDLIDAR
@@ -79,11 +79,11 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q2/4.f;
+    current_distance = data[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality >> 2);
+    current_intensity = (float)(data[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
@@ -109,9 +109,9 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q2/4.f;
+                current_distance =  data[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 
-                current_intensity = (float)(data[i].sync_quality >> 2);
+                current_intensity = (float)(data[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 
             }
 
@@ -132,6 +132,10 @@ code:
 
 Upgrade Log
 =====================================================================
+
+2018-07-13 version:1.3.5
+
+1.add fit line
 
 2018-05-23 version:1.3.4
 

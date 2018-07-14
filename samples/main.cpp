@@ -4,7 +4,6 @@
 #include <string>
 #include <signal.h>
 #include <memory>
-//#include <unistd.h>
 using namespace std;
 using namespace ydlidar;
 CYdLidar laser;
@@ -51,8 +50,9 @@ int main(int argc, char * argv[])
     while(!running){
 		bool hardError;
 		LaserScan scan;
+        std::vector<gline> lines;
 
-		if(laser.doProcessSimple(scan, hardError )){
+        if(laser.doProcessSimple(scan,lines, hardError )){
             for(int i =0; i < scan.ranges.size(); i++ ){
                 float angle = scan.config.min_angle + i*scan.config.ang_increment;
                 float dis = scan.ranges[i];
@@ -60,12 +60,14 @@ int main(int argc, char * argv[])
             }
             fprintf(stderr,"min_angle: %f \n",scan.config.min_angle);
             fprintf(stderr,"max_angle: %f \n",scan.config.max_angle);
-
 			fprintf(stderr,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
 
-		}
-    //usleep(50*1000);
+            fprintf(stdout, "fit line size: %d\n",lines.size());
+            for(std::vector<gline>::const_iterator it = lines.begin(); it != lines.end(); it++) {
+                fprintf(stdout, "line length: %f,   line angle: %f\n", (*it).distance, (*it).angle);
+            }
 
+		}
 
 	}
   laser.turnOff();
