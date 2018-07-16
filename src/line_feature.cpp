@@ -5,9 +5,9 @@ namespace line_feature
 
 LineFeature::LineFeature() {
     set_least_threshold(0.03);
-    set_min_line_length(0.05);
-    set_min_predict_distance(0.05);
-    set_max_point_distance(0.3);
+    set_min_line_length(0.01);
+    set_min_predict_distance(0.02);
+    set_max_point_distance(0.5);
     set_seed_line_points(4);
     set_min_line_points(6);
 	
