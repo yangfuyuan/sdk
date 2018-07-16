@@ -584,9 +584,11 @@ bool CYdLidar::checkStatus()
     again:
     // check health:
     bool ret = getDeviceHealth();
+    bool check_error = false;
 
     int m_type;
     if (!ret || !getDeviceInfo(m_type)){
+        check_error = true;
         checkmodel[m_SerialBaudrate] = true;
         map<int,bool>::iterator it;
         for (it=checkmodel.begin(); it!=checkmodel.end(); ++it) {
@@ -614,7 +616,8 @@ bool CYdLidar::checkStatus()
     }
 
     show_error = 0;
-    m_Intensities = false;
+    if(m_type != 4||check_error)
+        m_Intensities = false;
     if (m_type == 4) {
         if (m_SerialBaudrate == 153600)
             m_Intensities = true;

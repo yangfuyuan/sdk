@@ -33,8 +33,8 @@ int main(int argc, char * argv[])
     signal(SIGINT, Stop);
     signal(SIGTERM, Stop);
     laser.setSerialPort(port);
-    laser.setSerialBaudrate(baud);
-    laser.setIntensities(intensities);
+    laser.setSerialBaudrate(baud);//s4b 波特率一定要设置对为115200
+    laser.setIntensities(intensities);//s4b 一定要设置为true
     laser.setMaxRange(16.0);
     laser.setMinRange(0.1);
     laser.setMaxAngle(180);
