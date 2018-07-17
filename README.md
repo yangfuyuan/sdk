@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.5
+YDLIDAR SDK PACKAGE V1.3.6
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk) application for YDLIDAR
