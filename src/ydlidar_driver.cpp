@@ -44,6 +44,9 @@ namespace ydlidar{
         LastSampleAngleCal = 0;
         CheckSunResult = true;
         Valu8Tou16 = 0;
+
+        memset(&last_odom, 0, sizeof(last_odom));
+        memset(&current_odom, 0, sizeof(current_odom));
 	}
 
 	YDlidarDriver::~YDlidarDriver(){
@@ -674,21 +677,23 @@ namespace ydlidar{
                     int diff = (*node).stamp - (*it).stamp;
                     if (abs(diff) < min){
                         min = diff;
-                        (*node).current_odom = *it;
+                        last_odom = *it;
                     }
                 }
-
-            } else {
-                 (*node).current_odom.stamp = 0;
-                 (*node).current_odom.x = 0;
-                 (*node).current_odom.y = 0;
-                 (*node).current_odom.phi = 0;
-                 (*node).current_odom.v = 0;
-                 (*node).current_odom.w = 0;
 
             }
 
         }
+
+        if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT ) {
+            current_odom = last_odom;
+        }
+        (*node).current_odom = last_odom;
+        (*node).current_odom.dx = last_odom.x - current_odom.x;
+        (*node).current_odom.dy = last_odom.y - current_odom.y;
+        (*node).current_odom.dth = last_odom.phi - current_odom.phi;
+
+
 
 		package_Sample_Index++;
 

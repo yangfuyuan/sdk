@@ -113,6 +113,9 @@ struct odom_info
     double phi;	     ///< 角度方向
     double v;       ///< 线速度
     double w;       ///< 角速度
+    double dx;       ///< x位置增量
+    double dy;       ///< y位置增量
+    double dth;       ///< 方向增量
 };
 
 struct node_info {
@@ -897,6 +900,9 @@ namespace ydlidar{
         std::string serial_port;///< 雷达端口
 
         std::list< odom_info> odom_queue;
+
+        odom_info   last_odom; //! 当前里程计同步坐标
+        odom_info   current_odom;
 
 	};
 }
