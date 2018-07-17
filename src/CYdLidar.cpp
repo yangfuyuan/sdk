@@ -21,7 +21,8 @@ CYdLidar::CYdLidar()
     m_Exposure = false;
     m_HeartBeat = false;
     m_Reversion = false;
-    m_AutoReconnect = false;
+    m_AutoReconnect = true;
+    m_EnableDebug = false;
     m_MaxAngle = 180.f;
     m_MinAngle = -180.f;
     m_MaxRange = 16.0;
@@ -132,7 +133,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
             memset(angle_compensate_nodes, 0, all_nodes_counts*sizeof(node_info));
             unsigned int i = 0;
             for( ; i < count; i++) {
-                if ((nodes[i].distance_q2) != 0) {
+                if ((nodes[i].distance_q) != 0) {
                     float angle = (float)((nodes[i].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
                     if(m_Reversion){
                        angle=angle+180;
@@ -188,7 +189,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)(angle_compensate_nodes[i].distance_q2)/1000.f;
+                range = (float)(angle_compensate_nodes[i].distance_q)/1000.f;
                 intensity = (float)(angle_compensate_nodes[i].sync_quality);
 
                 if (i<all_nodes_counts/2) {
@@ -649,6 +650,7 @@ bool  CYdLidar::checkCOMMs()
 	}
 
 	// make connection...
+    YDlidarDriver::singleton()->setSaveParse(m_EnableDebug, "/tmp/ydldiar_scan.txt");
     result_t op_result = YDlidarDriver::singleton()->connect(m_SerialPort.c_str(), m_SerialBaudrate);
     if (op_result != RESULT_OK) {
         fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port %s\n",  m_SerialPort.c_str() );

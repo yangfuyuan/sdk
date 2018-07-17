@@ -122,7 +122,7 @@ struct node_info {
     uint8_t    sync_flag;
     uint16_t   sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
-    uint16_t   distance_q2; //! 当前测距点距离
+    uint16_t   distance_q; //! 当前测距点距离
     uint64_t   stamp; //! 时间戳
     uint8_t    scan_frequence;//! 特定版本此值才有效,无效值是0, 当前扫描频率current_frequence = scan_frequence/10.0
     odom_info   current_odom; //! 当前里程计同步坐标
@@ -374,6 +374,17 @@ namespace ydlidar{
          *	  false 关闭
          */
         void setAutoReconnect(const bool& enable);
+
+        /**
+         * @brief 设置保存解析命令到文件 \n
+         * @param[in] parse    是否保存解析:
+         *     true	保存
+         *	  false 不保存
+         * @filename 保存文件名
+         */
+        bool setSaveParse(bool parse, const std::string& filename);
+
+
 
 		/**
 		* @brief 获取雷达设备健康状态 \n
@@ -840,7 +851,8 @@ namespace ydlidar{
         std::atomic<bool>     isScanning;   ///< 扫图状态
 		std::atomic<bool>     isHeartbeat;  ///< 掉电保护状态
         std::atomic<bool>     isAutoReconnect;  ///< 异常自动从新连接
-        std::atomic<bool>      isAutoconnting; ///< 是否正在自动连接中
+        std::atomic<bool>     isAutoconnting;  ///< 是否正在自动连接中
+        std::atomic<bool>     save_parsing;    ///< 是否保存解析命令到文件，调试调用
 
 		enum {
 			DEFAULT_TIMEOUT = 2000,    /**< 默认超时时间. */ 
@@ -903,6 +915,8 @@ namespace ydlidar{
 
         odom_info   last_odom; //! 当前里程计同步坐标
         odom_info   current_odom;
+
+        FILE *fd;
 
 	};
 }

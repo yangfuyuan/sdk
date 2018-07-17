@@ -35,34 +35,58 @@ linux:
 
     $ ./ydlidar_test
 
-    $Please enter the lidar port:/dev/ttyUSB0
+    $ Please enter the lidar port:/dev/ttyUSB0
 
-    $Please enter the lidar baud rate:230400
+    $ Please enter the lidar baud rate:115200
+
+    $ Please enter the lidar intensity:0
+
 
 windows:
 
     $ ydlidar_test.exe
 
-    $Please enter the lidar port:COM3
+    $ Please enter the lidar port:COM3
     
-    $Please enter the lidar baud rate:230400
+    $ Please enter the lidar baud rate:115200
+
+    $ Please enter the lidar intensity:0
 
 =====================================================================
 
 You should see YDLIDAR's scan result in the console:
 
-    Yd Lidar running correctly ! The health status: good
-    [YDLIDAR] Connection established in [/dev/ttyUSB0]:
-    Firmware version: 2.0.9
-    Hardware version: 2
-    Model: G4
-    Serial: 2018022700000003
-    [YDLIDAR INFO] Current Sampling Rate : 9K
-    [YDLIDAR INFO] Current Scan Frequency : 7.400000Hz
-    [YDLIDAR INFO] Now YDLIDAR is scanning ......
-    Scan received: 43 ranges
-    Scan received: 1361 ranges
-    Scan received: 1412 ranges
+     	YDLIDAR C++ TEST
+	Please enter the lidar port:/dev/ttyUSB0
+	Please enter the lidar baud rate:115200
+	Please enter the lidar intensity:1
+	fhs_lock: creating lockfile:      25148
+
+	Yd Lidar running correctly ! The health status: good
+	firmware: 273
+	[YDLIDAR] Connection established in [/dev/ttyUSB0]:
+	Firmware version: 1.1.7
+	Hardware version: 1
+	Model: S4
+	Serial: 2018022700000003
+	[YDLIDAR INFO] Current Sampling Rate : 4K
+	[YDLIDAR INFO] Current Scan Frequency : 7.000000Hz
+	set EXPOSURE MODEL SUCCESS!!!
+	[YDLIDAR INFO] Now YDLIDAR is scanning ......
+	min_angle: -3.141593 
+	max_angle: 3.141593 
+	Scan received: 571 ranges
+	fit line size: 9 
+	line length: 0.127150,   line angle: -1.888069
+	line length: 0.149980,   line angle: -2.520781
+	line length: 0.149141,   line angle: -2.590903
+	line length: 0.186178,   line angle: -2.221969
+	line length: 0.123318,   line angle: -2.354801
+	line length: 0.086761,   line angle: 2.476112
+	line length: 0.035698,   line angle: 2.552944
+	line length: 0.108063,   line angle: 0.907348
+	line length: 0.115837,   line angle: -1.229582
+
 
 
 Lidar point data structure
@@ -78,17 +102,17 @@ data structure:
 
       double y;	     ///< y位置
 
-      double phi;	     ///< 角度方向
+      double phi;     ///< 角度方向
 
       double v;       ///< 线速度
 
       double w;       ///< 角速度
 
-      double dx;
+      double dx;       ///< x位置增量
 
-     double dy;
+      double dy;       ///< y位置增量
 
-     double dth;
+      double dth;       ///< 方向增量
 
     };
 
@@ -100,7 +124,7 @@ data structure:
 
        uint16_t   angle_q6_checkbit; //!angle
 
-       uint16_t   distance_q2; //! distance
+       uint16_t   distance_q; //! distance
 
        uint64_t   stamp; //! time stamp
 
@@ -119,11 +143,11 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q2;
+    current_distance = data[i].distance_q;　//v1.3.5版本之后距离不用右移２位
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality);
+    current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
@@ -149,7 +173,7 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q2;
+                current_distance =  data[i].distance_q;
 
                 current_intensity = (float)(data[i].sync_quality );
 

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['save_5fparsing',['save_parsing',['../classydlidar_1_1_y_dlidar_driver.html#a0f386d9157f5eaf3ab307f372e7355c9',1,'ydlidar::YDlidarDriver']]],
   ['scan_5ffrequence',['scan_frequence',['../structnode__info.html#a718a8a2f94497d5edea2be4550f74348',1,'node_info']]],
   ['scan_5fnode_5fbuf',['scan_node_buf',['../classydlidar_1_1_y_dlidar_driver.html#aeaefa47c69cbb0439b1259bdc6ccb29e',1,'ydlidar::YDlidarDriver']]],
   ['scan_5fnode_5fcount',['scan_node_count',['../classydlidar_1_1_y_dlidar_driver.html#a106fc563bb42f19e84e8d9db1e7856fe',1,'ydlidar::YDlidarDriver']]],

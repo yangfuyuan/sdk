@@ -22,7 +22,6 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="ydliar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK
    &#160;<span id="projectnumber">V1.3.6</span>
@@ -172,6 +171,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a6de3ec3e2b2837f0459f1ce35257323a"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达异常自动重新连接 <br />
  <a href="#a6de3ec3e2b2837f0459f1ce35257323a">More...</a><br /></td></tr>
 <tr class="separator:a6de3ec3e2b2837f0459f1ce35257323a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a662b5734ef7657da0cde6b22bea25f47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a662b5734ef7657da0cde6b22bea25f47">setSaveParse</a> (bool parse, const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a662b5734ef7657da0cde6b22bea25f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置保存解析命令到文件 <br />
+ <a href="#a662b5734ef7657da0cde6b22bea25f47">More...</a><br /></td></tr>
+<tr class="separator:a662b5734ef7657da0cde6b22bea25f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fe6f8b842a2aff2c3ae13f8423b03f4"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9fe6f8b842a2aff2c3ae13f8423b03f4">getHealth</a> (<a class="el" href="structdevice__health.html">device_health</a> &amp;health, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
 <tr class="memdesc:a9fe6f8b842a2aff2c3ae13f8423b03f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取雷达设备健康状态 <br />
  <a href="#a9fe6f8b842a2aff2c3ae13f8423b03f4">More...</a><br /></td></tr>
@@ -331,6 +334,10 @@ std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a 
 std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a4fcf172c55eabd5c6ca2d8c2bf14e5c6">isAutoconnting</a></td></tr>
 <tr class="memdesc:a4fcf172c55eabd5c6ca2d8c2bf14e5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">是否正在自动连接中 <br /></td></tr>
 <tr class="separator:a4fcf172c55eabd5c6ca2d8c2bf14e5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f386d9157f5eaf3ab307f372e7355c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f386d9157f5eaf3ab307f372e7355c9"></a>
+std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a0f386d9157f5eaf3ab307f372e7355c9">save_parsing</a></td></tr>
+<tr class="memdesc:a0f386d9157f5eaf3ab307f372e7355c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">是否保存解析命令到文件，调试调用 <br /></td></tr>
+<tr class="separator:a0f386d9157f5eaf3ab307f372e7355c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaefa47c69cbb0439b1259bdc6ccb29e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaefa47c69cbb0439b1259bdc6ccb29e"></a>
 <a class="el" href="structnode__info.html">node_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aeaefa47c69cbb0439b1259bdc6ccb29e">scan_node_buf</a> [2048]</td></tr>
 <tr class="memdesc:aeaefa47c69cbb0439b1259bdc6ccb29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">激光点信息 <br /></td></tr>
@@ -1879,6 +1886,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作, 当前操作需在非低光功率模式下, <br />
 只有S4雷达支持此功能 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a662b5734ef7657da0cde6b22bea25f47"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ydlidar::YDlidarDriver::setSaveParse </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>parse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>设置保存解析命令到文件 <br />
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">parse</td><td>是否保存解析: true 保存 false 不保存  保存文件名 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

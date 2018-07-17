@@ -45,6 +45,8 @@ namespace ydlidar{
         CheckSunResult = true;
         Valu8Tou16 = 0;
 
+        fd = NULL;
+
         memset(&last_odom, 0, sizeof(last_odom));
         memset(&current_odom, 0, sizeof(current_odom));
 	}
@@ -67,6 +69,9 @@ namespace ydlidar{
 			delete _serial;
 			_serial = NULL;
 		}
+
+        if (NULL != fd)
+            fclose(fd);
 	}
 
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
@@ -80,9 +85,16 @@ namespace ydlidar{
 		{
 			ScopedLocker l(_lock);
 			if(!_serial->open()){
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "connect %s failed in %d\n", port_path, baudrate);
+                }
 				return RESULT_FAIL;
 			}
 		}
+
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "connect %s success in %d\n", port_path, baudrate);
+        }
 
 		isConnected = true;
 
@@ -180,6 +192,29 @@ namespace ydlidar{
 
     }
 
+    bool YDlidarDriver::setSaveParse(bool parse, const std::string& filename) {
+        bool ret = false;
+        save_parsing = parse;
+        if(save_parsing) {
+            if(fd == NULL){
+                 fd=fopen("ydlidar_scan.txt","w");
+                 ret = true;
+                 if (NULL == fd){
+                     fd =fopen(filename.c_str(), "w");
+                     ret = false;
+                 }
+            }
+        } else {
+            if(fd != NULL) {
+                fclose(fd);
+            }
+        }
+
+        return ret;
+
+
+    }
+
 
 	result_t YDlidarDriver::sendCommand(uint8_t cmd, const void * payload, size_t payloadsize) {
 		uint8_t pkt_header[10];
@@ -224,15 +259,30 @@ namespace ydlidar{
 		if (data == NULL || size ==0) {
 			return RESULT_FAIL;
 		}
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "[send]: ");
+            for( int i =0; i < size; i++ )
+                fprintf(fd, "%02x ", *(data +i));
+        }
 		size_t r;
-        	while (size) {
-                	r = _serial->write(data, size);
-            	if (r < 1)
-                	return RESULT_FAIL;
-            	size -= r;
-            	data += r;
-        	}
-        	return RESULT_OK;
+        while (size) {
+            r = _serial->write(data, size);
+            if (r < 1){
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[failed]\n");
+
+                }
+                return RESULT_FAIL;
+
+            }
+            size -= r;
+            data += r;
+        }
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "[success]\n");
+        }
+        return RESULT_OK;
+
 	}
 
 	result_t YDlidarDriver::getData(uint8_t * data, size_t size) {
@@ -328,6 +378,9 @@ namespace ydlidar{
                         {
                             isScanning = false;
                         }
+                        if (NULL != fd&& save_parsing){
+                            fprintf(fd, "exit scanning thread!!\n");
+                        }
                         return RESULT_FAIL;
                     } else {//做异常处理, 重新连接
                         isAutoconnting = true;
@@ -345,6 +398,10 @@ namespace ydlidar{
                                 isConnected = false;
                             }
                         }
+                        if (NULL != fd&& save_parsing){
+                            fprintf(fd, "reconnecting lidar!!\n");
+                        }
+
                         while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
                             delay(1000);
                         }
@@ -358,6 +415,9 @@ namespace ydlidar{
                                 timeout_count =0;
                                 isAutoconnting = false;
                                 continue;
+                            }
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "reconnecting lidar success, start scan failed!!\n");
                             }
 
                         }
@@ -393,6 +453,9 @@ namespace ydlidar{
                 if (end_ts - start_ts > DEFAULT_HEART_BEAT) {
                     sendHeartBeat();
                     start_ts = end_ts;
+                    if (NULL != fd&& save_parsing){
+                        fprintf(fd, "[send heartbeat]\n");
+                    }
                 }
             }
 		}
@@ -454,6 +517,9 @@ namespace ydlidar{
 
 						}else{
 							recvPos = 0;
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][error]\n", currentByte);
+                            }
 							continue;
 						}
 						break;
@@ -464,8 +530,14 @@ namespace ydlidar{
                             if(package_type == CT_RingStart){
                                 scan_frequence = (currentByte&0xFE)>>1;
                                 (*node).scan_frequence = scan_frequence;
+                                if((*node).scan_frequence != 0 && NULL != fd && save_parsing) {
+                                    fprintf(fd, "[[%02x][SCAN FREQUENCE[%f]]]\n", currentByte, scan_frequence/10.f);
+                                }
                             }
 						} else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][error]\n", currentByte);
+                            }
 							recvPos = 0;
 							continue;
 						}
@@ -479,6 +551,9 @@ namespace ydlidar{
 							FirstSampleAngle = currentByte;
 						} else {
 							recvPos = 0;
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][error]\n", currentByte);
+                            }
 							continue;
 						}
 						break;
@@ -491,6 +566,9 @@ namespace ydlidar{
 						if (currentByte & LIDAR_RESP_MEASUREMENT_CHECKBIT) {
 							LastSampleAngle = currentByte;
 						} else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][error]\n", currentByte);
+                            }
 							recvPos = 0;
 							continue;
 						}
@@ -531,6 +609,13 @@ namespace ydlidar{
 						CheckSun += (currentByte*0x100);
 						break;
 					}
+                    if (NULL != fd&& save_parsing){
+                        if(recvPos ==3|| recvPos==8 || recvPos ==9){
+                           fprintf(fd, "[%02x]", currentByte);
+                        }else{
+                           fprintf(fd, "%02x", currentByte);
+                        }
+                    }
 					packageBuffer[recvPos++] = currentByte;
 				}
 
@@ -579,7 +664,13 @@ namespace ydlidar{
 
 						packageBuffer[package_recvPos+recvPos] = recvBuffer[pos];
 						recvPos++;
+
+                        if (NULL != fd&& save_parsing){
+                            fprintf(fd, "%02x", recvBuffer[pos]);
+                        }
 					}
+
+
 
 					if(package_Sample_Num*PackageSampleBytes == recvPos){
 						package_recvPos += recvPos;
@@ -599,8 +690,14 @@ namespace ydlidar{
 
 			if(CheckSunCal != CheckSun){	
 				CheckSunResult = false;
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[%02x][%02x][error]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+                }
 			}else{
 				CheckSunResult = true;
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[%02x][%02x]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+                }
 			}
 
 		}
@@ -622,12 +719,12 @@ namespace ydlidar{
 		if(CheckSunResult == true){
 			if(m_intensities){
 				(*node).sync_quality = (((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<<LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT)| (package.packageSample[package_Sample_Index].PakageSampleQuality));
-                (*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
+                (*node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}else{
-                (*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index] >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
+                (*node).distance_q = packages.packageSampleDistance[package_Sample_Index] >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}	  
-            if(((*node).distance_q2) != 0){
-                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q2)) )/155.3)/((*node).distance_q2)))*180.0/3.1415) * 64.0);
+            if(((*node).distance_q) != 0){
+                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q)) )/155.3)/((*node).distance_q)))*180.0/3.1415) * 64.0);
 			}else{
 				AngleCorrectForDistance = 0;		
 			}
@@ -644,7 +741,7 @@ namespace ydlidar{
             (*node).sync_flag = Node_NotSync;
             (*node).sync_quality = Node_Default_Quality;
 			(*node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
-			(*node).distance_q2 = 0;
+			(*node).distance_q = 0;
 		}
 
 
@@ -658,6 +755,9 @@ namespace ydlidar{
         if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
 			m_ns = ns;
 			m_calc_ns = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
+            if (NULL != fd&& save_parsing){
+                fprintf(fd, "new scan data: (%d, %d)\n", nowPackageNum, package_Sample_Index);
+            }
 		}
 
 		if(package_Sample_Index ==0){
@@ -760,10 +860,10 @@ namespace ydlidar{
 		scan_data->clear();
 		for (int pos = 0; pos < (int)count; ++pos) {
 			scanDot dot;
-            if (!(buffer[pos].distance_q2)) continue;
+            if (!(buffer[pos].distance_q)) continue;
             dot.quality = (buffer[pos].sync_quality);
 			dot.angle = (buffer[pos].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
-            dot.dist = (buffer[pos].distance_q2);
+            dot.dist = (buffer[pos].distance_q);
 			scan_data->push_back(dot);
 		}
 	}
@@ -774,7 +874,7 @@ namespace ydlidar{
 		int i = 0;
 
 		for (i = 0; i < (int)count; i++) {
-            if((nodebuffer[i].distance_q2) == 0) {
+            if((nodebuffer[i].distance_q) == 0) {
 				continue;
 			} else {
 				while(i != 0) {
@@ -794,7 +894,7 @@ namespace ydlidar{
 		}
 
 		for (i = (int)count - 1; i >= 0; i--) {
-            if((nodebuffer[i].distance_q2) == 0) {
+            if((nodebuffer[i].distance_q) == 0) {
 				continue;
 			} else {
 				while(i != ((int)count - 1)) {
@@ -810,7 +910,7 @@ namespace ydlidar{
 
 		float frontAngle = (nodebuffer[0].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
 		for (i = 1; i < (int)count; i++) {
-            if((nodebuffer[i].distance_q2) == 0) {
+            if((nodebuffer[i].distance_q) == 0) {
 				float expect_angle =  frontAngle + i * inc_origin_angle;
 				if (expect_angle > 360.0f) expect_angle -= 360.0f;
 				uint16_t checkbit = nodebuffer[i].angle_q6_checkbit & LIDAR_RESP_MEASUREMENT_CHECKBIT;
@@ -930,6 +1030,9 @@ namespace ydlidar{
 		}else{
 			PackageSampleBytes = 2;
 		}
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "set lidar intensity: %s\n", isintensities?"true":"false");
+        }
 	}
 
 	/************************************************************************/	
@@ -947,6 +1050,9 @@ namespace ydlidar{
     void YDlidarDriver::setHeartBeat(const bool& enable)
 	{
 		isHeartbeat = enable;
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "set lidar heartbeat: %s\n", enable?"true":"false");
+        }
 
 	}
         

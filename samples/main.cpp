@@ -50,6 +50,7 @@ int main(int argc, char * argv[])
     laser.setReversion(false);
     laser.setFixedResolution(false);
     laser.setAutoReconnect(true);
+    laser.setEnableDebug(false);
 
     //雷达相对机器人安装位置
     pose_info laser_pose;

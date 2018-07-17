@@ -24,6 +24,7 @@ var searchData=
   ['setrts',['setRTS',['../classserial_1_1_serial.html#a7c91f22768107389f52d80d691994fc7',1,'serial::Serial']]],
   ['setsamplingrate',['setSamplingRate',['../classydlidar_1_1_y_dlidar_driver.html#a30f9219bcf3aa3a8df2bbdae983ccd02',1,'ydlidar::YDlidarDriver']]],
   ['setsavelowexposure',['setSaveLowExposure',['../classydlidar_1_1_y_dlidar_driver.html#a73ef6628afc1eadf2f3079db99b383c6',1,'ydlidar::YDlidarDriver']]],
+  ['setsaveparse',['setSaveParse',['../classydlidar_1_1_y_dlidar_driver.html#a662b5734ef7657da0cde6b22bea25f47',1,'ydlidar::YDlidarDriver']]],
   ['setscanfrequencyadd',['setScanFrequencyAdd',['../classydlidar_1_1_y_dlidar_driver.html#a0feea99573991bb4eb6f8e1718a71435',1,'ydlidar::YDlidarDriver']]],
   ['setscanfrequencyaddmic',['setScanFrequencyAddMic',['../classydlidar_1_1_y_dlidar_driver.html#aa801f64f5ca2ce1e70ee096eb0b4b612',1,'ydlidar::YDlidarDriver']]],
   ['setscanfrequencydis',['setScanFrequencyDis',['../classydlidar_1_1_y_dlidar_driver.html#a811e3e1f0012925c8a90aebda9716738',1,'ydlidar::YDlidarDriver']]],
