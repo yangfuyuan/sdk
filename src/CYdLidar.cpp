@@ -21,7 +21,8 @@ CYdLidar::CYdLidar()
     m_Exposure = false;
     m_HeartBeat = false;
     m_Reversion = false;
-    m_AutoReconnect = false;
+    m_AutoReconnect = true;
+    m_EnableDebug = false;
     m_MaxAngle = 180.f;
     m_MinAngle = -180.f;
     m_MaxRange = 16.0;
@@ -33,6 +34,13 @@ CYdLidar::CYdLidar()
     each_angle = 0.5;
     show_error = 0;
     m_IgnoreArray.clear();
+
+    sensor_matrix.setIdentity();
+    sensor_matrix_inv.setIdentity();
+    robot_matrix.setIdentity();
+    current_sensor_vector.setOne();
+    lidar_sensor_vector.setOne();
+
 }
 
 /*-------------------------------------------------------------
@@ -51,10 +59,32 @@ void CYdLidar::disconnecting()
     }
 }
 
+void CYdLidar::setSyncOdometry(const odom_info &odom) {
+    if( YDlidarDriver::singleton() )  {
+        YDlidarDriver::singleton()->setSyncOdometry(odom);
+    }
+}
+
+void CYdLidar::setSensorPose(const pose_info &pose) {
+    sensor_matrix(0, 0) = cos(pose.phi);
+    sensor_matrix(0, 1) = -sin(pose.phi);
+    sensor_matrix(0, 2) = pose.x;
+
+    sensor_matrix(1, 0) = sin(pose.phi);
+    sensor_matrix(1, 1) = cos(pose.phi);
+    sensor_matrix(1, 2) = pose.y;
+
+    sensor_matrix(2, 0) = 0;
+    sensor_matrix(2, 1) = 0;
+    sensor_matrix(2, 2) = 1;
+    sensor_matrix_inv = matrix::inv(sensor_matrix);
+
+}
+
 /*-------------------------------------------------------------
 						doProcessSimple
 -------------------------------------------------------------*/
-bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bool &hardwareError){
+bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointCloud &pointcloud, std::vector<gline>& lines, bool &hardwareError){
 	hardwareError			= false;
 
 	// Bound?
@@ -80,6 +110,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bo
     int current_index = 0;
     lines.clear();
 
+
 	// Fill in scan data:
 	if (op_result == RESULT_OK)
 	{
@@ -102,7 +133,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bo
             memset(angle_compensate_nodes, 0, all_nodes_counts*sizeof(node_info));
             unsigned int i = 0;
             for( ; i < count; i++) {
-                if ((nodes[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) != 0) {
+                if ((nodes[i].distance_q) != 0) {
                     float angle = (float)((nodes[i].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
                     if(m_Reversion){
                        angle=angle+180;
@@ -123,6 +154,8 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bo
              }
 
             LaserScan scan_msg;
+            PointCloud pc;
+            pc.system_time_stamp = tim_scan_start;
 
             if (m_MaxAngle< m_MinAngle) {
                 float temp = m_MinAngle;
@@ -151,10 +184,13 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bo
             scan_msg.config.min_range = m_MinRange;
             scan_msg.config.max_range = m_MaxRange;
 
+            LaserScan correction_scan_msg = scan_msg;
+
+
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)(angle_compensate_nodes[i].distance_q2>>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT)/1000.f;
-                intensity = (float)(angle_compensate_nodes[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+                range = (float)(angle_compensate_nodes[i].distance_q)/1000.f;
+                intensity = (float)(angle_compensate_nodes[i].sync_quality);
 
                 if (i<all_nodes_counts/2) {
                     index = all_nodes_counts/2-1-i;
@@ -183,29 +219,67 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,std::vector<gline>& lines, bo
                 }
 
                 int pos = index - node_start ;
-                if (0<= pos && pos < counts) {
-                    scan_msg.ranges[pos] =  range;
-                    scan_msg.intensities[pos] = intensity;    
-                    double angle = scan_msg.config.min_angle + scan_msg.config.ang_increment*pos;
+                if (0 <= pos && pos < counts) {
+                    {
+                        //校准激光雷达数据
+                        current_sensor_vector(0) = range*cos(correction_scan_msg.config.min_angle + correction_scan_msg.config.ang_increment*pos);
+                        current_sensor_vector(1) = range*sin(correction_scan_msg.config.min_angle + correction_scan_msg.config.ang_increment*pos);
+                        current_sensor_vector(2) = 1;
 
+                        double dth = angle_compensate_nodes[i].current_odom.dth;
+                        double dx  = angle_compensate_nodes[i].current_odom.dx;
+                        double dy  = angle_compensate_nodes[i].current_odom.dy;
 
-                    if( range >= scan_msg.config.min_range) {
-                        bearings.push_back(angle);
-                        indices.push_back(current_index);
-                        rangedata.ranges.push_back(range);
-                        rangedata.xs.push_back(range*cos(angle));
-                        rangedata.ys.push_back(range*sin(angle));
-                        current_index++;
+                        robot_matrix.setIdentity();
+                        robot_matrix(0, 0) = cos(dth);
+                        robot_matrix(0, 1) = sin(dth);
+                        robot_matrix(0, 2) = dx;
+                        robot_matrix(1, 0) = -sin(dth);
+                        robot_matrix(1, 1) = cos(dth);
+                        robot_matrix(1, 2) = dy;
+                        lidar_sensor_vector = sensor_matrix_inv*robot_matrix*sensor_matrix*current_sensor_vector;
+
+                        double lx = lidar_sensor_vector(0);
+                        double ly = lidar_sensor_vector(1);
+                        point_info point;
+                        point.x = lx;
+                        point.y = ly;
+                        point.z = 0.0;
+                        pc.points.push_back(point);
+                        double newrange = hypot(lx, ly);
+                        double angle = atan2(ly, lx);
+                        int newindex = (angle - correction_scan_msg.config.min_angle) / correction_scan_msg.config.ang_increment;
+                        if( 0 <= newindex && newindex < counts) {
+                            if( newrange < correction_scan_msg.config.min_angle)
+                                newrange = 0.0;
+                            correction_scan_msg.ranges[newindex] = newrange;
+                            correction_scan_msg.intensities[pos] = intensity;
+
+                            if( newrange >= correction_scan_msg.config.min_range) {
+                                bearings.push_back(angle);
+                                indices.push_back(current_index);
+                                rangedata.ranges.push_back(newrange);
+                                rangedata.xs.push_back(lx);
+                                rangedata.ys.push_back(ly);
+                                current_index++;
+                            }
+                        }
+
                     }
+
+                    scan_msg.ranges[pos] =  range;
+                    scan_msg.intensities[pos] = intensity;
                 }
-            } 
+            }
+
+
             line_feature_.setCachedRangeData(bearings, indices, rangedata);
             line_feature_.extractLines(lines);
+            syncscan = correction_scan_msg;
+            pointcloud = pc;
             outscan = scan_msg;
             delete[] angle_compensate_nodes;
             return true;
-
-
 		}
 
     } else {
@@ -474,6 +548,24 @@ bool CYdLidar::checkScanFrequency()
                 freq = _scan_frequency.frequency/100.0f;
             }
         }
+        if(fabs(m_ScanFrequency - freq) < 1.0) {
+            hz = (m_ScanFrequency - freq)*10;
+            if (hz>0) {
+                while (hz != 0) {
+                    YDlidarDriver::singleton()->setScanFrequencyAddMic(_scan_frequency);
+                    hz--;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            } else {
+                while (hz != 0) {
+                    YDlidarDriver::singleton()->setScanFrequencyDisMic(_scan_frequency);
+                    hz++;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            }
+
+        }
+
         if (m_ScanFrequency < 7 && m_SampleRate>6) {
             node_counts = 1600;
 
@@ -525,6 +617,9 @@ bool CYdLidar::checkHeartBeat() const
         YDlidarDriver::singleton()->setHeartBeat(false);
         ret = true;
     }
+
+    return ret;
+
 }
 /*-------------------------------------------------------------
 						checkCOMMs
@@ -555,6 +650,7 @@ bool  CYdLidar::checkCOMMs()
 	}
 
 	// make connection...
+    YDlidarDriver::singleton()->setSaveParse(m_EnableDebug, "/tmp/ydldiar_scan.txt");
     result_t op_result = YDlidarDriver::singleton()->connect(m_SerialPort.c_str(), m_SerialBaudrate);
     if (op_result != RESULT_OK) {
         fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port %s\n",  m_SerialPort.c_str() );
@@ -584,9 +680,9 @@ bool CYdLidar::checkStatus()
     again:
     // check health:
     bool ret = getDeviceHealth();
-    bool check_error = false;
 
     int m_type;
+    bool check_error = false;
     if (!ret || !getDeviceInfo(m_type)){
         check_error = true;
         checkmodel[m_SerialBaudrate] = true;
@@ -616,7 +712,7 @@ bool CYdLidar::checkStatus()
     }
 
     show_error = 0;
-    if(m_type != 4||check_error)
+    if(m_type != 4 || check_error)
         m_Intensities = false;
     if (m_type == 4) {
         if (m_SerialBaudrate == 153600)

@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "ydlidar_driver.h"
 #include <math.h>
+#include "matrix/math.hpp"
 
 #if !defined(__cplusplus)
 #ifndef __cplusplus
@@ -49,6 +50,8 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(bool,HeartBeat,private)///< 设置和获取激光是否开启掉电保护, 之后版本号大于等于2.0.9的(G4, F4PRO, G4C)支持
     PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
     PropertyBuilderByName(bool,AutoReconnect, private)///< 设置异常是否自动重新连接
+    PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件
+
 
 
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率
@@ -65,8 +68,7 @@ public:
     bool initialize();  //!< Attempts to connect and turns the laser on. Raises an exception on error.
 
     // Return true if laser data acquistion succeeds, If it's not
-    bool doProcessSimple(LaserScan &outscan, std::vector<gline>& lines, bool &hardwareError);
-
+    bool doProcessSimple(LaserScan &outscan, LaserScan &syncscan, PointCloud &pointcloud, std::vector<gline>& lines, bool &hardwareError);
 
     //Turn on the motor enable
 	bool  turnOn();  //!< See base class docs
@@ -84,6 +86,18 @@ public:
 
     /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
     bool checkScanFrequency();
+
+    /**
+     * @brief setSyncOdometry
+     * @param odom
+     */
+    void setSyncOdometry(const odom_info& odom);
+
+    /**
+     * @brief setSensorPose
+     * @param pose
+     */
+    void setSensorPose(const pose_info& pose);
 
     //Turn off lidar connection
     void disconnecting(); //!< Closes the comms with the laser. Shouldn't have to be directly needed by the user
@@ -113,6 +127,13 @@ private:
     double each_angle;
     int show_error;
 
-     LineFeature    line_feature_;
+    matrix::SquareMatrix<double, 3> sensor_matrix;
+    matrix::SquareMatrix<double, 3> sensor_matrix_inv;
+    matrix::SquareMatrix<double, 3> robot_matrix;
+    matrix::Vector<double, 3> lidar_sensor_vector;
+    matrix::Vector<double, 3> current_sensor_vector;
+
+    LineFeature    line_feature_;
+
 };	// End of class
 
