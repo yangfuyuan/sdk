@@ -1,9 +1,17 @@
 var searchData=
 [
-  ['vector',['Vector',['../classmatrix_1_1_vector.html',1,'matrix']]],
-  ['vector2',['Vector2',['../classmatrix_1_1_vector2.html',1,'matrix']]],
-  ['vector3',['Vector3',['../classmatrix_1_1_vector3.html',1,'matrix']]],
-  ['vector_3c_20double_2c_203_20_3e',['Vector&lt; double, 3 &gt;',['../classmatrix_1_1_vector.html',1,'matrix']]],
-  ['vector_3c_20type_2c_202_20_3e',['Vector&lt; Type, 2 &gt;',['../classmatrix_1_1_vector.html',1,'matrix']]],
-  ['vector_3c_20type_2c_203_20_3e',['Vector&lt; Type, 3 &gt;',['../classmatrix_1_1_vector.html',1,'matrix']]]
+  ['sampling_5frate',['sampling_rate',['../structsampling__rate.html',1,'']]],
+  ['scan_5fexposure',['scan_exposure',['../structscan__exposure.html',1,'']]],
+  ['scan_5ffrequency',['scan_frequency',['../structscan__frequency.html',1,'']]],
+  ['scan_5fheart_5fbeat',['scan_heart_beat',['../structscan__heart__beat.html',1,'']]],
+  ['scan_5fpoints',['scan_points',['../structscan__points.html',1,'']]],
+  ['scan_5frotation',['scan_rotation',['../structscan__rotation.html',1,'']]],
+  ['scandot',['scanDot',['../structscan_dot.html',1,'']]],
+  ['scopedlocker',['ScopedLocker',['../class_scoped_locker.html',1,'']]],
+  ['scopedreadlock',['ScopedReadLock',['../classserial_1_1_serial_1_1_scoped_read_lock.html',1,'serial::Serial']]],
+  ['scopedwritelock',['ScopedWriteLock',['../classserial_1_1_serial_1_1_scoped_write_lock.html',1,'serial::Serial']]],
+  ['serial',['Serial',['../classserial_1_1_serial.html',1,'serial']]],
+  ['serialimpl',['SerialImpl',['../classserial_1_1serial_1_1_serial_1_1_serial_impl.html',1,'serial::Serial']]],
+  ['squarematrix',['SquareMatrix',['../classmatrix_1_1_square_matrix.html',1,'matrix']]],
+  ['squarematrix_3c_20double_2c_203_20_3e',['SquareMatrix&lt; double, 3 &gt;',['../classmatrix_1_1_square_matrix.html',1,'matrix']]]
 ];

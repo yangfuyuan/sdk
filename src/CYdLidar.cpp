@@ -83,7 +83,7 @@ void CYdLidar::setSensorPose(const pose_info &pose) {
 /*-------------------------------------------------------------
 						doProcessSimple
 -------------------------------------------------------------*/
-bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointCloud &pointcloud, bool &hardwareError){
+bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointCloud &pointcloud, std::vector<gline>& lines, bool &hardwareError){
 	hardwareError			= false;
 
 	// Bound?
@@ -102,6 +102,13 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
     uint64_t tim_scan_start = getTime();
 	result_t op_result =  YDlidarDriver::singleton()->grabScanData(nodes, count);
     const uint64_t tim_scan_end = getTime();
+
+    std::vector<double> bearings;
+    std::vector<unsigned int> indices;
+    RangeData  rangedata;
+    int current_index = 0;
+    lines.clear();
+
 
 	// Fill in scan data:
 	if (op_result == RESULT_OK)
@@ -238,23 +245,35 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
                         point.y = ly;
                         point.z = 0.0;
                         pc.points.push_back(point);
-                        double range = hypot(lx, ly);
+                        double newrange = hypot(lx, ly);
                         double angle = atan2(ly, lx);
                         int newindex = (angle - correction_scan_msg.config.min_angle) / correction_scan_msg.config.ang_increment;
                         if( 0 <= newindex && newindex < counts) {
-                            if( range < correction_scan_msg.config.min_angle)
-                                range = 0.0;
-                            correction_scan_msg.ranges[newindex] = range;
+                            if( newrange < correction_scan_msg.config.min_angle)
+                                newrange = 0.0;
+                            correction_scan_msg.ranges[newindex] = newrange;
                             correction_scan_msg.intensities[pos] = intensity;
+
+                            if( newrange >= correction_scan_msg.config.min_range) {
+                                bearings.push_back(angle);
+                                indices.push_back(current_index);
+                                rangedata.ranges.push_back(newrange);
+                                rangedata.xs.push_back(lx);
+                                rangedata.ys.push_back(ly);
+                                current_index++;
+                            }
                         }
 
                     }
+
                     scan_msg.ranges[pos] =  range;
                     scan_msg.intensities[pos] = intensity;
                 }
             }
 
 
+            line_feature_.setCachedRangeData(bearings, indices, rangedata);
+            line_feature_.extractLines(lines);
             syncscan = correction_scan_msg;
             pointcloud = pc;
             outscan = scan_msg;

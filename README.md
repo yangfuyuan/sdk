@@ -84,6 +84,12 @@ data structure:
 
       double w;       ///< 角速度
 
+      double dx;
+
+     double dy;
+
+     double dth;
+
     };
 
     struct node_info {
@@ -166,6 +172,11 @@ code:
 
 Upgrade Log
 =====================================================================
+
+2018-07-17 version:1.3.6
+
+  1.add fit line.
+
 
 2018-05-23 version:1.3.5
 

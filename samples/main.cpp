@@ -25,12 +25,17 @@ int main(int argc, char * argv[])
 	printf(" YDLIDAR C++ TEST\n");
     std::string port;
     std::string baudrate;
+    std::string intensity;
     printf("Please enter the lidar port:");
     std::cin>>port;
     printf("Please enter the lidar baud rate:");
     std::cin>>baudrate;
+
+    printf("Please enter the lidar intensity:");
+    std::cin>>intensity;
+
     const int baud = atoi(baudrate.c_str());
-    const int intensities = 0;
+    bool intensities = atoi(intensity.c_str()) ==0?false:true;
 
     signal(SIGINT, Stop);
     signal(SIGTERM, Stop);
@@ -38,7 +43,7 @@ int main(int argc, char * argv[])
     laser.setSerialBaudrate(baud);
     laser.setIntensities(intensities);
     laser.setMaxRange(16.0);
-    laser.setMinRange(0.26);
+    laser.setMinRange(0.1);
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
     laser.setHeartBeat(false);
@@ -61,17 +66,23 @@ int main(int argc, char * argv[])
         LaserScan scan;//原始激光数据
         LaserScan syncscan;//同步后激光数据
         PointCloud pc;//同步后激光点云数据
+        std::vector<gline> lines;
 
-        if(laser.doProcessSimple(scan, syncscan, pc, hardError )){
+        if(laser.doProcessSimple(scan, syncscan, pc, lines, hardError )){
             for(int i =0; i < scan.ranges.size(); i++ ){
                 float angle = scan.config.min_angle + i*scan.config.ang_increment;
                 float dis = scan.ranges[i];
 
             }
-            fprintf(stderr,"min_angle: %f \n",scan.config.min_angle);
-            fprintf(stderr,"max_angle: %f \n",scan.config.max_angle);
+            fprintf(stdout,"min_angle: %f \n",scan.config.min_angle);
+            fprintf(stdout,"max_angle: %f \n",scan.config.max_angle);
 
-			fprintf(stderr,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
+            fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
+            fprintf(stdout, "fit line size: %u \n", (unsigned int)lines.size());
+            for(std::vector<gline>::const_iterator it = lines.begin(); it != lines.end(); it++) {
+                fprintf(stdout, "line length: %f,   line angle: %f\n", (*it).distance, (*it).angle);
+            }
+            fflush(stdout);
 
 		}
 

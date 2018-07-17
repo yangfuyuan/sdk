@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['cacheddata',['CachedData',['../structline__feature_1_1_cached_data.html',1,'line_feature']]],
   ['cachescandata',['cacheScanData',['../classydlidar_1_1_y_dlidar_driver.html#ab462b22dc3a4d39fef4f722345a87d5e',1,'ydlidar::YDlidarDriver']]],
   ['checkcomms',['checkCOMMs',['../class_c_yd_lidar.html#ab43ca6b1d054aa464a36bea0d4b7934c',1,'CYdLidar']]],
   ['checkhardware',['checkHardware',['../class_c_yd_lidar.html#ab3c24f8f59fee87aa4e829ca5c8f90d2',1,'CYdLidar']]],
