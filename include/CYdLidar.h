@@ -126,6 +126,7 @@ private:
     int node_counts ;
     double each_angle;
     int show_error;
+    bool reversion;
 
     matrix::SquareMatrix<double, 3> sensor_matrix;
     matrix::SquareMatrix<double, 3> sensor_matrix_inv;

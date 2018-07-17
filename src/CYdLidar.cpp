@@ -30,6 +30,7 @@ CYdLidar::CYdLidar()
     m_SampleRate = 9;
     m_ScanFrequency = 7;
     isScanning = false;
+    reversion	= false;
     node_counts = 720;
     each_angle = 0.5;
     show_error = 0;
@@ -135,7 +136,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
             for( ; i < count; i++) {
                 if ((nodes[i].distance_q) != 0) {
                     float angle = (float)((nodes[i].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
-                    if(m_Reversion){
+                    if(reversion&&m_Reversion){
                        angle=angle+180;
                        if(angle>=360){ angle=angle-360;}
                         nodes[i].angle_q6_checkbit = ((uint16_t)(angle * 64.0f)) << LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT;
@@ -426,6 +427,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
 
 
             }
+	    reversion = true;
 
 	    }
             break;
@@ -474,6 +476,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
             break;
         case 9:
             model = "G4C";
+	    reversion = true;
             break;
         default:
             model = "Unknown";
