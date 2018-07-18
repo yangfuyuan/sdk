@@ -38,14 +38,18 @@ int lfs_lock( const char *filename, int pid )
     char *buffer = malloc(size);
     struct sockaddr_in addr;
 
-    if ( !( s = socket( AF_INET, SOCK_STREAM, 0 ) ) > 0 )
+    if ( !( s = socket( AF_INET, SOCK_STREAM, 0 ) ) > 0 ){
+        free(buffer);
         return 1;
+    }
     addr.sin_family = AF_INET;
     addr.sin_port = htons( 50001 );
     addr.sin_addr.s_addr = inet_addr( "127.0.0.1" );
 
-    if ( !connect( s, ( struct sockaddr * ) &addr, sizeof( addr ) ) == 0 )
+    if ( !connect( s, ( struct sockaddr * ) &addr, sizeof( addr ) ) == 0 ){
+        free(buffer);
         return 1;
+    }
     ret=recv( s, buffer, size, 0 );
     sprintf( buffer, "lock %s %i\n", filename, pid );
     /* printf( "%s", buffer ); */
@@ -59,7 +63,11 @@ int lfs_lock( const char *filename, int pid )
     send( s, "quit\n", strlen( "quit\n" ), 0 );
     close(s);
     /* printf("%s\n", buffer); */
-    if( buffer[0] == '2' ) return 0;
+    if( buffer[0] == '2' ){
+        free(buffer);
+        return 0;
+    }
+    free(buffer);
     return 1;
 }
 
@@ -80,14 +88,18 @@ int lfs_unlock( const char *filename, int pid )
     char *buffer = malloc(size);
     struct sockaddr_in addr;
 
-    if ( !( s = socket( AF_INET, SOCK_STREAM, 0 ) ) > 0 )
+    if ( !( s = socket( AF_INET, SOCK_STREAM, 0 ) ) > 0 ){
+        free(buffer);
         return 1;
+    }
     addr.sin_family = AF_INET;
     addr.sin_port = htons( 50001 );
     addr.sin_addr.s_addr = inet_addr( "127.0.0.1" );
 
-    if ( !connect( s, ( struct sockaddr * ) &addr, sizeof( addr ) ) == 0 )
+    if ( !connect( s, ( struct sockaddr * ) &addr, sizeof( addr ) ) == 0 ) {
+        free(buffer);
         return 1;
+    }
     sprintf( buffer, "unlock %s %i\n", filename, pid );
     /* printf( "%s", buffer ); */
     send( s, buffer, strlen(buffer), 0 );
@@ -99,7 +111,11 @@ int lfs_unlock( const char *filename, int pid )
     }
     send( s, "quit\n", strlen( "quit\n" ), 0 );
     close(s);
-    if( buffer[0] == '2' ) return 0;
+    if( buffer[0] == '2' ) {
+        free(buffer);
+        return 0;
+    }
+    free(buffer);
     return 1;
 }
 #endif /* LFS */

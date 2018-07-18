@@ -105,7 +105,7 @@ struct node_info {
     uint8_t    sync_flag;
     uint16_t    sync_quality;
 	uint16_t   angle_q6_checkbit;
-	uint16_t   distance_q2;
+    uint16_t   distance_q;
 	uint64_t   stamp;
 } __attribute__((packed)) ;
 

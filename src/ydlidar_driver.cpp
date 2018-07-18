@@ -633,12 +633,12 @@ namespace ydlidar{
 		if(CheckSunResult == true){
 			if(m_intensities){
                 (node).sync_quality = (((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<<LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT) |package.packageSample[package_Sample_Index].PakageSampleQuality);
-                (node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
+                (node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}else{
-                (node).distance_q2 = packages.packageSampleDistance[package_Sample_Index] >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
+                (node).distance_q = packages.packageSampleDistance[package_Sample_Index] >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}	  
-            if((node).distance_q2 != 0){
-                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((node).distance_q2)) )/155.3)/((node).distance_q2)))*180.0/3.1415) * 64.0);
+            if((node).distance_q != 0){
+                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((node).distance_q)) )/155.3)/((node).distance_q)))*180.0/3.1415) * 64.0);
 			}else{
 				AngleCorrectForDistance = 0;		
 			}
@@ -655,7 +655,7 @@ namespace ydlidar{
             (node).sync_flag = Node_NotSync;
             (node).sync_quality = Node_Default_Quality;
             (node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
-            (node).distance_q2 = 0;
+            (node).distance_q = 0;
 		}
 
 
@@ -692,7 +692,7 @@ namespace ydlidar{
             angle +=360;
 
 
-        float dis =  (float)node.distance_q2;
+        float dis =  (float)node.distance_q;
         (*point).laser_x = dis*cos(angle*M_PI/180.f);
         (*point).laser_y = dis*sin(angle*M_PI/180.f);
 

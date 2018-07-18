@@ -335,6 +335,23 @@ bool CYdLidar::checkScanFrequency()
                 freq = _scan_frequency.frequency/100.0f;
             }
         }
+
+        if(fabs(m_ScanFrequency - freq) < 1.0) {
+            hz = (m_ScanFrequency - freq)*10;
+            if (hz>0) {
+                while (hz != 0) {
+                    lidarPtr->setScanFrequencyAddMic(_scan_frequency);
+                    hz--;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            } else {
+                while (hz != 0) {
+                    lidarPtr->setScanFrequencyDisMic(_scan_frequency);
+                    hz++;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            }
+        }
     }
 
     printf("[YDLIDAR INFO] Current Scan Frequency : %fHz\n" , freq);
