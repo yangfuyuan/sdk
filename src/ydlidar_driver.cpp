@@ -719,7 +719,10 @@ namespace ydlidar{
 
 		if(CheckSunResult == true){
 			if(m_intensities){
-				(*node).sync_quality = (((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<<LIDAR_RESP_MEASUREMENT_SYNC_QUALITY_SHIFT)| (package.packageSample[package_Sample_Index].PakageSampleQuality));
+				uint8_t qvalue = package.packageSample[package_Sample_Index].PakageSampleDistance&0x03;
+				qvalue = qvalue<<(8 - LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT);
+				qvalue = qvalue || (package.packageSample[package_Sample_Index].PakageSampleQuality>>LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+				(*node).sync_quality = qvalue;
                 (*node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
 			}else{
                 (*node).distance_q = packages.packageSampleDistance[package_Sample_Index] >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
