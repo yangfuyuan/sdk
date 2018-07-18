@@ -74,7 +74,7 @@ typedef enum {
 	CT_RingStart  = 1,
 	CT_Tail,
 }CT;
-#define Node_Default_Quality (10<<2)
+#define Node_Default_Quality (10)
 #define Node_Sync 1
 #define Node_NotSync 2
 #define PackagePaidBytes 10
@@ -85,6 +85,7 @@ typedef enum {
 #endif
 
 struct node_info {
+	uint8_t    sync_flag;  //sync flag
     uint8_t    sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
     uint16_t   distance_q2; //! 当前测距点距离

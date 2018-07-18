@@ -360,8 +360,8 @@ namespace ydlidar{
                 }
 			}
 			for (size_t pos = 0; pos < count; ++pos) {
-				if (local_buf[pos].sync_quality & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
-					if ((local_scan[0].sync_quality & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
+				if (local_buf[pos].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
+					if ((local_scan[0].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
 						_lock.lock();//timeout lock, wait resource copy 
 						memcpy(scan_node_buf, local_scan, scan_count*sizeof(node_info));
 						scan_node_count = scan_count;
@@ -592,10 +592,11 @@ namespace ydlidar{
 		}
 
 		if(package_CT == CT_Normal){
-			(*node).sync_quality = Node_Default_Quality + Node_NotSync;
+			(*node).sync_flag = Node_NotSync;
 		} else{
-			(*node).sync_quality = Node_Default_Quality + Node_Sync;
+			(*node).sync_flag = Node_Sync;
 		}
+		(*node).sync_quality = Node_Default_Quality;
 
 		if(CheckSunResult == true){
 			if(m_intensities){
@@ -619,7 +620,8 @@ namespace ydlidar{
 				} 
 			}
 		}else{
-			(*node).sync_quality = Node_Default_Quality + Node_NotSync;
+			(*node).sync_flag = Node_NotSync;
+			(*node).sync_quality = Node_Default_Quality;
 			(*node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
 			(*node).distance_q2 = 0;
 		}
@@ -632,7 +634,7 @@ namespace ydlidar{
 			nowPackageNum = packages.nowPackageNum;
 		}
 
-		if((*node).sync_quality&LIDAR_RESP_MEASUREMENT_SYNCBIT){
+		if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
 			m_ns = ns;
 			m_calc_ns = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
 		}
@@ -712,7 +714,7 @@ namespace ydlidar{
 		for (int pos = 0; pos < (int)count; ++pos) {
 			scanDot dot;
 			if (!buffer[pos].distance_q2) continue;
-			dot.quality = (buffer[pos].sync_quality>>LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
+			dot.quality = (buffer[pos].sync_quality);
 			dot.angle = (buffer[pos].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
 			dot.dist = buffer[pos].distance_q2;
 			scan_data->push_back(dot);
