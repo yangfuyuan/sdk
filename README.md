@@ -47,7 +47,7 @@ windows:
     $ ydlidar_test.exe
 
     $ Please enter the lidar port:COM3
-    
+
     $ Please enter the lidar baud rate:115200
 
     $ Please enter the lidar intensity:0
@@ -73,10 +73,10 @@ You should see YDLIDAR's scan result in the console:
 	[YDLIDAR INFO] Current Scan Frequency : 7.000000Hz
 	set EXPOSURE MODEL SUCCESS!!!
 	[YDLIDAR INFO] Now YDLIDAR is scanning ......
-	min_angle: -3.141593 
-	max_angle: 3.141593 
+	min_angle: -3.141593
+	max_angle: 3.141593
 	Scan received: 571 ranges
-	fit line size: 9 
+	fit line size: 9
 	line length: 0.127150,   line angle: -1.888069
 	line length: 0.149980,   line angle: -2.520781
 	line length: 0.149141,   line angle: -2.590903
@@ -147,7 +147,7 @@ example:
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位
+    current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位(如果特定带信号的s4b雷达是8比特的需右移２位)
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
