@@ -6,6 +6,7 @@
 *  http://www.eaibot.com
 * 
 */
+#pragma warning (disable:4996);
 #include "common.h"
 #include "ydlidar_driver.h"
 #include <math.h>
