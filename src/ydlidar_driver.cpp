@@ -753,22 +753,15 @@ namespace ydlidar{
 		}
 
         if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
-			m_ns = ns;
-			m_calc_ns = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
+			m_ns = ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
             if (NULL != fd&& save_parsing){
                 fprintf(fd, "new scan data: (%d, %d)\n", nowPackageNum, package_Sample_Index);
             }
 		}
 
-		if(package_Sample_Index ==0){
-			m_ns = ns;
-		}
 
-		(*node).stamp = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1 - package_Sample_Index)*m_pointTime;
-		if((*node).stamp < m_calc_ns){
-			(*node).stamp = m_calc_ns;
-		}
-
+		(*node).stamp = m_ns + package_Sample_Index*m_pointTime;
+		
         {
             ScopedLocker l(_odom_lock);
             if (!odom_queue.empty()) {
@@ -799,7 +792,7 @@ namespace ydlidar{
 
 		if(package_Sample_Index >= nowPackageNum){
 			package_Sample_Index = 0;
-			m_calc_ns = (*node).stamp;
+			m_ns = (*node).stamp + m_pointTime ;
 		}
 		delete[] recvBuffer;
 		return RESULT_OK;
