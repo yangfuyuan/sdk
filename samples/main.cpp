@@ -61,7 +61,6 @@ int main(int argc, char * argv[])
 
     laser.initialize();
 
-
     while(!running){
 		bool hardError;
         LaserScan scan;//原始激光数据
@@ -77,6 +76,7 @@ int main(int argc, char * argv[])
             }
             fprintf(stdout,"min_angle: %f \n",scan.config.min_angle);
             fprintf(stdout,"max_angle: %f \n",scan.config.max_angle);
+            fprintf(stdout,"scan frequency: %f HZ\n",1000000000.0/scan.config.scan_time);
 
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fprintf(stdout, "fit line size: %u \n", (unsigned int)lines.size());

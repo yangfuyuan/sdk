@@ -30,6 +30,7 @@ CYdLidar::CYdLidar()
     m_SampleRate = 9;
     m_ScanFrequency = 7;
     isScanning = false;
+    reversion	= false;
     node_counts = 720;
     each_angle = 0.5;
     show_error = 0;
@@ -102,8 +103,6 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
     //  wait Scan data:
     uint64_t tim_scan_start = getTime();
 	result_t op_result =  YDlidarDriver::singleton()->grabScanData(nodes, count);
-    const uint64_t tim_scan_end = getTime();
-
     std::vector<double> bearings;
     std::vector<unsigned int> indices;
     RangeData  rangedata;
@@ -116,10 +115,8 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 	{
 		op_result = YDlidarDriver::singleton()->ascendScanData(nodes, count);
 		//同步后的时间
-		if(nodes[0].stamp > 0){
-            tim_scan_start = nodes[0].stamp;
-        }
-		const double scan_time = tim_scan_end - tim_scan_start;
+        uint64_t max_time =nodes[0].stamp ;
+        uint64_t min_time = nodes[0].stamp;
 		if (op_result == RESULT_OK)
 		{
             if(!m_FixedResolution){
@@ -135,7 +132,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
             for( ; i < count; i++) {
                 if ((nodes[i].distance_q) != 0) {
                     float angle = (float)((nodes[i].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
-                    if(m_Reversion){
+                    if(reversion&&!m_Reversion){
                        angle=angle+180;
                        if(angle>=360){ angle=angle-360;}
                         nodes[i].angle_q6_checkbit = ((uint16_t)(angle * 64.0f)) << LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT;
@@ -151,7 +148,17 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
                             angle_compensate_nodes[inter+1]=nodes[i];
                     }
                 }
+
+                if(nodes[i].stamp > max_time) {
+                    max_time = nodes[i].stamp;
+                }
+                if(nodes[i].stamp < min_time) {
+                    min_time = nodes[i].stamp;
+                }
              }
+
+            const double scan_time = max_time - min_time;
+
 
             LaserScan scan_msg;
             PointCloud pc;
@@ -175,7 +182,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
             int index = 0;
 
             scan_msg.system_time_stamp = tim_scan_start;
-            scan_msg.self_time_stamp = tim_scan_start;
+            scan_msg.self_time_stamp = min_time;
             scan_msg.config.min_angle = DEG2RAD(m_MinAngle);
             scan_msg.config.max_angle = DEG2RAD(m_MaxAngle);
             scan_msg.config.ang_increment = (scan_msg.config.max_angle - scan_msg.config.min_angle) / (double)counts;
@@ -426,6 +433,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
 
 
             }
+	    reversion = true;
 
 	    }
             break;
@@ -474,6 +482,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
             break;
         case 9:
             model = "G4C";
+	    reversion = true;
             break;
         default:
             model = "Unknown";
