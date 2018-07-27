@@ -143,11 +143,11 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q;　//v1.3.5版本之后距离不用右移２位
+    current_distance = data[i].distance_q;
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位(如果特定带信号的s4b雷达是8比特的需右移２位)
+    current_intensity = (float)((data[i].sync_quality&0x00ff) >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
@@ -175,7 +175,7 @@ code:
 
                 current_distance =  data[i].distance_q;
 
-                current_intensity = (float)(data[i].sync_quality );
+                current_intensity = (float)((data[i].sync_quality&0x00ff) >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT );
 
             }
 

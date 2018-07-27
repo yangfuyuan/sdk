@@ -45,6 +45,7 @@ namespace ydlidar{
         LastSampleAngleCal = 0;
         CheckSunResult = true;
         Valu8Tou16 = 0;
+        enable_correctionAngle = false;
 
         fd = NULL;
 
@@ -217,6 +218,11 @@ namespace ydlidar{
     }
 
 
+    void YDlidarDriver::setEnableCorrectionAngle(bool enable) {
+        enable_correctionAngle = enable;
+    }
+
+
 	result_t YDlidarDriver::sendCommand(uint8_t cmd, const void * payload, size_t payloadsize) {
 		uint8_t pkt_header[10];
 		cmd_packet * header = reinterpret_cast<cmd_packet * >(pkt_header);
@@ -367,8 +373,6 @@ namespace ydlidar{
 		memset(local_scan, 0, sizeof(local_scan));
 		waitScanData(local_buf, count);
 
-		uint32_t start_ts = getms();
-        uint32_t end_ts = start_ts;
         int timeout_count = 0;
 
 		while(isScanning) {
@@ -447,18 +451,6 @@ namespace ydlidar{
 					scan_count-=1;
 				}
 			}
-
-			//heartbeat function
-            if (isHeartbeat) {
-                end_ts = getms();
-                if (end_ts - start_ts > DEFAULT_HEART_BEAT) {
-                    sendHeartBeat();
-                    start_ts = end_ts;
-                    if (NULL != fd&& save_parsing){
-                        fprintf(fd, "[send heartbeat]\n");
-                    }
-                }
-            }
 		}
 
 		{
@@ -726,6 +718,9 @@ namespace ydlidar{
 			}else{
 				AngleCorrectForDistance = 0;		
 			}
+            if(!enable_correctionAngle) {
+                AngleCorrectForDistance = 0;
+            }
 			if((FirstSampleAngle + IntervalSampleAngle*package_Sample_Index + AngleCorrectForDistance) < 0){
 				(*node).angle_q6_checkbit = (((uint16_t)(FirstSampleAngle + IntervalSampleAngle*package_Sample_Index + AngleCorrectForDistance + 360*64))<<1) + LIDAR_RESP_MEASUREMENT_CHECKBIT;
 			}else{
@@ -1085,86 +1080,11 @@ namespace ydlidar{
 
         {
             //calc stamp
-            m_pointTime = 1e9/4000;
-            trans_delay = 0;
-            {
-                if(model != -1){
-                    switch(model){
-                        case 1://f4
-                        trans_delay = _serial->getByteTime();
-                        break;
-                        case 5://g4
-                        {
-                            if(_sampling_rate == -1){
-                                sampling_rate _rate;
-                                getSamplingRate(_rate);
-                                _sampling_rate = _rate.rate;
-                            }
-                            switch(_sampling_rate){
-                                case 1:
-                                m_pointTime = 1e9/8000;
-                                break;
-                                case 2:
-                                m_pointTime = 1e9/9000;
-                                break;
-                            }
-                            if(firmware_version < 521&& firmware_version != 0){
-                                setHeartBeat(false);
-                            }
-
-                        }
-                        trans_delay = _serial->getByteTime();
-                        break;
-                        case 6://x4
-                        m_pointTime = 1e9/5000;
-                        break;
-                        case 8://f4pro
-                        {
-                            if(_sampling_rate == -1){
-                                sampling_rate _rate;
-                                getSamplingRate(_rate);
-                                _sampling_rate = _rate.rate;
-                            }
-                            if(_sampling_rate ==1){
-                                m_pointTime = 1e9/6000;
-                            }
-                            if(firmware_version < 521&& firmware_version != 0){
-                                setHeartBeat(false);
-                            }
-
-                        }
-                        trans_delay = _serial->getByteTime();
-                        break;
-                        case 9://g4c
-                        trans_delay = _serial->getByteTime();
-                        if(firmware_version < 521&& firmware_version != 0){
-                            setHeartBeat(false);
-                        }
-                        break;
-                    }
-                }
-            }
+            m_pointTime = 1e9/5000;
+            trans_delay =  _serial->getByteTime();
         }
 
 		{
-			ScopedLocker l(_lock);
-			if ((ans = sendCommand(force?LIDAR_CMD_FORCE_SCAN:LIDAR_CMD_SCAN)) != RESULT_OK) {
-				return ans;
-			}
-
-			lidar_ans_header response_header;
-			if ((ans = waitResponseHeader(&response_header, timeout)) != RESULT_OK) {
-				return ans;
-			}
-
-			if (response_header.type != LIDAR_ANS_TYPE_MEASUREMENT) {
-				return RESULT_FAIL;
-			}
-
-            if (response_header.size < 5 ) {
-				return RESULT_FAIL;
-			}
-
 			ans = this->createThread();
 			return ans;
 		}
@@ -1187,26 +1107,6 @@ namespace ydlidar{
         result_t ans;
         if (!isConnected) {
             return RESULT_FAIL;
-        }
-        {
-            ScopedLocker l(_lock);
-            if ((ans = sendCommand(force?LIDAR_CMD_FORCE_SCAN:LIDAR_CMD_SCAN)) != RESULT_OK) {
-                return ans;
-            }
-
-            lidar_ans_header response_header;
-            if ((ans = waitResponseHeader(&response_header, timeout)) != RESULT_OK) {
-                return ans;
-            }
-
-            if (response_header.type != LIDAR_ANS_TYPE_MEASUREMENT) {
-                return RESULT_FAIL;
-            }
-
-            if (response_header.size < 5) {
-                return RESULT_FAIL;
-            }
-
         }
         startMotor();
         return RESULT_OK;

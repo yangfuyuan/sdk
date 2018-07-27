@@ -51,6 +51,8 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
     PropertyBuilderByName(bool,AutoReconnect, private)///< 设置异常是否自动重新连接
     PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件
+    PropertyBuilderByName(bool,EnablCorrectionAngle, private)///< 设置是否开启调试把解析数据保存到文件
+
 
 
 
