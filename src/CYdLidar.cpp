@@ -198,7 +198,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
                 range = (float)(angle_compensate_nodes[i].distance_q)/1000.f;
-                intensity = (float)(angle_compensate_nodes[i].sync_quality);
+                intensity = (float)(angle_compensate_nodes[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
 
                 if (i<all_nodes_counts/2) {
                     index = all_nodes_counts/2-1-i;
