@@ -705,7 +705,7 @@ namespace ydlidar{
             (*point).screen_y = laser_pose.y + coeff*(*point).laser_y*cos(laser_pose.theta*M_PI/180.0) + (*point).laser_x*sin(laser_pose.theta*M_PI/180.0);
 
 
-            if(inBox((*point).screen_x, (*point).screen_y)) {
+            if(inBox((*point).screen_x, (*point).screen_y) && (fabs((*point).screen_x - laser_pose.x) > 0.001 || fabs((*point).screen_y - laser_pose.y) > 0.001)) {
                 touchid++;
                 (*point).touchid = touchid;
                 (*point).isvalid = true;
