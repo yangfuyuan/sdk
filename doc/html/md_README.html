@@ -22,6 +22,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="ydliar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK
    &#160;<span id="projectnumber">V1.3.6</span>
@@ -135,10 +136,10 @@ Serial: 2018022700000003
 [YDLIDAR INFO] Current Scan Frequency : 7.000000Hz
 set EXPOSURE MODEL SUCCESS!!!
 [YDLIDAR INFO] Now YDLIDAR is scanning ......
-min_angle: -3.141593 
-max_angle: 3.141593 
+min_angle: -3.141593
+max_angle: 3.141593
 Scan received: 571 ranges
-fit line size: 9 
+fit line size: 9
 line length: 0.127150,   line angle: -1.888069
 line length: 0.149980,   line angle: -2.520781
 line length: 0.149141,   line angle: -2.590903
@@ -151,23 +152,23 @@ line length: 0.115837,   line angle: -1.229582
 </pre><h1>Lidar point data structure </h1>
 <p>data structure: </p><pre class="fragment">struct odom_info {
 
-  uint64_t   stamp; ///&lt; 时间戳
+  uint64_t   stamp; ///&lt; timestamp
 
-  double x;       ///&lt; x位置
+  double x;       ///&lt; x coordinate position
 
-  double y;      ///&lt; y位置
+  double y;      ///&lt; y coordinate position
 
-  double phi;     ///&lt; 角度方向
+  double phi;     ///&lt; yaw direction
 
-  double v;       ///&lt; 线速度
+  double v;       ///&lt; line speed
 
-  double w;       ///&lt; 角速度
+  double w;       ///&lt; angle speed
 
-  double dx;       ///&lt; x位置增量
+  double dx;       ///&lt; x-axis position increment
 
-  double dy;       ///&lt; y位置增量
+  double dy;       ///&lt; y-axis position increment
 
-  double dth;       ///&lt; 方向增量
+  double dth;       ///&lt; yaw increment
 
 };
 
@@ -195,11 +196,11 @@ struct node_info {
 
 current_time_stamp = data[i].stamp;
 
-current_distance = data[i].distance_q;　//v1.3.5版本之后距离不用右移２位
+current_distance = data[i].distance_q;　///&lt; No need to shift 2 digits right after version v1.3.5
 
 current_angle = ((data[i].angle_q6_checkbit&gt;&gt;LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位
+current_intensity = (float)(data[i].sync_quality);/////&lt; No need to shift 2 digits right after version v1.3.5
 
 ###note:current_frequence = data[0].scan_frequence/10.0.
 

@@ -96,23 +96,23 @@ data structure:
 
     struct odom_info {
 
-      uint64_t   stamp; ///< 时间戳
+      uint64_t   stamp; ///< timestamp
 
-      double x;	      ///< x位置
+      double x;	      ///< x coordinate position
 
-      double y;	     ///< y位置
+      double y;	     ///< y coordinate position
 
-      double phi;     ///< 角度方向
+      double phi;     ///< yaw direction
 
-      double v;       ///< 线速度
+      double v;       ///< line speed
 
-      double w;       ///< 角速度
+      double w;       ///< angle speed
 
-      double dx;       ///< x位置增量
+      double dx;       ///< x-axis position increment
 
-      double dy;       ///< y位置增量
+      double dy;       ///< y-axis position increment
 
-      double dth;       ///< 方向增量
+      double dth;       ///< yaw increment
 
     };
 
@@ -143,11 +143,11 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q;　//v1.3.5版本之后距离不用右移２位
+    current_distance = data[i].distance_q;　///< No need to shift 2 digits right after version v1.3.5
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
-    current_intensity = (float)(data[i].sync_quality);//v1.3.5版本之后信号质量不用右移２位(如果特定带信号的s4b雷达是8比特的需右移２位)
+    current_intensity = (float)(data[i].sync_quality);/////< No need to shift 2 digits right after version v1.3.5
 
     ###note:current_frequence = data[0].scan_frequence/10.0.
 
