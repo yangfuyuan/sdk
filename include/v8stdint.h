@@ -4,6 +4,29 @@
 #include <stddef.h>
 #include <stdio.h>
 
+
+
+
+
+#ifdef WIN32
+#ifdef ydlidar_IMPORTS
+#define YDLIDAR_API __declspec(dllimport)
+#else
+#ifdef ydlidarStatic_IMPORTS
+#define YDLIDAR_API 
+#else
+
+#define YDLIDAR_API __declspec(dllexport)
+#endif // YDLIDAR_STATIC_EXPORTS
+#endif
+
+#else 
+#define YDLIDAR_API 
+#endif // ifdef WIN32
+
+
+
+
 #if defined(_WIN32) && !defined(__MINGW32__)
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
@@ -56,6 +79,7 @@ typedef uint64_t TTimeStamp;
 #define RESULT_FAIL    -2
 
 #define INVALID_TIMESTAMP (0)
+
 
 
 
