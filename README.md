@@ -11,11 +11,80 @@ How to build YDLIDAR SDK samples
     $ cd sdk
     $ git checkout big-screen
     $ cd ..
+
+###linux:
     $ mkdir build
     $ cd build
     $ cmake ../sdk
     $ make			###linux
-    $ vs open Project.sln	###windows
+
+###windows:
+
+
+1. install [cmake](https://cmake.org/download/)
+
+2. build steps:
+
+
+
+  step1: open cmake-gui and select source code/binaries directory
+
+  <p align="left">
+      <a href="https://github.com/yangfuyuan
+      " target="_blank"><img src="image/step1.png"
+      alt="IMAGE ALT TEXT HERE" width="388" height="365" border="10"/></a>
+  </p>
+
+
+
+  step2: Configure and select build toolchain
+
+  <p align="left">
+      <a href="https://github.com/yangfuyuan
+      " target="_blank"><img src="image/step2.png"
+      alt="IMAGE ALT TEXT HERE" width="388" height="365" border="10"/></a>
+  </p>
+
+
+
+  step3: configuring done  
+
+  <p align="left">
+      <a href="https://github.com/yangfuyuan
+      " target="_blank"><img src="image/step3.png"
+      alt="IMAGE ALT TEXT HERE" width="388" height="365" border="10"/></a>
+  </p>         
+
+
+
+  step4: generate and done
+
+  <p align="left">
+      <a href="https://github.com/yangfuyuan
+      " target="_blank"><img src="image/step4.png"
+      alt="IMAGE ALT TEXT HERE" width="388" height="365" border="10"/></a>
+  </p>
+
+
+
+  step5: open vs Project
+
+  <p align="left">
+      <a href="https://github.com/yangfuyuan
+      " target="_blank"><img src="image/step5.png"
+      alt="IMAGE ALT TEXT HERE" width="388" height="365" border="10"/></a>
+  </p>
+
+
+  step6: build finished and run
+
+   <p align="left">
+       <a href="https://github.com/yangfuyuan
+       " target="_blank"><img src="image/step6.png"
+       alt="IMAGE ALT TEXT HERE" width="488" height="365" border="10"/></a>
+   </p>
+
+
     
 How to run YDLIDAR SDK samples
 =====================================================================
@@ -75,7 +144,7 @@ Upgrade Log
 
 <p align="middle">
     <a href="https://github.com/yangfuyuan
-    " target="_blank"><img src="image.png"
+    " target="_blank"><img src="image/image.png"
     alt="IMAGE ALT TEXT HERE" width="705" height="823" border="10"/></a>
 </p>
 

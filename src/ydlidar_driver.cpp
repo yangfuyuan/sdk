@@ -993,7 +993,7 @@ namespace ydlidar{
 				return RESULT_FAIL;
 			}
 
-			if (response_header.size < (sizeof(node_info)-sizeof(uint64_t))) {
+			if (response_header.size < 5) {
 				return RESULT_FAIL;
 			}
 
