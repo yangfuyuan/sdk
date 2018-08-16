@@ -13,9 +13,13 @@ How to build YDLIDAR SDK samples
     $ cd ..
 
 ###linux:
+
     $ mkdir build
+
     $ cd build
+
     $ cmake ../sdk
+
     $ make			###linux
 
 ###windows:
