@@ -433,6 +433,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
             break;
         case 6:
             model="X4";
+            break;
         case 8:
         {
             model="F4Pro";
