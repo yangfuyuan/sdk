@@ -31,6 +31,11 @@ namespace ydlidar{
 		_sampling_rate=-1;
 		model = -1;
         firmware_version = 0;
+        scan_node_count  = 0;
+
+        m_pointTime = 1e9/4000;
+        trans_delay = 0;
+        m_ns        = 0;
 
         //解析参数
         PackageSampleBytes = 2;
@@ -98,6 +103,11 @@ namespace ydlidar{
         }
 
 		isConnected = true;
+        {
+            ScopedLocker l(_lock);
+            sendCommand(LIDAR_CMD_FORCE_STOP);
+            sendCommand(LIDAR_CMD_STOP);
+        }
 
 		clearDTR();
 
@@ -390,7 +400,6 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){
-									sendCommand(LIDAR_CMD_STOP);
                                     _serial->close();
 
                                 }
@@ -760,10 +769,16 @@ namespace ydlidar{
 
         if(package_Sample_Index %4 == 0)
         {
-            ScopedLocker l(_odom_lock);
-            if (!odom_queue.empty()) {
+
+            std::list< odom_info> temp_queue;
+            {
+                ScopedLocker l(_odom_lock);
+                temp_queue = odom_queue;
+
+            }
+            if (!temp_queue.empty()) {
                 int min = 100000000;
-                for (std::list<odom_info>::const_iterator it = odom_queue.begin(); it != odom_queue.end(); ++it) {
+                for (std::list<odom_info>::const_iterator it = temp_queue.begin(); it != temp_queue.end(); ++it) {
                     int diff = (*node).stamp - (*it).stamp;
                     if (abs(diff) < min){
                         min = diff;
@@ -832,8 +847,8 @@ namespace ydlidar{
 				if(scan_node_count == 0) {
 					return RESULT_FAIL;
 				}
+                ScopedLocker l(_lock);
 				size_t size_to_copy = min(count, scan_node_count);
-				ScopedLocker l(_lock);
 				memcpy(nodebuffer, scan_node_buf, size_to_copy*sizeof(node_info));
 				count = size_to_copy;
 				scan_node_count = 0;
@@ -1226,7 +1241,7 @@ namespace ydlidar{
 		disableDataGrabbing();
 		{
 			ScopedLocker l(_lock);
-			sendCommand(LIDAR_CMD_STOP);
+            sendCommand(LIDAR_CMD_FORCE_STOP);
 			sendCommand(LIDAR_CMD_STOP);
 		}
 
