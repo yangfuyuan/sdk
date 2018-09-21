@@ -27,6 +27,7 @@ namespace ydlidar{
 		isSupportMotorCtrl=true;
 		_sampling_rate=-1;
 		model = -1;
+        touch_point_count = 0;
 
         //解析参数
         PackageSampleBytes = 2;
@@ -79,6 +80,11 @@ namespace ydlidar{
 
 		isConnected = true;
 
+        {
+            ScopedLocker l(_lock);
+            sendCommand(LIDAR_CMD_FORCE_STOP);
+            sendCommand(LIDAR_CMD_STOP);
+        }
 		clearDTR();
 
 		return RESULT_OK;
@@ -347,7 +353,6 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){								
-                                    sendCommand(LIDAR_CMD_STOP);
                                     _serial->close();
 
                                 }
@@ -759,9 +764,9 @@ namespace ydlidar{
                 if(touch_point_count == 0) {
 					return RESULT_FAIL;
 				}
+                ScopedLocker l(_lock);
                 size_t size_to_copy =min(touch_point_count, count);
                 size_t point_count = 0;
-				ScopedLocker l(_lock);
                 for(int i = 0; i < size_to_copy; i++){
                     if(touch_point_buf[i].isvalid){
                         pointbuffer[point_count] = touch_point_buf[i];
@@ -1059,6 +1064,7 @@ namespace ydlidar{
 		disableDataGrabbing();
 		{
 			ScopedLocker l(_lock);
+            sendCommand(LIDAR_CMD_FORCE_STOP);
 			sendCommand(LIDAR_CMD_STOP);
 		}
 

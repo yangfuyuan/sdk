@@ -26,8 +26,6 @@ using namespace SL::Input_Lite;
 
 
 CYdLidar laser;
-static bool running = false;
-
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -68,15 +66,6 @@ inline int GetScreenSize(int *w, int*h)
 }
 #endif
 
-
-
-static void Stop(int signo)   
-{  
-    
-    printf("Received exit signal\n");
-    running = true;
-     
-}  
 
 int main(int argc, char * argv[]) {
 
@@ -917,10 +906,8 @@ int main(int argc, char * argv[]) {
 
 
     typedef CArrayDouble<2>  CPointType;
-    signal(SIGINT, Stop);
-    signal(SIGTERM, Stop);
 
-
+    ydlidar::init(argc, argv);
 
     int width, height;
     if(GetScreenSize(&width, &height) != 0){
@@ -985,7 +972,7 @@ int main(int argc, char * argv[]) {
 
     int cnt = 0;
     laser.initialize();
-    while(!running){
+    while(ydlidar::ok()){
 		bool hardError;
         std::vector<touch_info> outPoints;
         int x, y;//当前点击位置
