@@ -89,7 +89,7 @@ How to build YDLIDAR SDK samples
    </p>
 
 
-    
+
 How to run YDLIDAR SDK samples
 =====================================================================
     $ cd samples
@@ -122,6 +122,10 @@ You should see YDLIDAR's scan result in the console:
 
 Upgrade Log
 =====================================================================
+
+2018-10-11 version:1.1.2
+
+   1.add network support.
 
 2018-05-23 version:1.1.1
 
@@ -173,11 +177,11 @@ Upgrade Log
 	CYdLidar laser;
 
 	laser.setMax_x(1920);
-    
+
 	laser.setMax_y(1080);
-    
+
 	laser.setMin_x(0);
-    
+
 	laser.setMin_y(0);
 
 	LaserPose pose;
@@ -211,11 +215,11 @@ Upgrade Log
 	CYdLidar laser;
 
 	laser.setMax_x(1920);
-    
+
 	laser.setMax_y(1080);
-    
+
 	laser.setMin_x(0);
-    
+
 	laser.setMin_y(0);
 
 	LaserPose pose;
