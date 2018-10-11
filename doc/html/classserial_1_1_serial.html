@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="ydliar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK SCREEN INTERACTION
-   &#160;<span id="projectnumber">V1.1.1</span>
+   &#160;<span id="projectnumber">V1.1.2</span>
    </div>
   </td>
  </tr>
@@ -100,6 +100,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="serial_8h_source.html">serial.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for serial::Serial:</div>
+<div class="dyncontent">
+<div class="center"><img src="classserial_1_1_serial__inherit__graph.png" border="0" usemap="#serial_1_1_serial_inherit__map" alt="Inheritance graph"/></div>
+<map name="serial_1_1_serial_inherit__map" id="serial_1_1_serial_inherit__map">
+<area shape="rect" id="node2" href="class_channel_device.html" title="ChannelDevice" alt="" coords="5,5,116,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for serial::Serial:</div>
+<div class="dyncontent">
+<div class="center"><img src="classserial_1_1_serial__coll__graph.png" border="0" usemap="#serial_1_1_serial_coll__map" alt="Collaboration graph"/></div>
+<map name="serial_1_1_serial_coll__map" id="serial_1_1_serial_coll__map">
+<area shape="rect" id="node2" href="class_channel_device.html" title="ChannelDevice" alt="" coords="5,5,116,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -116,12 +132,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aecbc4cc1723143805ae5a4aa79ba9332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a071000a2f5f77a40df8311fad5044481"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a071000a2f5f77a40df8311fad5044481">~Serial</a> ()</td></tr>
 <tr class="separator:a071000a2f5f77a40df8311fad5044481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4403ddb51e9d209fd86ed316f0ee9b4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#aa4403ddb51e9d209fd86ed316f0ee9b4">open</a> ()</td></tr>
+<tr class="memitem:aba21c1e8516bbda3d79286cd1ec00cd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba21c1e8516bbda3d79286cd1ec00cd7"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>bindport</b> (const char *, uint32_t)</td></tr>
+<tr class="separator:aba21c1e8516bbda3d79286cd1ec00cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4403ddb51e9d209fd86ed316f0ee9b4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#aa4403ddb51e9d209fd86ed316f0ee9b4">open</a> ()</td></tr>
 <tr class="separator:aa4403ddb51e9d209fd86ed316f0ee9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48458f741d0fdcc5623b4daa079cbf78"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a48458f741d0fdcc5623b4daa079cbf78">isOpen</a> () const </td></tr>
-<tr class="separator:a48458f741d0fdcc5623b4daa079cbf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a501082725b61e4baf615266065bbac5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a501082725b61e4baf615266065bbac5f">close</a> ()</td></tr>
-<tr class="separator:a501082725b61e4baf615266065bbac5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657df1809f2eb966aec5811ed2c70b8c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a657df1809f2eb966aec5811ed2c70b8c">isOpen</a> ()</td></tr>
+<tr class="separator:a657df1809f2eb966aec5811ed2c70b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f2dd60d05e6d36af1393a1405b64364"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a4f2dd60d05e6d36af1393a1405b64364">closefd</a> ()</td></tr>
+<tr class="separator:a4f2dd60d05e6d36af1393a1405b64364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8ad4f4396d2f2e79b11550353335b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e8ad4f4396d2f2e79b11550353335b8"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>readdata</b> (unsigned char *data, size_t size)</td></tr>
+<tr class="separator:a0e8ad4f4396d2f2e79b11550353335b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fec831df4406b679ddc9aade8cb36c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fec831df4406b679ddc9aade8cb36c3"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>writedata</b> (const uint8_t *data, size_t size)</td></tr>
+<tr class="separator:a2fec831df4406b679ddc9aade8cb36c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f9df670431f8b30f57689720e9d9c75"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f9df670431f8b30f57689720e9d9c75"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ReleasePort</b> ()</td></tr>
+<tr class="separator:a6f9df670431f8b30f57689720e9d9c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5fae6cebb8e34345ca1f55cbccc4698"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#ab5fae6cebb8e34345ca1f55cbccc4698">available</a> ()</td></tr>
 <tr class="separator:ab5fae6cebb8e34345ca1f55cbccc4698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59bd8d40309769e8eed91dd3684e0000"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a59bd8d40309769e8eed91dd3684e0000">waitReadable</a> ()</td></tr>
@@ -129,9 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35c0f6ff20c142a5210dde288731f954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a35c0f6ff20c142a5210dde288731f954">waitByteTimes</a> (size_t count)</td></tr>
 <tr class="separator:a35c0f6ff20c142a5210dde288731f954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa94e4ca3b2b803e3145c99fe063ae09b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa94e4ca3b2b803e3145c99fe063ae09b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_t data_count, uint32_t timeout, size_t *returned_size)</td></tr>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_t data_count, uint32_t timeout, size_t *returned_size)</td></tr>
 <tr class="separator:aa94e4ca3b2b803e3145c99fe063ae09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01fc2e3d77cb7d70069de87eca1400e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a01fc2e3d77cb7d70069de87eca1400e9">read</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memitem:a01fc2e3d77cb7d70069de87eca1400e9"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a01fc2e3d77cb7d70069de87eca1400e9">read</a> (uint8_t *buffer, size_t size)</td></tr>
 <tr class="separator:a01fc2e3d77cb7d70069de87eca1400e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ecd4645c76548ba079eab6f2f46adfb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a3ecd4645c76548ba079eab6f2f46adfb">read</a> (std::vector&lt; uint8_t &gt; &amp;buffer, size_t size=1)</td></tr>
 <tr class="separator:a3ecd4645c76548ba079eab6f2f46adfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,7 +209,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 <tr class="separator:a76e56ce22e2706b8954a1dc9c5188c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad793526755625a59a0bf9d4cc0ea1755"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceserial.html#a93ef57a314b4e562f9eded6c15d34351">flowcontrol_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#ad793526755625a59a0bf9d4cc0ea1755">getFlowcontrol</a> () const </td></tr>
 <tr class="separator:ad793526755625a59a0bf9d4cc0ea1755"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45a7676a6e6c775cd549e889e714b5bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a45a7676a6e6c775cd549e889e714b5bb">flush</a> ()</td></tr>
+<tr class="memitem:a45a7676a6e6c775cd549e889e714b5bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a45a7676a6e6c775cd549e889e714b5bb">flush</a> ()</td></tr>
 <tr class="separator:a45a7676a6e6c775cd549e889e714b5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7432cbada95a7eac6d71a107cf2eaa3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#aa7432cbada95a7eac6d71a107cf2eaa3">flushInput</a> ()</td></tr>
 <tr class="separator:aa7432cbada95a7eac6d71a107cf2eaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +233,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 <tr class="separator:a29a1f68b9a238e9a6a833373855708ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a7c1a8e363b530147970155d0f6fe8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a5a7c1a8e363b530147970155d0f6fe8d">getCD</a> ()</td></tr>
 <tr class="separator:a5a7c1a8e363b530147970155d0f6fe8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7ad05b2521db6bbf184108f59e105e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#a8b7ad05b2521db6bbf184108f59e105e">getByteTime</a> ()</td></tr>
-<tr class="separator:a8b7ad05b2521db6bbf184108f59e105e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2866093a60772d13691c99bd91adc6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserial_1_1_serial.html#acb2866093a60772d13691c99bd91adc6">getByteTime</a> ()</td></tr>
+<tr class="separator:acb2866093a60772d13691c99bd91adc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that provides a portable serial port interface. </p>
@@ -343,25 +371,38 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 
 </div>
 </div>
-<a class="anchor" id="a501082725b61e4baf615266065bbac5f"></a>
+<a class="anchor" id="a4f2dd60d05e6d36af1393a1405b64364"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void serial::Serial::close </td>
+          <td class="memname">void serial::Serial::closefd </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Closes the serial port. </p>
+
+<p>Implements <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="a45a7676a6e6c775cd549e889e714b5bb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void serial::Serial::flush </td>
@@ -370,8 +411,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Flush the input and output buffers </p>
+
+<p>Implements <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
 
 </div>
 </div>
@@ -444,19 +492,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 
 </div>
 </div>
-<a class="anchor" id="a8b7ad05b2521db6bbf184108f59e105e"></a>
+<a class="anchor" id="acb2866093a60772d13691c99bd91adc6"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t serial::Serial::getByteTime </td>
+          <td class="memname">int serial::Serial::getByteTime </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Returns the singal byte time. </p>
+
+<p>Reimplemented from <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
 
 </div>
 </div>
@@ -619,26 +677,39 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 
 </div>
 </div>
-<a class="anchor" id="a48458f741d0fdcc5623b4daa079cbf78"></a>
+<a class="anchor" id="a657df1809f2eb966aec5811ed2c70b8c"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool serial::Serial::isOpen </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Gets the open status of the serial port.</p>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the port is open, false otherwise. </dd></dl>
+
+<p>Implements <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
 
 </div>
 </div>
 <a class="anchor" id="aa4403ddb51e9d209fd86ed316f0ee9b4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool serial::Serial::open </td>
@@ -647,17 +718,27 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Opens the serial port as long as the port is set and the port isn't already open.</p>
 <p>If the port is provided to the constructor then an explicit call to open is not needed.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classserial_1_1_serial.html#aecbc4cc1723143805ae5a4aa79ba9332">Serial::Serial</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the port is open, false otherwise. </dd></dl>
 
+<p>Implements <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a01fc2e3d77cb7d70069de87eca1400e9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t serial::Serial::read </td>
@@ -677,6 +758,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Read a given amount of bytes from the serial port into a given buffer.</p>
 <p>The read function will return in one of three cases:</p><ul>
@@ -996,6 +1082,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 <a class="anchor" id="a4c8a44a1e6ce42f8cb521d9a4e10bc59"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool serial::Serial::setDTR </td>
@@ -1005,8 +1094,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Set the DTR handshaking line to the given level. Defaults to true. </p>
+
+<p>Reimplemented from <a class="el" href="class_channel_device.html">ChannelDevice</a>.</p>
 
 </div>
 </div>
@@ -1361,8 +1457,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waitfordata</b> (size_
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/yang/tmp/sdk/include/<a class="el" href="serial_8h_source.html">serial.h</a></li>
-<li>/home/yang/tmp/sdk/src/serial.cpp</li>
+<li>serial/<a class="el" href="serial_8h_source.html">serial.h</a></li>
+<li>serial/serial.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

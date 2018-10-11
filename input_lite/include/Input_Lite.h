@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#ifdef _WIN32 || WIN32
+#ifdef defined(_WIN32) || defined(WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #elif __APPLE__

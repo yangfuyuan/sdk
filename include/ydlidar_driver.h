@@ -5,6 +5,7 @@
 #include "locker.h"
 #include "serial.h"
 #include "thread.h"
+#include "sockets/ActiveSocket.h"
 
 #if !defined(__cplusplus)
 #ifndef __cplusplus
@@ -210,7 +211,7 @@ namespace ydlidar{
         * A constructor.
         * A more elaborate description of the constructor.
         */
-         YDlidarDriver();
+         explicit YDlidarDriver(uint8_t drivertype = DRIVER_TYPE_SERIALPORT);
 
         /**
         * A destructor.
@@ -796,7 +797,7 @@ namespace ydlidar{
 
 	private:
         int PackageSampleBytes;             ///< 一个包包含的激光点数
-		serial::Serial *_serial;			///< 串口
+        ChannelDevice *_serial;			    ///< 串口
 		bool m_intensities;					///< 信号质量状体
 		int _sampling_rate;					///< 采样频率
 		int model;							///< 雷达型号
@@ -833,6 +834,7 @@ namespace ydlidar{
 
          bool  reversion;///< 雷达反转安装
          std::string serial_port;///< 雷达端口
+         uint8_t     m_driver_type;
 	};
 }
 

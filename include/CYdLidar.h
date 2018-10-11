@@ -50,6 +50,7 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(bool,AutoReconnect,private)
     PropertyBuilderByName(int,SerialBaudrate,private)
     PropertyBuilderByName(int,SampleRate,private)
+    PropertyBuilderByName(int,DeviceType,private)
 
     PropertyBuilderByName(std::string,SerialPort,private)
 

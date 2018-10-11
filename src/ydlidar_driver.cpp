@@ -6,15 +6,16 @@
 *  http://www.eaibot.com
 * 
 */
-#include "common.h"
+#include <serial/common.h>
 #include "ydlidar_driver.h"
 #include <math.h>
+#include <timer.h>
 using namespace impl;
 
 namespace ydlidar{
 
-	YDlidarDriver::YDlidarDriver():
-	_serial(0) {
+    YDlidarDriver::YDlidarDriver(uint8_t drivertype):
+    _serial(0), m_driver_type(drivertype) {
 		isConnected = false;
 		isScanning = false;
         //串口配置参数
@@ -52,11 +53,13 @@ namespace ydlidar{
         isAutoReconnect = false;
 		_thread.join();
 
+        ScopedLocker lk(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-				_serial->close();
+                _serial->closefd();
 			}
 		}
+
 		if(_serial){
 			delete _serial;
 			_serial = NULL;
@@ -66,10 +69,24 @@ namespace ydlidar{
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
 		_baudrate = baudrate;
         serial_port = string(port_path);
-        ScopedLocker lk(_serial_lock);
-		if(!_serial){
-			_serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
-		}
+
+        {
+            ScopedLocker lk(_serial_lock);
+            if(!_serial){
+                switch (m_driver_type) {
+                case DRIVER_TYPE_SERIALPORT:
+                    _serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
+                    //_serial->bindport(port_path, _baudrate);
+
+                    break;
+                case DRIVER_TYPE_TCP:
+                    _serial = new CActiveSocket();
+                    _serial->bindport(port_path, baudrate);
+                default:
+                    break;
+                }
+            }
+        }
 
 		{
 			ScopedLocker l(_lock);
@@ -78,6 +95,8 @@ namespace ydlidar{
 			}
 		}
 
+
+
 		isConnected = true;
 
         {
@@ -85,6 +104,7 @@ namespace ydlidar{
             sendCommand(LIDAR_CMD_FORCE_STOP);
             sendCommand(LIDAR_CMD_STOP);
         }
+        _serial->flush();
 		clearDTR();
 
 		return RESULT_OK;
@@ -96,6 +116,7 @@ namespace ydlidar{
 			return ;
 		}
 
+        ScopedLocker l(_serial_lock);
 		if(_serial){
 			_serial->setDTR(1);
 		}
@@ -107,6 +128,7 @@ namespace ydlidar{
 			return ;
 		}
 
+        ScopedLocker l(_serial_lock);
 		if(_serial){
 			_serial->setDTR(0);
 		}
@@ -146,7 +168,7 @@ namespace ydlidar{
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-				_serial->close();
+                _serial->closefd();
 			}
 		}
 		isConnected = false;
@@ -243,7 +265,7 @@ namespace ydlidar{
 		}
 		size_t r;
         	while (size) {
-                	r = _serial->write(data, size);
+                    r = _serial->writedata(data, size);
             	if (r < 1)
                 	return RESULT_FAIL;
             	size -= r;
@@ -258,7 +280,7 @@ namespace ydlidar{
 		}
 		size_t r;
         	while (size) {
-                r = _serial->read(data, size);
+                r = _serial->readdata(data, size);
             	if (r < 1)
                 	return RESULT_FAIL;
             	size -= r;
@@ -353,7 +375,7 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){								
-                                    _serial->close();
+                                    _serial->closefd();
 
                                 }
                                 delete _serial;
@@ -767,7 +789,7 @@ namespace ydlidar{
                 ScopedLocker l(_lock);
                 size_t size_to_copy =min(touch_point_count, count);
                 size_t point_count = 0;
-                for(int i = 0; i < size_to_copy; i++){
+                for(size_t i = 0; i < size_to_copy; i++){
                     if(touch_point_buf[i].isvalid){
                         pointbuffer[point_count] = touch_point_buf[i];
                         point_count++;

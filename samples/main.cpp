@@ -1,5 +1,5 @@
 ﻿
-#include "CYdLidar.h"
+#include "include/CYdLidar.h"
 #include <iostream>
 #include <string>
 #include <signal.h>
@@ -7,7 +7,8 @@
 #include <thread>
 #include <memory>
 #include <array>
-#include "kmeans.h"
+#include <regex>
+#include "include/kmeans.h"
 #include "input_lite/include/InputManager.h"
 #include "input_lite/include/Input_Lite.h"
 
@@ -72,13 +73,21 @@ int main(int argc, char * argv[]) {
     printf(" YDLIDAR BIG SCRREN C++ TEST\n\n");
     char str[40];
     char baudrate[4];
-    again:
-    printf("请输入端口号:");
+    printf("请输入串口号或雷达IP:");
     std::cin>>str;
     const std::string port = string(str);
 
+    regex reg("(\\d{1,3}).(\\d{1,3}).(\\d{1,3}).(\\d{1,3})");
+    smatch m;
 
-    printf("请输入雷达波特率:");
+    uint8_t driver_type;
+    if(regex_match(port, m, reg)) {
+        driver_type = 1;
+    }else {
+        driver_type = 0;
+    }
+
+    printf("请输入雷达波特率或网络端口:");
     std::cin>>baudrate;
 
     const int baud =  atoi(baudrate);
@@ -924,11 +933,12 @@ int main(int argc, char * argv[]) {
     bool isempty = false;//是否操作屏幕
     bool select = true;//是否已经左键选择
     int pre_count = 0;
-    double points_distance = 10.0;
+    double points_distance = 10.0;//
 
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
     laser.setAutoReconnect(true);//串口异常自动重新
+    laser.setDeviceType(driver_type);
 
 
     laser.setMax_x(width/resolution_x);

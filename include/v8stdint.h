@@ -67,6 +67,10 @@ typedef uint64_t TTimeStamp;
 
 #define INVALID_TIMESTAMP (0)
 
+enum {
+    DRIVER_TYPE_SERIALPORT = 0x0,
+    DRIVER_TYPE_TCP = 0x1,
+};
 
 
 // Determine if sigaction is available
