@@ -42,6 +42,11 @@
  *----------------------------------------------------------------------------*/
 #include "SimpleSocket.h"
 using namespace ydlidar;
+#if defined(_MSC_VER)
+#pragma comment(lib, "setupapi.lib")
+#pragma comment(lib, "ws2_32.lib")
+
+#endif
 
 CSimpleSocket::CSimpleSocket(CSocketType nType) :
     m_socket(INVALID_SOCKET),

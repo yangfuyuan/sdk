@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <atomic>
 #include "locker.h"
-#include "serial.h"
+#include "serial/serial.h"
 #include "thread.h"
 #include "sockets/ActiveSocket.h"
 

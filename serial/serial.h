@@ -32,8 +32,8 @@
 #include <string>
 #include <cstring>
 #include <sstream>
-#include <v8stdint.h>
-#include <ChannelDevice.h>
+#include <include/v8stdint.h>
+#include <include/ChannelDevice.h>
 
 
 namespace serial {
