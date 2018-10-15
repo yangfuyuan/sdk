@@ -27,6 +27,7 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_MinRange = 0.08;
     m_SampleRate = 9;
     m_ScanFrequency = 7;
+    m_DeviceType    = DRIVER_TYPE_SERIALPORT;
     isScanning = false;
     node_counts = 720;
     each_angle = 0.5;
@@ -436,7 +437,7 @@ bool CYdLidar::checkScanFrequency()
     float freq = 7.0f;
     scan_frequency _scan_frequency;
     int hz = 0;
-    if (5 <= m_ScanFrequency && m_ScanFrequency <= 12) {
+    if (5 <= m_ScanFrequency && m_ScanFrequency <= 13) {
         result_t ans = lidarPtr->getScanFrequency(_scan_frequency) ;
         if (ans == RESULT_OK) {
             freq = _scan_frequency.frequency/100.f;
@@ -455,6 +456,24 @@ bool CYdLidar::checkScanFrequency()
                 freq = _scan_frequency.frequency/100.0f;
             }
         }
+        if(fabs(m_ScanFrequency - freq) < 1.0) {
+            hz = (m_ScanFrequency - freq)*10;
+            if (hz>0) {
+                while (hz != 0) {
+                    lidarPtr->setScanFrequencyAddMic(_scan_frequency);
+                    hz--;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            } else {
+                while (hz != 0) {
+                    lidarPtr->setScanFrequencyDisMic(_scan_frequency);
+                    hz++;
+                }
+                freq = _scan_frequency.frequency/100.0f;
+            }
+
+        }
+
         if (m_ScanFrequency < 7 && m_SampleRate>6) {
             node_counts = 1600;
 
@@ -481,24 +500,30 @@ bool CYdLidar::checkHeartBeat() const
 {
     bool ret = false;
     scan_heart_beat beat;
-    result_t ans = lidarPtr->setScanHeartbeat(beat);
-    if (m_HeartBeat) {
-        if (beat.enable&& ans == RESULT_OK) {
-            ans = lidarPtr->setScanHeartbeat(beat);
+    if( m_HeartBeat ) {
+        Sync:
+        result_t ans = lidarPtr->setScanHeartbeat(beat);
+        if( ans == RESULT_OK) {
+            if( beat.enable ) {
+                ans = lidarPtr->setScanHeartbeat(beat);
+                if( ans == RESULT_OK) {
+                    if(!beat.enable) {
+                        lidarPtr->setHeartBeat(true);
+                        ret = true;
+                        return ret;
+                    }
+                }
+                goto Sync;
+            } else  {
+                lidarPtr->setHeartBeat(true);
+                ret = true;
+                return ret;
+            }
         }
-        if (!beat.enable&& ans == RESULT_OK ) {
-            lidarPtr->setHeartBeat(true);
-            ret = true;
-        }
-    } else {
-        if (!beat.enable&& ans == RESULT_OK) {
-            ans = lidarPtr->setScanHeartbeat(beat);
-        }
-        if (beat.enable && ans==RESULT_OK) {
-            lidarPtr->setHeartBeat(false);
-            ret = true;
-        }
-
+        goto Sync;
+    }else {
+        lidarPtr->setHeartBeat(false);
+        ret = true;
     }
 
     return ret;
@@ -511,7 +536,7 @@ bool  CYdLidar::checkCOMMs()
 {
     if (!lidarPtr) {
         // create the driver instance
-        lidarPtr = new YDlidarDriver;
+        lidarPtr = new YDlidarDriver(m_DeviceType);
         if (!lidarPtr) {
              fprintf(stderr, "Create Driver fail\n");
             return false;
@@ -575,7 +600,7 @@ bool CYdLidar::checkStatus()
             lidarPtr->disconnect();
             delete lidarPtr;
             lidarPtr = 0;
-            lidarPtr = new YDlidarDriver;
+            lidarPtr = new YDlidarDriver(m_DeviceType);
             if (!lidarPtr) {
                 printf("YDLIDAR Create Driver fail, exit\n");
                 return false;

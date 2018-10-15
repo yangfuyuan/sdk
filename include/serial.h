@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sstream>
 #include "v8stdint.h"
+#include "ChannelDevice.h"
 
 namespace serial {
 
@@ -104,7 +105,7 @@ namespace serial {
 	/*!
 	* Class that provides a portable serial port interface.
 	*/
-	class Serial {
+    class Serial : public ChannelDevice {
 	public:
 		/*!
 		* Creates a Serial object and opens the port if a port is specified,
@@ -148,6 +149,9 @@ namespace serial {
 		/*! Destructor */
 		virtual ~Serial ();
 
+
+        virtual bool bindport(const char *, uint32_t);
+
 		/*!
 		* Opens the serial port as long as the port is set and the port isn't
 		* already open.
@@ -164,10 +168,10 @@ namespace serial {
 		*
 		* \return Returns true if the port is open, false otherwise.
 		*/
-		bool isOpen () const;
+        bool isOpen ();
 
 		/*! Closes the serial port. */
-		void close ();
+        void closePort ();
 
 		/*! Return the number of characters in the buffer. */
 		size_t available ();
@@ -186,6 +190,11 @@ namespace serial {
 
 
 		int waitfordata(size_t data_count, uint32_t timeout, size_t * returned_size);
+
+
+        virtual size_t writeData(const uint8_t * data, size_t size);
+
+        virtual size_t readData(uint8_t * data, size_t size);
 
 		/*! Read a given amount of bytes from the serial port into a given buffer.
 		*
@@ -542,8 +551,9 @@ namespace serial {
 		/*! Returns the current status of the CD line. */
 		bool getCD ();
 
-		/*! Returns the singal byte time. */
-		uint32_t getByteTime();
+        /*! Returns the singal byte time. */
+        int getByteTime();
+
 
 	private:
 		// Disable copy constructors

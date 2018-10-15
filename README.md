@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.4
+YDLIDAR SDK PACKAGE V1.3.6
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
@@ -24,14 +24,14 @@ How to run YDLIDAR SDK samples
 linux:
 
     $ ./ydlidar_test
-    $Please enter the lidar port:/dev/ttyUSB0
-    $Please enter the lidar baud rate:230400
+    $Please enter the lidar serial port or IP:/dev/ttyUSB0
+    $Please enter the lidar serial baud rate or network port:230400
 
 windows:
 
     $ ydlidar_test.exe
-    $Please enter the lidar port:COM3
-    $Please enter the lidar baud rate:230400
+    $Please enter the lidar serial port or IP:COM3
+    $Please enter the lidar serial baud rate or network port:230400
 
 =====================================================================
 
@@ -129,6 +129,10 @@ code:
 
 Upgrade Log
 =====================================================================
+
+2018-10-15 version:1.3.6
+
+   1.add network support.
 
 2018-05-23 version:1.3.4
 

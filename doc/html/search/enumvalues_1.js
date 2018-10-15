@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['max_5fscan_5fnodes',['MAX_SCAN_NODES',['../classydlidar_1_1_y_dlidar_driver.html#a13a4f2dc4067b43794b2c47c06d5d27aa3db6fc46c7ce55cdf3a968b70e96374a',1,'ydlidar::YDlidarDriver']]]
+  ['default_5fheart_5fbeat',['DEFAULT_HEART_BEAT',['../classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa94033b4717c83f52cd008fe38b712e21',1,'ydlidar::YDlidarDriver']]],
+  ['default_5ftimeout',['DEFAULT_TIMEOUT',['../classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442',1,'ydlidar::YDlidarDriver']]]
 ];

@@ -4,44 +4,45 @@
 #include <string>
 #include <signal.h>
 #include <memory>
-//#include <unistd.h>
+#include <regex>
 using namespace std;
 using namespace ydlidar;
 CYdLidar laser;
-static bool running = false;
-
-static void Stop(int signo)   
-{  
-    
-    printf("Received exit signal\n");
-    running = true;
-     
-}  
 
 int main(int argc, char * argv[])
 {
 	printf(" YDLIDAR C++ TEST\n");
     std::string port;
     std::string baudrate;
-    printf("Please enter the lidar port:");
+    printf("Please enter the lidar serial port or IP:");
     std::cin>>port;
-    printf("Please enter the lidar baud rate:");
+    printf("Please enter the lidar serial baud rate or network port:");
     std::cin>>baudrate;
     const int baud = atoi(baudrate.c_str());
     const int intensities =  0;
 
-    signal(SIGINT, Stop);
-    signal(SIGTERM, Stop);
+    regex reg("(\\d{1,3}).(\\d{1,3}).(\\d{1,3}).(\\d{1,3})");
+    smatch m;
 
+    uint8_t driver_type;
+    if(regex_match(port, m, reg)) {
+        driver_type = 1;
+    }else {
+        driver_type = 0;
+    }
+
+
+    ydlidar::init(argc, argv);
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
+    laser.setDeviceType(driver_type);
     laser.setFixedResolution(false);
     laser.setHeartBeat(false);
     laser.setReversion(false);
     laser.setIntensities(intensities);
     laser.setAutoReconnect(true);//异常是否重新连接
     laser.initialize();
-    while(!running){
+    while(ydlidar::ok()){
 		bool hardError;
 		LaserScan scan;
 
@@ -49,7 +50,6 @@ int main(int argc, char * argv[])
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fflush(stdout);
 		}
-        //usleep(50*1000);
 	}
 
 

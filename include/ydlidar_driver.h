@@ -174,12 +174,6 @@ struct lidar_ans_header {
 	uint8_t  type;
 } __attribute__((packed));
 
-struct scanDot {
-	uint8_t   quality;
-	float angle;
-	float dist;
-};
-
 
 //! A struct for returning configuration from the YDLIDAR
 struct LaserConfig {
@@ -236,7 +230,7 @@ namespace ydlidar{
         * A constructor.
         * A more elaborate description of the constructor.
         */
-         YDlidarDriver();
+        explicit YDlidarDriver(uint8_t drivertype = DRIVER_TYPE_SERIALPORT);
 
         /**
         * A destructor.
@@ -639,14 +633,6 @@ namespace ydlidar{
     	*/
 		result_t setPointsForOneRingFlag(scan_points& points,uint32_t timeout = DEFAULT_TIMEOUT);
 
-		/**
-		* @brief 解析激光信息数据到scanDot数据类型 \n
-    	* @param[in] scan_data 解析后激光数据
-    	* @param[in] buffer    解析前激光信息数据		
-		* @param[in] count      一圈激光点数
-		* @note 解析之前，必须使用::ascendScanData函数获取激光数据成功
-    	*/
-		void simpleScanData(std::vector<scanDot> * scan_data , node_info *buffer, size_t count);
 
 	protected:
 
@@ -808,14 +794,13 @@ namespace ydlidar{
 
 	private:
         int PackageSampleBytes;             ///< 一个包包含的激光点数
-		serial::Serial *_serial;			///< 串口
+        ChannelDevice *_serial;			///< 串口
 		bool m_intensities;					///< 信号质量状体
 		int _sampling_rate;					///< 采样频率
 		int model;							///< 雷达型号
 		uint32_t _baudrate;					///< 波特率
 		bool isSupportMotorCtrl;			///< 是否支持电机控制
 		uint64_t m_ns;						///< 时间戳
-		uint64_t m_calc_ns;					///< 时间戳
 		uint32_t m_pointTime;				///< 激光点直接时间间隔
 		uint32_t trans_delay;				///< 串口传输一个byte时间
         uint16_t firmware_version;          ///< 雷达固件版本号
@@ -836,7 +821,8 @@ namespace ydlidar{
         bool CheckSunResult;
         uint16_t Valu8Tou16;
 
-        std::string serial_port;///< 雷达端口
+        std::string serial_port;///< 雷达端口      
+        uint8_t     m_driver_type;
 
 	};
 }

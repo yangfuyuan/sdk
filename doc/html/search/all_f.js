@@ -8,5 +8,7 @@ var searchData=
   ['read_5ftimeout_5fmultiplier',['read_timeout_multiplier',['../structserial_1_1_timeout.html#a64412753eb2edf1621716dd9f1a4e71e',1,'serial::Timeout']]],
   ['readline',['readline',['../classserial_1_1_serial.html#a010b18ec545dfe1a7bb1c95be4bdaa54',1,'serial::Serial::readline(std::string &amp;buffer, size_t size=65536, std::string eol=&quot;\n&quot;)'],['../classserial_1_1_serial.html#a04177f637cc02f92ec0492d377528b2a',1,'serial::Serial::readline(size_t size=65536, std::string eol=&quot;\n&quot;)']]],
   ['readlines',['readlines',['../classserial_1_1_serial.html#a2ff222081c30ee4343498c6cc5c14b10',1,'serial::Serial']]],
+  ['receive',['Receive',['../classydlidar_1_1_c_simple_socket.html#a637ff7510be4ea144a3a4d062260a6a9',1,'ydlidar::CSimpleSocket']]],
+  ['receives',['Receives',['../classydlidar_1_1_c_simple_socket.html#a7eae391e0dcbafd740488b9a269c8eeeaeb0f1c6410f5b9f5b03274e9d90592fd',1,'ydlidar::CSimpleSocket']]],
   ['reset',['reset',['../classydlidar_1_1_y_dlidar_driver.html#a3dd4086c5685163f7c7487ea0f5af08c',1,'ydlidar::YDlidarDriver']]]
 ];

@@ -8,13 +8,14 @@
 */
 #include "common.h"
 #include "ydlidar_driver.h"
+#include <ActiveSocket.h>
 #include <math.h>
 using namespace impl;
 
 namespace ydlidar{
 
-	YDlidarDriver::YDlidarDriver():
-	_serial(0) {
+    YDlidarDriver::YDlidarDriver(uint8_t drivertype):
+    _serial(0),m_driver_type(drivertype) {
 		isConnected = false;
 		isScanning = false;
         //串口配置参数
@@ -29,6 +30,10 @@ namespace ydlidar{
         firmware_version = 0;
         scan_node_count = 0;
 
+        m_pointTime = 1e9/4000;
+        trans_delay = 0;
+        m_ns = 0;
+
         //解析参数
         PackageSampleBytes = 2;
         package_Sample_Index = 0;
@@ -42,6 +47,7 @@ namespace ydlidar{
         LastSampleAngleCal = 0;
         CheckSunResult = true;
         Valu8Tou16 = 0;
+
 	}
 
 	YDlidarDriver::~YDlidarDriver(){
@@ -52,9 +58,10 @@ namespace ydlidar{
         isAutoReconnect = false;
 		_thread.join();
 
+        ScopedLocker lk(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-				_serial->close();
+                _serial->closePort();
 			}
 		}
 		if(_serial){
@@ -66,10 +73,26 @@ namespace ydlidar{
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
 		_baudrate = baudrate;
         serial_port = string(port_path);
-        ScopedLocker lk(_serial_lock);
+        if(m_driver_type != DRIVER_TYPE_SERIALPORT || m_driver_type != DRIVER_TYPE_TCP) {
+            m_driver_type = DRIVER_TYPE_SERIALPORT;
+        }
         {
+
+            ScopedLocker lk(_serial_lock);
             if(!_serial){
-                _serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
+                switch (m_driver_type) {
+                case DRIVER_TYPE_SERIALPORT:
+                    _serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
+                    _serial->bindport(port_path, _baudrate);
+                    break;
+                case DRIVER_TYPE_TCP:
+                    _serial = new CActiveSocket();
+                    _serial->bindport(port_path, baudrate);
+                default:
+                    break;
+                }
+
+
             }
         }
 
@@ -149,7 +172,7 @@ namespace ydlidar{
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-				_serial->close();
+                _serial->closePort();
 			}
 		}
 		isConnected = false;
@@ -219,14 +242,15 @@ namespace ydlidar{
 			return RESULT_FAIL;
 		}
 		size_t r;
-        	while (size) {
-                	r = _serial->write(data, size);
-            	if (r < 1)
-                	return RESULT_FAIL;
-            	size -= r;
-            	data += r;
-        	}
-        	return RESULT_OK;
+        while (size) {
+            r = _serial->writeData(data, size);
+            if (r < 1)
+                return RESULT_FAIL;
+            size -= r;
+            data += r;
+        }
+        return RESULT_OK;
+
 	}
 
 	result_t YDlidarDriver::getData(uint8_t * data, size_t size) {
@@ -234,15 +258,16 @@ namespace ydlidar{
 			return RESULT_FAIL;
 		}
 		size_t r;
-        	while (size) {
-                r = _serial->read(data, size);
-            	if (r < 1)
-                	return RESULT_FAIL;
-            	size -= r;
-            	data += r;
+        while (size) {
+            r = _serial->readData(data, size);
+            if (r < 1)
+                return RESULT_FAIL;
+            size -= r;
+            data += r;
 
-        	}
-        	return RESULT_OK;
+        }
+        return RESULT_OK;
+
 	}
 
 	result_t YDlidarDriver::waitResponseHeader(lidar_ans_header * header, uint32_t timeout) {
@@ -330,7 +355,7 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){
-                                    _serial->close();
+                                    _serial->closePort();
                                     delete _serial;
                                     _serial = NULL;
                                     isConnected = false;
@@ -338,14 +363,13 @@ namespace ydlidar{
                             }
                         }
                         while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
-                            delay(2000);
+                            delay(1000);
                         }
                         if(!isAutoReconnect) {
                             isScanning = false;
                             return RESULT_FAIL;
                         }
                         if(isconnected()) {
-                            ScopedLocker lk(_serial_lock);
                             if(startAutoScan() == RESULT_OK){
                                 timeout_count =0;
                                 isAutoconnting = false;
@@ -404,8 +428,7 @@ namespace ydlidar{
 		uint32_t size = (m_intensities)?sizeof(node_package):sizeof(node_packages);
 		uint8_t* recvBuffer = new uint8_t[size];
 
-		uint32_t waitTime;
-		uint64_t ns;
+        uint32_t waitTime = 0;
 		uint8_t *packageBuffer = (m_intensities)?(uint8_t*)&package.package_Head:(uint8_t*)&packages.package_Head;
 		uint8_t  package_Sample_Num = 0;
 		int32_t AngleCorrectForDistance;
@@ -427,9 +450,6 @@ namespace ydlidar{
 				if (recvSize > remainSize){
 					recvSize = remainSize;
 				}
-
-				ns = getTime();
-
 
 				getData(recvBuffer, recvSize);
 
@@ -604,7 +624,7 @@ namespace ydlidar{
 		}
 		(*node).sync_quality = Node_Default_Quality;
 
-		if(CheckSunResult == true){
+        if(CheckSunResult){
 			if(m_intensities){
 				(*node).sync_quality = (uint8_t((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<< (8-LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) ) || (package.packageSample[package_Sample_Index].PakageSampleQuality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT));
 				(*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
@@ -641,24 +661,17 @@ namespace ydlidar{
 		}
 
 		if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
-			m_ns = ns;
-			m_calc_ns = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1)*m_pointTime;
+            m_ns = getTime() - (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
 		}
 
-		if(package_Sample_Index ==0){
-			m_ns = ns;
-		}
 
-		(*node).stamp = m_ns - nowPackageNum*trans_delay - (nowPackageNum -1 - package_Sample_Index)*m_pointTime;
-		if((*node).stamp < m_calc_ns){
-			(*node).stamp = m_calc_ns;
-		}
+        (*node).stamp = m_ns + package_Sample_Index*m_pointTime;
 
 		package_Sample_Index++;
 
 		if(package_Sample_Index >= nowPackageNum){
 			package_Sample_Index = 0;
-			m_calc_ns = (*node).stamp;
+             m_ns= (*node).stamp + m_pointTime;
 		}
 		delete[] recvBuffer;
 		return RESULT_OK;
@@ -715,21 +728,9 @@ namespace ydlidar{
 
 	}
 
-	void YDlidarDriver::simpleScanData(std::vector<scanDot> *scan_data , node_info *buffer, size_t count) {
-		scan_data->clear();
-		for (int pos = 0; pos < (int)count; ++pos) {
-			scanDot dot;
-			if (!buffer[pos].distance_q2) continue;
-			dot.quality = (buffer[pos].sync_quality);
-			dot.angle = (buffer[pos].angle_q6_checkbit >> LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
-			dot.dist = buffer[pos].distance_q2;
-			scan_data->push_back(dot);
-		}
-	}
 
 	result_t YDlidarDriver::ascendScanData(node_info * nodebuffer, size_t count) {
 		float inc_origin_angle = (float)360.0/count;
-		node_info *tmpbuffer = new node_info[count];
 		int i = 0;
 
 		for (i = 0; i < (int)count; i++) {
@@ -748,7 +749,6 @@ namespace ydlidar{
 		}
 
 		if (i == (int)count){
-			delete[] tmpbuffer;
 			return RESULT_FAIL;
 		}
 
@@ -789,6 +789,7 @@ namespace ydlidar{
 			pre_degree = degree;
 		}
 
+        node_info *tmpbuffer = new node_info[count];
 		for (i = (int)zero_pos; i < (int)count; i++) {
 			tmpbuffer[i-zero_pos] = nodebuffer[i];
 		}

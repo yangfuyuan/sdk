@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stopbits_5ft',['stopbits_t',['../namespaceserial.html#af5b116611d6628a3aa8f788fdc09f469',1,'serial']]]
+  ['parity_5ft',['parity_t',['../namespaceserial.html#a8f45d26bf7c9a06659e75b5004a50481',1,'serial']]]
 ];
