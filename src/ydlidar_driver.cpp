@@ -6,8 +6,8 @@
 *  http://www.eaibot.com
 * 
 */
-#include "common.h"
 #include "ydlidar_driver.h"
+#include "common.h"
 #include <math.h>
 using namespace impl;
 
