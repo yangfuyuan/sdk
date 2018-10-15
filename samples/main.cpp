@@ -9,6 +9,10 @@ using namespace std;
 using namespace ydlidar;
 CYdLidar laser;
 
+#if defined(_MSC_VER)
+#pragma comment(lib, "ydlidar_driver.lib")
+#endif
+
 int main(int argc, char * argv[])
 {
 	printf(" YDLIDAR C++ TEST\n");

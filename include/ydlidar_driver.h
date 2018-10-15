@@ -2,8 +2,9 @@
 #define YDLIDAR_DRIVER_H
 #include <stdlib.h>
 #include <atomic>
-#include "locker.h"
 #include "serial.h"
+#include "ActiveSocket.h"
+#include "locker.h"
 #include "thread.h"
 
 #if !defined(__cplusplus)

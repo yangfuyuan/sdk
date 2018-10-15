@@ -8,7 +8,6 @@
 */
 #include "common.h"
 #include "ydlidar_driver.h"
-#include <ActiveSocket.h>
 #include <math.h>
 using namespace impl;
 

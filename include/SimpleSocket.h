@@ -85,7 +85,7 @@
 
 # pragma warning(disable: 4786)
 # pragma  comment(lib, "ws2_32.lib")
-
+#pragma comment(lib, "setupapi.lib")
 #define IPTOS_LOWDELAY  0x10
 
 #endif
