@@ -72,19 +72,19 @@ namespace ydlidar{
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
 		_baudrate = baudrate;
         serial_port = string(port_path);
-        if(m_driver_type != DRIVER_TYPE_SERIALPORT || m_driver_type != DRIVER_TYPE_TCP) {
-            m_driver_type = DRIVER_TYPE_SERIALPORT;
+        if(m_driver_type != DEVICE_DRIVER_TYPE_SERIALPORT && m_driver_type != DEVICE_DRIVER_TYPE_TCP) {
+            m_driver_type = DEVICE_DRIVER_TYPE_SERIALPORT;
         }
         {
 
             ScopedLocker lk(_serial_lock);
             if(!_serial){
                 switch (m_driver_type) {
-                case DRIVER_TYPE_SERIALPORT:
+                case DEVICE_DRIVER_TYPE_SERIALPORT:
                     _serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
                     _serial->bindport(port_path, _baudrate);
                     break;
-                case DRIVER_TYPE_TCP:
+                case DEVICE_DRIVER_TYPE_TCP:
                     _serial = new CActiveSocket();
                     _serial->bindport(port_path, baudrate);
                 default:

@@ -68,8 +68,8 @@ typedef uint64_t TTimeStamp;
 #define INVALID_TIMESTAMP (0)
 
 enum {
-    DRIVER_TYPE_SERIALPORT = 0x0,
-    DRIVER_TYPE_TCP = 0x1,
+    DEVICE_DRIVER_TYPE_SERIALPORT = 0x0,
+    DEVICE_DRIVER_TYPE_TCP = 0x1,
 };
 
 

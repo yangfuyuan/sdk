@@ -27,7 +27,7 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_MinRange = 0.08;
     m_SampleRate = 9;
     m_ScanFrequency = 7;
-    m_DeviceType    = DRIVER_TYPE_SERIALPORT;
+    m_DeviceType    = DEVICE_DRIVER_TYPE_SERIALPORT;
     isScanning = false;
     node_counts = 720;
     each_angle = 0.5;
@@ -549,7 +549,7 @@ bool  CYdLidar::checkCOMMs()
     }
 
 	// Is it COMX, X>4? ->  "\\.\COMX"
-    if (m_SerialPort.size()>=3) {
+    if (m_DeviceType == DEVICE_DRIVER_TYPE_SERIALPORT&&m_SerialPort.size()>=3) {
         if ( tolower( m_SerialPort[0]) =='c' && tolower( m_SerialPort[1]) =='o' && tolower( m_SerialPort[2]) =='m' ) {
 			// Need to add "\\.\"?
             if (m_SerialPort.size()>4 || m_SerialPort[3]>'4')
@@ -560,7 +560,11 @@ bool  CYdLidar::checkCOMMs()
 	// make connection...
     result_t op_result = lidarPtr->connect(m_SerialPort.c_str(), m_SerialBaudrate);
     if (op_result != RESULT_OK) {
-        fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port %s\n",  m_SerialPort.c_str() );
+        if(m_DeviceType == DEVICE_DRIVER_TYPE_SERIALPORT) {
+            fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port[%s] and baudrate[%d]\n",  m_SerialPort.c_str(), m_SerialBaudrate );
+        }else {
+            fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified ip address[%s] and port [%d]\n",  m_SerialPort.c_str() , m_SerialBaudrate);
+        }
 		return false;
 	}
 
@@ -590,6 +594,8 @@ bool CYdLidar::checkStatus()
 
     int m_type;
     if (!ret||!getDeviceInfo(m_type)){
+        if(m_DeviceType==DEVICE_DRIVER_TYPE_TCP)
+            return false;
         checkmodel[m_SerialBaudrate] = true;
         map<int,bool>::iterator it;
         for (it=checkmodel.begin(); it!=checkmodel.end(); ++it) {
@@ -620,7 +626,7 @@ bool CYdLidar::checkStatus()
     show_error = 0;
     m_Intensities = false;
     if (m_type == 4) {
-        if (m_SerialBaudrate == 153600)
+        if (m_SerialBaudrate == 153600&&m_DeviceType==DEVICE_DRIVER_TYPE_SERIALPORT)
             m_Intensities = true;
         if (m_Intensities) {
             scan_exposure exposure;
