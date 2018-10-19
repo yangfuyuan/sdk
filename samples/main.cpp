@@ -55,7 +55,6 @@ int main(int argc, char * argv[])
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fflush(stdout);
 		}
-        usleep(1000*150);
 	}
 
 
