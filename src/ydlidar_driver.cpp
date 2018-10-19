@@ -60,6 +60,7 @@ namespace ydlidar{
         ScopedLocker lk(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
+                _serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -82,17 +83,16 @@ namespace ydlidar{
                 switch (m_driver_type) {
                 case DEVICE_DRIVER_TYPE_SERIALPORT:
                     _serial = new serial::Serial(port_path, _baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
-                    _serial->bindport(port_path, _baudrate);
                     break;
                 case DEVICE_DRIVER_TYPE_TCP:
                     _serial = new CActiveSocket();
-                    _serial->bindport(port_path, baudrate);
                 default:
                     break;
                 }
 
 
             }
+            _serial->bindport(port_path, baudrate);
         }
 
 		{
@@ -120,6 +120,7 @@ namespace ydlidar{
 		}
 
 		if(_serial){
+            _serial->flush();
 			_serial->setDTR(1);
 		}
 
@@ -131,6 +132,7 @@ namespace ydlidar{
 		}
 
 		if(_serial){
+            _serial->flush();
 			_serial->setDTR(0);
 		}
 	}
@@ -171,6 +173,7 @@ namespace ydlidar{
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
+                _serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -340,7 +343,7 @@ namespace ydlidar{
 
 		while(isScanning) {
 			if ((ans=waitScanData(local_buf, count)) != RESULT_OK) {
-                if (ans != RESULT_TIMEOUT|| timeout_count>5) {
+                if (ans != RESULT_TIMEOUT|| timeout_count>15) {
                     if(!isAutoReconnect) {//不重新连接, 退出线程
                         fprintf(stderr, "exit scanning thread!!\n");
                         {
@@ -354,6 +357,7 @@ namespace ydlidar{
                             ScopedLocker l(_serial_lock);
                             if(_serial){
                                 if(_serial->isOpen()){
+                                    _serial->flush();
                                     _serial->closePort();
                                     delete _serial;
                                     _serial = NULL;

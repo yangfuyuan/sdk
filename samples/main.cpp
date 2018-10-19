@@ -41,9 +41,10 @@ int main(int argc, char * argv[])
     laser.setSerialBaudrate(baud);
     laser.setDeviceType(driver_type);
     laser.setFixedResolution(false);
-    laser.setHeartBeat(false);
+    laser.setHeartBeat(true);
     laser.setReversion(false);
     laser.setIntensities(intensities);
+    laser.setScanFrequency(12);
     laser.setAutoReconnect(true);//异常是否重新连接
     laser.initialize();
     while(ydlidar::ok()){
@@ -54,6 +55,7 @@ int main(int argc, char * argv[])
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fflush(stdout);
 		}
+        usleep(1000*150);
 	}
 
 

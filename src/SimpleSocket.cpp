@@ -147,6 +147,7 @@ bool CSimpleSocket::open() {
     SetBlocking();
     if(m_open) {
         SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
+        SetReceiveWindowSize(4096);
     }
     return m_open;
 }
@@ -1278,13 +1279,21 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
             // data avaliable
             assert (FD_ISSET(m_socket, &m_readFds));
 #ifdef _WIN32
-            if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeTcp) {
+            if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
                     *returned_size = data_count;
                 }
                 return 0;
             }
+
 #endif
+
+            if(m_nSocketType == CSimpleSocket::SocketTypeUdp) {
+                if(returned_size) {
+                    *returned_size = data_count;
+                }
+                return 0;
+            }
 
             if ( IOCTLSOCKET(m_socket, FIONREAD, returned_size) == -1){
                 int32_t nLen = sizeof(nError);
