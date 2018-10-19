@@ -145,10 +145,10 @@ bool CSimpleSocket::open() {
     SetNonblocking();
     m_open = Open(m_addr.c_str(), m_port);
     SetBlocking();
-    if(m_open) {
-        SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
-        SetReceiveWindowSize(4096);
-    }
+//    if(m_open) {
+//        SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
+//        SetReceiveWindowSize(4096);
+//    }
     return m_open;
 }
 
