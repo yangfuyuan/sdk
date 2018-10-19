@@ -211,7 +211,7 @@ namespace ydlidar{
         * A constructor.
         * A more elaborate description of the constructor.
         */
-         explicit YDlidarDriver(uint8_t drivertype = DRIVER_TYPE_SERIALPORT);
+         explicit YDlidarDriver(uint8_t drivertype = DEVICE_DRIVER_TYPE_SERIALPORT);
 
         /**
         * A destructor.
