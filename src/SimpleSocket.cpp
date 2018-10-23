@@ -132,7 +132,8 @@ CSimpleSocket *CSimpleSocket::operator=(CSimpleSocket &socket)
 bool CSimpleSocket::bindport(const char* addr, uint32_t port) {
     m_addr = addr;
     m_port = port;
-    SetConnectTimeout(2, 0);
+    DisableNagleAlgoritm();
+    SetConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_SEC, DEFAULT_CONNECTION_TIMEOUT_USEC);
     return true;
 }
 
@@ -145,10 +146,6 @@ bool CSimpleSocket::open() {
     SetNonblocking();
     m_open = Open(m_addr.c_str(), m_port);
     SetBlocking();
-//    if(m_open) {
-//        SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
-//        SetReceiveWindowSize(4096);
-//    }
     return m_open;
 }
 
@@ -194,7 +191,7 @@ bool CSimpleSocket::Initialize()
     // Data structure containing general Windows Sockets Info
     //-------------------------------------------------------------------------
     memset(&m_hWSAData, 0, sizeof(m_hWSAData));
-    WSAStartup(MAKEWORD(2, 0), &m_hWSAData);
+    WSAStartup(MAKEWORD(2, 2), &m_hWSAData);
 #endif
 
     //-------------------------------------------------------------------------

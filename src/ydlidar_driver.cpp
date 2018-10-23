@@ -15,37 +15,37 @@ namespace ydlidar{
 
     YDlidarDriver::YDlidarDriver(uint8_t drivertype):
     _serial(0),m_driver_type(drivertype) {
-		isConnected = false;
-		isScanning = false;
+        isConnected         = false;
+        isScanning          = false;
         //串口配置参数
-		m_intensities = false;
-		isHeartbeat = false;
-        isAutoReconnect = false;
-        isAutoconnting = false;
-		_baudrate = 115200;
-		isSupportMotorCtrl=true;
-		_sampling_rate=-1;
-		model = -1;
-        firmware_version = 0;
-        scan_node_count = 0;
+        m_intensities       = false;
+        isHeartbeat         = false;
+        isAutoReconnect     = false;
+        isAutoconnting      = false;
+        _baudrate           = 115200;
+        isSupportMotorCtrl  = true;
+        _sampling_rate      = -1;
+        model               = -1;
+        firmware_version    = 0;
+        scan_node_count     = 0;
 
-        m_pointTime = 1e9/4000;
-        trans_delay = 0;
-        m_ns = 0;
+        m_pointTime         = 1e9/4000;
+        trans_delay         = 0;
+        m_ns                = 0;
 
         //解析参数
-        PackageSampleBytes = 2;
+        PackageSampleBytes  = 2;
         package_Sample_Index = 0;
         IntervalSampleAngle = 0.0;
         IntervalSampleAngle_LastPackage = 0.0;
-        FirstSampleAngle = 0;
-        LastSampleAngle = 0;
-        CheckSun = 0;
-        CheckSunCal = 0;
-        SampleNumlAndCTCal = 0;
-        LastSampleAngleCal = 0;
-        CheckSunResult = true;
-        Valu8Tou16 = 0;
+        FirstSampleAngle    = 0;
+        LastSampleAngle     = 0;
+        CheckSun            = 0;
+        CheckSunCal         = 0;
+        SampleNumlAndCTCal  = 0;
+        LastSampleAngleCal  = 0;
+        CheckSunResult      = true;
+        Valu8Tou16          = 0;
 
 	}
 
@@ -168,8 +168,6 @@ namespace ydlidar{
 		}
 
 		stop();
-
-
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
@@ -204,7 +202,6 @@ namespace ydlidar{
 		uint8_t pkt_header[10];
 		cmd_packet * header = reinterpret_cast<cmd_packet * >(pkt_header);
 		uint8_t checksum = 0;
-
 		if (!isConnected) {
 			return RESULT_FAIL;
 		}
@@ -277,7 +274,7 @@ namespace ydlidar{
 		uint32_t startTs = getms();
 		uint8_t  recvBuffer[sizeof(lidar_ans_header)];
 		uint8_t  *headerBuffer = reinterpret_cast<uint8_t *>(header);
-		uint32_t waitTime;
+        uint32_t waitTime = 0;
 
 		while ((waitTime=getms() - startTs) <= timeout) {
 			size_t remainSize = sizeof(lidar_ans_header) - recvPos;
@@ -333,7 +330,7 @@ namespace ydlidar{
 		size_t         count = 128;
 		node_info      local_scan[MAX_SCAN_NODES];
 		size_t         scan_count = 0;
-		result_t            ans;
+        result_t       ans = RESULT_FAIL;
 		memset(local_scan, 0, sizeof(local_scan));
 		waitScanData(local_buf, count);
 
@@ -434,10 +431,10 @@ namespace ydlidar{
         uint32_t waitTime = 0;
 		uint8_t *packageBuffer = (m_intensities)?(uint8_t*)&package.package_Head:(uint8_t*)&packages.package_Head;
 		uint8_t  package_Sample_Num = 0;
-		int32_t AngleCorrectForDistance;
+        int32_t AngleCorrectForDistance = 0;
 		int  package_recvPos = 0;
-        uint8_t package_type;
-        uint8_t scan_frequence;
+        uint8_t package_type = 0;
+        uint8_t scan_frequence = 0;
 
 		if(package_Sample_Index == 0) {
 			recvPos = 0;
@@ -688,8 +685,8 @@ namespace ydlidar{
 
 		size_t     recvNodeCount =  0;
 		uint32_t   startTs = getms();
-		uint32_t   waitTime;
-		result_t ans;
+        uint32_t   waitTime = 0;
+        result_t   ans = RESULT_FAIL;
 
 		while ((waitTime = getms() - startTs) <= timeout && recvNodeCount < count) {
 			node_info node;
@@ -1041,6 +1038,7 @@ namespace ydlidar{
 	result_t YDlidarDriver::createThread() {
 		_thread = CLASS_THREAD(YDlidarDriver, cacheScanData);
 		if (_thread.getHandle() == 0) {
+            isScanning = false;
 			return RESULT_FAIL;
 		}
 		isScanning = true;
