@@ -373,7 +373,7 @@ namespace ydlidar{
 
 		while(isScanning) {
 			if ((ans=waitScanData(local_buf, count)) != RESULT_OK) {
-                if (ans != RESULT_TIMEOUT || timeout_count>5) {
+                if (ans != RESULT_TIMEOUT || timeout_count > DEFAULT_TIMEOUT_COUNT) {
                     if(!isAutoReconnect) {//不重新连接, 退出线程
                         fprintf(stderr, "exit scanning thread!!\n");
                         {
@@ -385,52 +385,52 @@ namespace ydlidar{
                         return RESULT_FAIL;
                     } else {//做异常处理, 重新连接
                         isAutoconnting = true;
-                        again:
-                        {
-                            ScopedLocker l(_serial_lock);
-                            if(_serial){
-                                if(_serial->isOpen()){
-									sendCommand(LIDAR_CMD_STOP);
-                                    _serial->close();
+                        while (isAutoReconnect&&isAutoconnting) {
+                            {
+                                ScopedLocker l(_serial_lock);
+                                if(_serial){
+                                    if(_serial->isOpen()){
+                                        sendCommand(LIDAR_CMD_STOP);
+                                        _serial->close();
 
+                                    }
+                                    delete _serial;
+                                    _serial = NULL;
+                                    isConnected = false;
                                 }
-                                delete _serial;
-                                _serial = NULL;
-                                isConnected = false;
-                            }
-                        }
-                        if (NULL != fd&& save_parsing){
-                            fprintf(fd, "reconnecting lidar!!\n");
-                        }
-
-                        while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
-                            delay(1000);
-                        }
-                        if(!isAutoReconnect) {
-                            isScanning = false;
-                            return RESULT_FAIL;
-                        }
-                        if(isconnected()) {
-                            ScopedLocker lk(_serial_lock);
-                            if(startAutoScan() == RESULT_OK){
-                                timeout_count =0;
-                                isAutoconnting = false;
-                                continue;
                             }
                             if (NULL != fd&& save_parsing){
-                                fprintf(fd, "reconnecting lidar success, start scan failed!!\n");
+                                fprintf(fd, "reconnecting lidar!!\n");
                             }
 
+                            while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
+                                delay(200);
+                            }
+                            if(!isAutoReconnect) {
+                                isScanning = false;
+                                return RESULT_FAIL;
+                            }
+                            if(isconnected()) {
+                                ScopedLocker lk(_serial_lock);
+                                if(startAutoScan() == RESULT_OK){
+                                    timeout_count =0;
+                                    isAutoconnting = false;
+                                    continue;
+                                }
+                                if (NULL != fd&& save_parsing){
+                                    fprintf(fd, "reconnecting lidar success, start scan failed!!\n");
+                                }
+
+                            }
                         }
-                        goto again;
-
-
                     }
 
                 } else {
                      timeout_count++;
                 }
-			}
+            }else {
+                timeout_count = 0;
+            }
 			for (size_t pos = 0; pos < count; ++pos) {
                 if (local_buf[pos].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
                     if ((local_scan[0].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
