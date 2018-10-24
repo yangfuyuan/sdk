@@ -197,11 +197,11 @@ namespace serial {
         virtual bool isOpen ();
 
 		/*! Closes the serial port. */
-        virtual void closefd ();
+        virtual void closePort ();
 
-        virtual int readdata(unsigned char *data, size_t size);
+        virtual size_t readData(uint8_t *data, size_t size);
 
-        virtual int writedata(const uint8_t *data, size_t size);
+        virtual size_t writeData(const uint8_t *data, size_t size);
 
 
         virtual void ReleasePort();

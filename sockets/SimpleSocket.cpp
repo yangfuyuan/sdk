@@ -42,11 +42,6 @@
  *----------------------------------------------------------------------------*/
 #include "SimpleSocket.h"
 using namespace ydlidar;
-#if defined(_MSC_VER)
-#pragma comment(lib, "setupapi.lib")
-#pragma comment(lib, "ws2_32.lib")
-
-#endif
 
 CSimpleSocket::CSimpleSocket(CSocketType nType) :
     m_socket(INVALID_SOCKET),
@@ -137,7 +132,8 @@ CSimpleSocket *CSimpleSocket::operator=(CSimpleSocket &socket)
 bool CSimpleSocket::bindport(const char* addr, uint32_t port) {
     m_addr = addr;
     m_port = port;
-    SetConnectTimeout(2, 0);
+    DisableNagleAlgoritm();
+    SetConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_SEC, DEFAULT_CONNECTION_TIMEOUT_USEC);
     return true;
 }
 
@@ -150,9 +146,6 @@ bool CSimpleSocket::open() {
     SetNonblocking();
     m_open = Open(m_addr.c_str(), m_port);
     SetBlocking();
-    if(m_open) {
-        SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
-    }
     return m_open;
 }
 
@@ -160,7 +153,7 @@ bool CSimpleSocket::isOpen() {
     return m_open&&IsSocketValid();
 }
 
-void CSimpleSocket::closefd() {
+void CSimpleSocket::closePort() {
     Close();
     m_open = false;
 }
@@ -173,11 +166,11 @@ int CSimpleSocket::waitfordata(size_t data_count,uint32_t timeout, size_t * retu
     return WaitForData(data_count, timeout, returned_size);
 }
 
-int CSimpleSocket::writedata(const uint8_t * data, size_t size) {
+size_t CSimpleSocket::writeData(const uint8_t * data, size_t size) {
     return Send( data, size);
 }
 
- int CSimpleSocket::readdata(unsigned char * data, size_t size) {
+ size_t CSimpleSocket::readData(uint8_t * data, size_t size) {
     return (size_t)Receive(size, data);
 }
 
@@ -198,7 +191,7 @@ bool CSimpleSocket::Initialize()
     // Data structure containing general Windows Sockets Info
     //-------------------------------------------------------------------------
     memset(&m_hWSAData, 0, sizeof(m_hWSAData));
-    WSAStartup(MAKEWORD(2, 0), &m_hWSAData);
+    WSAStartup(MAKEWORD(2, 2), &m_hWSAData);
 #endif
 
     //-------------------------------------------------------------------------
@@ -1283,13 +1276,21 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
             // data avaliable
             assert (FD_ISSET(m_socket, &m_readFds));
 #ifdef _WIN32
-            if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeTcp) {
+            if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
                     *returned_size = data_count;
                 }
                 return 0;
             }
+
 #endif
+
+            if(m_nSocketType == CSimpleSocket::SocketTypeUdp) {
+                if(returned_size) {
+                    *returned_size = data_count;
+                }
+                return 0;
+            }
 
             if ( IOCTLSOCKET(m_socket, FIONREAD, returned_size) == -1){
                 int32_t nLen = sizeof(nError);

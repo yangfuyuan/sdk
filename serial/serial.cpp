@@ -98,14 +98,14 @@ namespace serial {
 	}
 
     bool Serial::bindport(const char * port, uint32_t baudrate) {
-        if(!pimpl_) {
+        /*if(!pimpl_) {
             delete pimpl_;
             pimpl_ = NULL;
         }
         pimpl_ = new SerialImpl(port, baudrate, eightbits, parity_none,
                                 stopbits_one, flowcontrol_none);
         Timeout t = Timeout::simpleTimeout(2000);
-        pimpl_->setTimeout(t);
+        pimpl_->setTimeout(t);*/
 
 
         return true;
@@ -115,7 +115,7 @@ namespace serial {
 		return pimpl_->open ();
 	}
 
-    void Serial::closefd () {
+    void Serial::closePort () {
 		pimpl_->close ();
 	}
 
@@ -130,11 +130,11 @@ namespace serial {
         }
     }
 
-    int Serial::writedata(const uint8_t *data, std::size_t size) {
+    size_t Serial::writeData(const uint8_t *data, std::size_t size) {
         return write(data, size);
     }
 
-    int Serial::readdata(unsigned char *data, std::size_t size) {
+    size_t Serial::readData(uint8_t *data, std::size_t size) {
         return read(data, size);
     }
 
@@ -271,7 +271,7 @@ namespace serial {
 		ScopedReadLock rlock(this->pimpl_);
 		ScopedWriteLock wlock(this->pimpl_);
 		bool was_open = pimpl_->isOpen ();
-        if (was_open) closefd();
+        if (was_open) closePort();
 		pimpl_->setPort (port);
 		if (was_open) open ();
 	}

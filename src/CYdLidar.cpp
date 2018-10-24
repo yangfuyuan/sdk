@@ -371,26 +371,25 @@ bool CYdLidar::checkHeartBeat() const
     bool ret = false;
     scan_heart_beat beat;
     if( m_HeartBeat ) {
-        Sync:
-        result_t ans = lidarPtr->setScanHeartbeat(beat);
-        if( ans == RESULT_OK) {
-            if( beat.enable ) {
-                ans = lidarPtr->setScanHeartbeat(beat);
-                if( ans == RESULT_OK) {
-                    if(!beat.enable) {
-                        lidarPtr->setHeartBeat(true);
-                        ret = true;
-                        return ret;
+        while (m_HeartBeat) {
+            result_t ans = lidarPtr->setScanHeartbeat(beat);
+            if( ans == RESULT_OK) {
+                if( beat.enable ) {
+                    ans = lidarPtr->setScanHeartbeat(beat);
+                    if( ans == RESULT_OK) {
+                        if(!beat.enable) {
+                            lidarPtr->setHeartBeat(true);
+                            ret = true;
+                            return ret;
+                        }
                     }
+                } else  {
+                    lidarPtr->setHeartBeat(true);
+                    ret = true;
+                    return ret;
                 }
-                goto Sync;
-            } else  {
-                lidarPtr->setHeartBeat(true);
-                ret = true;
-                return ret;
             }
         }
-        goto Sync;
     }else {
         lidarPtr->setHeartBeat(false);
         ret = true;

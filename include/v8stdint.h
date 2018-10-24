@@ -199,7 +199,7 @@ inline void init(int argc, char *argv[]) {
 inline bool ok() {
   return g_signal_status == 0;
 }
-inline void shutdown() {
+inline void shutdownNow() {
   trigger_interrupt_guard_condition(SIGINT);
 }
 
