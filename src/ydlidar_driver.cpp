@@ -20,7 +20,7 @@ namespace ydlidar{
         //串口配置参数
         m_intensities       = false;
         isHeartbeat         = false;
-        isAutoReconnect     = false;
+        isAutoReconnect     = true;
         isAutoconnting      = false;
         _baudrate           = 115200;
         isSupportMotorCtrl  = true;
@@ -119,6 +119,7 @@ namespace ydlidar{
 			return ;
 		}
 
+        ScopedLocker lk(_serial_lock);
 		if(_serial){
             _serial->flush();
 			_serial->setDTR(1);
@@ -131,6 +132,7 @@ namespace ydlidar{
 			return ;
 		}
 
+        ScopedLocker lk(_serial_lock);
 		if(_serial){
             _serial->flush();
 			_serial->setDTR(0);
@@ -340,45 +342,45 @@ namespace ydlidar{
 
 		while(isScanning) {
 			if ((ans=waitScanData(local_buf, count)) != RESULT_OK) {
-                if (ans != RESULT_TIMEOUT|| timeout_count>15) {
+                if (ans != RESULT_TIMEOUT|| timeout_count >DEFAULT_TIMEOUT_COUNT ) {
                     if(!isAutoReconnect) {//不重新连接, 退出线程
                         fprintf(stderr, "exit scanning thread!!\n");
+                        fflush(stderr);
                         {
                             isScanning = false;
                         }
                         return RESULT_FAIL;
                     }else {//做异常处理, 重新连接
                         isAutoconnting = true;
-                        again:
-                        {
-                            ScopedLocker l(_serial_lock);
-                            if(_serial){
-                                if(_serial->isOpen()){
-                                    _serial->flush();
-                                    _serial->closePort();
-                                    delete _serial;
-                                    _serial = NULL;
-                                    isConnected = false;
+                        while (isAutoReconnect&&isAutoconnting) {
+                            {
+                                ScopedLocker l(_serial_lock);
+                                if(_serial){
+                                    if(_serial->isOpen()){
+                                        _serial->flush();
+                                        _serial->closePort();
+                                        delete _serial;
+                                        _serial = NULL;
+                                        isConnected = false;
+                                    }
                                 }
                             }
-                        }
-                        while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
-                            delay(1000);
-                        }
-                        if(!isAutoReconnect) {
-                            isScanning = false;
-                            return RESULT_FAIL;
-                        }
-                        if(isconnected()) {
-                            if(startAutoScan() == RESULT_OK){
-                                timeout_count =0;
-                                isAutoconnting = false;
-                                continue;
+
+                            while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
+                                delay(200);
                             }
+                            if(!isAutoReconnect) {
+                                isScanning = false;
+                                return RESULT_FAIL;
+                            }
+                            if(isconnected()) {
+                                if(startAutoScan() == RESULT_OK){
+                                    timeout_count =0;
+                                    isAutoconnting = false;
+                                }
 
+                            }
                         }
-                        goto again;
-
 
                     }
 
@@ -388,7 +390,11 @@ namespace ydlidar{
                     fflush(stderr);
                     timeout_count++;
                 }
-			}
+            }else {
+                timeout_count = 0;
+            }
+
+
 			for (size_t pos = 0; pos < count; ++pos) {
 				if (local_buf[pos].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT) {
 					if ((local_scan[0].sync_flag & LIDAR_RESP_MEASUREMENT_SYNCBIT)) {
