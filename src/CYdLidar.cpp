@@ -300,7 +300,7 @@ bool CYdLidar::getDeviceInfo(int &lidar_model) {
         break;
     case YDlidarDriver::YDLIDAR_G4:
     {
-        model="G2-SS-1";
+        model="G4";
         op_result = lidarPtr->getSamplingRate(_rate);
         if (IS_OK(op_result)) {
             switch (m_SampleRate) {
@@ -350,6 +350,7 @@ bool CYdLidar::getDeviceInfo(int &lidar_model) {
         break;
     case YDlidarDriver::YDLIDAR_X4:
         model="X4";
+        m_samp_rate = 5;
         break;
     case YDlidarDriver::YDLIDAR_G4PRO:
         model="G4Pro";
@@ -395,7 +396,8 @@ bool CYdLidar::getDeviceInfo(int &lidar_model) {
     }
         break;
     case YDlidarDriver::YDLIDAR_G4C:
-        model = "G4C";
+        model="G2-SS-1";
+        m_samp_rate = 5;
         break;
     case YDlidarDriver::YDLIDAR_G10:
         model = "G10";
@@ -515,6 +517,7 @@ bool CYdLidar::checkScanFrequency()
         } else if ( m_ScanFrequency+ frequencyOffset < 6 && m_SampleRate == 4) {
             node_counts = 900;
         }
+        node_counts = m_SampleRate*1000/((float)m_ScanFrequency -frequencyOffset);
         each_angle = 360.0/node_counts;
     }
     printf("[YDLIDAR INFO] Current Scan Frequency : %fHz\n" , (float)m_ScanFrequency);

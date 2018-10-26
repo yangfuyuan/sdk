@@ -55,7 +55,7 @@ int main(int argc, char * argv[])
     laser.setMaxRange(16.0);
 
     //unit: K
-    laser.setSampleRate(9);
+    laser.setSampleRate(5);
 
     //unit: Hz
     laser.setScanFrequency(8);

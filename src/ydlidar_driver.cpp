@@ -1019,6 +1019,7 @@ std::string format(const char *fmt, ...)
                     break;
                     case YDLIDAR_G4C://g4c
                     trans_delay = _serial->getByteTime();
+                    m_pointTime = 1e9/5000;
                     if(firmware_version < 521&& firmware_version != 0){
                         setHeartBeat(false);
                     }
