@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="ydliar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK
-   &#160;<span id="projectnumber">V1.3.6</span>
+   &#160;<span id="projectnumber">V1.3.7(SamSung</span>
    </div>
   </td>
  </tr>
@@ -86,7 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespaceydlidar.html">ydlidar</a></li><li class="navelem"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html">YDlidarDriver</a></li>  </ul>
+<li class="navelem"><b>ydlidar</b></li><li class="navelem"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html">YDlidarDriver</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -117,27 +117,42 @@ Collaboration diagram for ydlidar::YDlidarDriver:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:abbb612f1ac6a9f6dfdcfeafb149dd0da"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a> = 2000, 
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa94033b4717c83f52cd008fe38b712e21">DEFAULT_HEART_BEAT</a> = 1000, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa3db6fc46c7ce55cdf3a968b70e96374a">MAX_SCAN_NODES</a> = 2048
+<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa3db6fc46c7ce55cdf3a968b70e96374a">MAX_SCAN_NODES</a> = 2048, 
+<b>DEFAULT_TIMEOUT_COUNT</b> = 2
  }</td></tr>
 <tr class="separator:abbb612f1ac6a9f6dfdcfeafb149dd0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1edd5634ea00ca122a0882d875f42853"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
-&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a3303d67e56b0dd5a36397a5326965713">YDLIDAR_F4</a> =1, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a6ea5ed1cde351e4b5df40d1bbd697212">YDLIDAR_T1</a> =2, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a7d64a3d3e3d3ef6d1db5c0a8740a523a">YDLIDAR_F2</a> =3, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853ab1d9ab224053d610e97ebee7236345ba">YDLIDAR_S4</a> =4, 
+<tr class="memitem:a1edd5634ea00ca122a0882d875f42853"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<b>YDLIDAR_F4</b> =1, 
+<b>YDLIDAR_T1</b> =2, 
+<b>YDLIDAR_F2</b> =3, 
+<b>YDLIDAR_S4</b> =4, 
 <br />
-&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a6bd6fb5e1f3ddd4e36ab12e53c114039">YDLIDAR_G4</a> =5, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a5065807c3aa6a4a731858dda599667b7">YDLIDAR_X4</a> =6, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a700fca9e58a191c0d1a4d13ae67927e8">YDLIDAR_F4PRO</a> =6, 
-<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a55a9d7236d51f9d1d38d41cd102be527">YDLIDAR_G4C</a> =9
+&#160;&#160;<b>YDLIDAR_G4</b> =5, 
+<b>YDLIDAR_X4</b> =6, 
+<b>YDLIDAR_G4PRO</b> =7, 
+<b>YDLIDAR_F4PRO</b> =8, 
+<br />
+&#160;&#160;<b>YDLIDAR_G4C</b> =9, 
+<b>YDLIDAR_G10</b> =10, 
+<b>YDLIDAR_S4B</b> = 11, 
+<b>YDLIDAR_S2</b> = 12, 
+<br />
+&#160;&#160;<b>YDLIDAR_G25</b> = 13, 
+<b>YDLIDAR_Tail</b>
 <br />
  }</td></tr>
 <tr class="separator:a1edd5634ea00ca122a0882d875f42853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf885e79fe7ecbd31056498ce1c1ff41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf885e79fe7ecbd31056498ce1c1ff41"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>YDLIDAR_RATE_4K</b> = 0, 
+<b>YDLIDAR_RATE_8K</b> = 1, 
+<b>YDLIDAR_RATE_9K</b> = 2, 
+<b>YDLIDAR_RATE_10K</b> = 3
+ }</td></tr>
+<tr class="separator:abf885e79fe7ecbd31056498ce1c1ff41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2def8a09042538c70a17ed3e48323480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a2def8a09042538c70a17ed3e48323480">YDlidarDriver</a> (uint8_t drivertype=DRIVER_TYPE_SERIALPORT)</td></tr>
-<tr class="separator:a2def8a09042538c70a17ed3e48323480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19e20b6aa35834507a0dacc8a3c510e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a19e20b6aa35834507a0dacc8a3c510e6">YDlidarDriver</a> ()</td></tr>
+<tr class="separator:a19e20b6aa35834507a0dacc8a3c510e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a50f9f1093a93b4d985f3e8bf27fde"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a87a50f9f1093a93b4d985f3e8bf27fde">~YDlidarDriver</a> ()</td></tr>
 <tr class="separator:a87a50f9f1093a93b4d985f3e8bf27fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c5eeecccaa6ed874635de1617e8d7d8"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a2c5eeecccaa6ed874635de1617e8d7d8">connect</a> (const char *port_path, uint32_t baudrate)</td></tr>
@@ -148,22 +163,22 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aa26790ae49d33936229fa67739a8ff5f">disconnect</a> ()</td></tr>
 <tr class="memdesc:aa26790ae49d33936229fa67739a8ff5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">断开雷达连接 <br /></td></tr>
 <tr class="separator:aa26790ae49d33936229fa67739a8ff5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37cd2766dec3536848aa25c88d9d1ea9"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a37cd2766dec3536848aa25c88d9d1ea9">isscanning</a> () const </td></tr>
-<tr class="memdesc:a37cd2766dec3536848aa25c88d9d1ea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">扫图状态 <br />
- <a href="#a37cd2766dec3536848aa25c88d9d1ea9">More...</a><br /></td></tr>
-<tr class="separator:a37cd2766dec3536848aa25c88d9d1ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2553d28304faa4acab6bd63e7c6c2ee6"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a2553d28304faa4acab6bd63e7c6c2ee6">isconnected</a> () const </td></tr>
-<tr class="memdesc:a2553d28304faa4acab6bd63e7c6c2ee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">连接雷达状态 <br />
- <a href="#a2553d28304faa4acab6bd63e7c6c2ee6">More...</a><br /></td></tr>
-<tr class="separator:a2553d28304faa4acab6bd63e7c6c2ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37c037538f3acc3e488c7d3bbfcaece"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ae37c037538f3acc3e488c7d3bbfcaece">isscanning</a> () const </td></tr>
+<tr class="memdesc:ae37c037538f3acc3e488c7d3bbfcaece"><td class="mdescLeft">&#160;</td><td class="mdescRight">扫图状态 <br />
+ <a href="#ae37c037538f3acc3e488c7d3bbfcaece">More...</a><br /></td></tr>
+<tr class="separator:ae37c037538f3acc3e488c7d3bbfcaece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918486cdb4f3fbe863ec2e1231168538"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a918486cdb4f3fbe863ec2e1231168538">isconnected</a> () const </td></tr>
+<tr class="memdesc:a918486cdb4f3fbe863ec2e1231168538"><td class="mdescLeft">&#160;</td><td class="mdescRight">连接雷达状态 <br />
+ <a href="#a918486cdb4f3fbe863ec2e1231168538">More...</a><br /></td></tr>
+<tr class="separator:a918486cdb4f3fbe863ec2e1231168538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc543dbbe1c5e37afc366e3c92203533"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#afc543dbbe1c5e37afc366e3c92203533">setIntensities</a> (const bool &amp;isintensities)</td></tr>
 <tr class="memdesc:afc543dbbe1c5e37afc366e3c92203533"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达是否带信号质量 <br />
 连接成功后，必须使用::disconnect函数关闭  <a href="#afc543dbbe1c5e37afc366e3c92203533">More...</a><br /></td></tr>
 <tr class="separator:afc543dbbe1c5e37afc366e3c92203533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b01c5124032be12ecbeffeefd38742"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a36b01c5124032be12ecbeffeefd38742">getHeartBeat</a> () const </td></tr>
-<tr class="memdesc:a36b01c5124032be12ecbeffeefd38742"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取当前雷达掉电保护功能 <br />
- <a href="#a36b01c5124032be12ecbeffeefd38742">More...</a><br /></td></tr>
-<tr class="separator:a36b01c5124032be12ecbeffeefd38742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707bd0c9d51a21957e5ef6dc6af040c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a707bd0c9d51a21957e5ef6dc6af040c2">getHeartBeat</a> () const </td></tr>
+<tr class="memdesc:a707bd0c9d51a21957e5ef6dc6af040c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取当前雷达掉电保护功能 <br />
+ <a href="#a707bd0c9d51a21957e5ef6dc6af040c2">More...</a><br /></td></tr>
+<tr class="separator:a707bd0c9d51a21957e5ef6dc6af040c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5d6603d3664d3efcb56d64d76d31956"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#af5d6603d3664d3efcb56d64d76d31956">setHeartBeat</a> (const bool &amp;enable)</td></tr>
 <tr class="memdesc:af5d6603d3664d3efcb56d64d76d31956"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达掉电保护使能 <br />
  <a href="#af5d6603d3664d3efcb56d64d76d31956">More...</a><br /></td></tr>
@@ -390,6 +405,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送掉电保护命令 <br />
  <a href="#a6e7dc7cd2a73d24a763cebde840a5d30">More...</a><br /></td></tr>
 <tr class="separator:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d37680a99bfa91f847ef9997998fdb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d37680a99bfa91f847ef9997998fdb9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1d37680a99bfa91f847ef9997998fdb9">checkTransDelay</a> ()</td></tr>
+<tr class="memdesc:a1d37680a99bfa91f847ef9997998fdb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">checkTransDelay <br /></td></tr>
+<tr class="separator:a1d37680a99bfa91f847ef9997998fdb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66565bee3cdb8b74698b691f2ab1e63"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae66565bee3cdb8b74698b691f2ab1e63"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ae66565bee3cdb8b74698b691f2ab1e63">disableDataGrabbing</a> ()</td></tr>
 <tr class="memdesc:ae66565bee3cdb8b74698b691f2ab1e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">关闭数据获取通道 <br />
@@ -430,65 +449,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a1edd5634ea00ca122a0882d875f42853"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">anonymous enum</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a3303d67e56b0dd5a36397a5326965713"></a>YDLIDAR_F4&#160;</td><td class="fielddoc">
-<p>F4雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a6ea5ed1cde351e4b5df40d1bbd697212"></a>YDLIDAR_T1&#160;</td><td class="fielddoc">
-<p>T1雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a7d64a3d3e3d3ef6d1db5c0a8740a523a"></a>YDLIDAR_F2&#160;</td><td class="fielddoc">
-<p>F2雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853ab1d9ab224053d610e97ebee7236345ba"></a>YDLIDAR_S4&#160;</td><td class="fielddoc">
-<p>S4雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a6bd6fb5e1f3ddd4e36ab12e53c114039"></a>YDLIDAR_G4&#160;</td><td class="fielddoc">
-<p>G4雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a5065807c3aa6a4a731858dda599667b7"></a>YDLIDAR_X4&#160;</td><td class="fielddoc">
-<p>X4雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a700fca9e58a191c0d1a4d13ae67927e8"></a>YDLIDAR_F4PRO&#160;</td><td class="fielddoc">
-<p>F4PRO雷达型号代号. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a55a9d7236d51f9d1d38d41cd102be527"></a>YDLIDAR_G4C&#160;</td><td class="fielddoc">
-<p>G4C雷达型号代号. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2def8a09042538c70a17ed3e48323480"></a>
+<a class="anchor" id="a19e20b6aa35834507a0dacc8a3c510e6"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ydlidar::YDlidarDriver::YDlidarDriver </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>drivertype</em> = <code>DRIVER_TYPE_SERIALPORT</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>A constructor. A more elaborate description of the constructor. </p>
 
@@ -952,12 +924,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a36b01c5124032be12ecbeffeefd38742"></a>
+<a class="anchor" id="a707bd0c9d51a21957e5ef6dc6af040c2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const bool ydlidar::YDlidarDriver::getHeartBeat </td>
+          <td class="memname">bool ydlidar::YDlidarDriver::getHeartBeat </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1192,12 +1164,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a2553d28304faa4acab6bd63e7c6c2ee6"></a>
+<a class="anchor" id="a918486cdb4f3fbe863ec2e1231168538"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const bool ydlidar::YDlidarDriver::isconnected </td>
+          <td class="memname">bool ydlidar::YDlidarDriver::isconnected </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1218,12 +1190,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a37cd2766dec3536848aa25c88d9d1ea9"></a>
+<a class="anchor" id="ae37c037538f3acc3e488c7d3bbfcaece"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const bool ydlidar::YDlidarDriver::isscanning </td>
+          <td class="memname">bool ydlidar::YDlidarDriver::isscanning </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -2483,8 +2455,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/<a class="el" href="ydlidar__driver_8h_source.html">ydlidar_driver.h</a></li>
-<li>src/ydlidar_driver.cpp</li>
+<li>/home/yang/Laser/SM/sdk/include/<a class="el" href="ydlidar__driver_8h_source.html">ydlidar_driver.h</a></li>
+<li>/home/yang/Laser/SM/sdk/src/ydlidar_driver.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

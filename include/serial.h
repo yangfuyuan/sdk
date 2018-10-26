@@ -7,7 +7,6 @@
 #include <cstring>
 #include <sstream>
 #include "v8stdint.h"
-#include "ChannelDevice.h"
 
 namespace serial {
 
@@ -105,7 +104,7 @@ namespace serial {
 	/*!
 	* Class that provides a portable serial port interface.
 	*/
-    class Serial : public ChannelDevice {
+    class Serial  {
 	public:
 		/*!
 		* Creates a Serial object and opens the port if a port is specified,
@@ -148,9 +147,6 @@ namespace serial {
 
 		/*! Destructor */
 		virtual ~Serial ();
-
-
-        virtual bool bindport(const char *, uint32_t);
 
 		/*!
 		* Opens the serial port as long as the port is set and the port isn't

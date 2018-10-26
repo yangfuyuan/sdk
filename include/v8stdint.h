@@ -10,9 +10,20 @@
 #include <cerrno>
 #include <stdexcept>
 #include <csignal>
+#include <sys/stat.h>
+#if defined(_MSC_VER)
+#include <io.h>
+#endif
 
+#if !defined(_MSC_VER)
+#include <unistd.h>
+#endif
 
 #define UNUSED(x) (void)x
+
+#if !defined(_MSC_VER)
+#	define _access access
+#endif
 
 #if defined(_WIN32) && !defined(__MINGW32__)
 typedef signed char int8_t;
@@ -71,6 +82,11 @@ enum {
     DEVICE_DRIVER_TYPE_SERIALPORT = 0x0,
     DEVICE_DRIVER_TYPE_TCP = 0x1,
 };
+
+
+#define IS_OK(x)    ( (x) == RESULT_OK )
+#define IS_TIMEOUT(x)  ( (x) == RESULT_TIMEOUT )
+#define IS_FAIL(x)  ( (x) == RESULT_FAIL )
 
 
 // Determine if sigaction is available
@@ -202,6 +218,23 @@ inline bool ok() {
 inline void shutdownNow() {
   trigger_interrupt_guard_condition(SIGINT);
 }
+
+//inline bool fileExists(const std::string filename) {
+//    return 0 == _access(filename.c_str(), 0x00 ); // 0x00 = Check for existence only!
+//}
+
+inline bool fileExists(const std::string filename) {
+#ifdef _WIN32
+    struct _stat info = {0};
+    int ret = _stat(filename.c_str(), &info);
+#else
+    struct stat info = {0};
+    int ret = stat(filename.c_str(), &info);
+#endif
+    return (ret == 0);
+    /*return 0 == _access(filename.c_str(), 0x00 ); // 0x00 = Check for existence only!*/
+}
+
 
 }
 

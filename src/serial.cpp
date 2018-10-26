@@ -68,20 +68,6 @@ namespace serial {
 		delete pimpl_;
 	}
 
-    bool Serial::bindport(const char * port, uint32_t baudrate) {
-//            if(!pimpl_) {
-//                delete pimpl_;
-//                pimpl_ = NULL;
-//            }
-//            pimpl_ = new SerialImpl(port, baudrate, eightbits, parity_none,
-//                                    stopbits_one, flowcontrol_none);
-//            Timeout t = Timeout::simpleTimeout(2000);
-//            pimpl_->setTimeout(t);
-
-        return true;
-
-    }
-
 	bool Serial::open () {
 		return pimpl_->open ();
 	}

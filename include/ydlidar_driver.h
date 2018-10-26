@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <atomic>
 #include "serial.h"
-#include "ActiveSocket.h"
 #include "locker.h"
 #include "thread.h"
 
@@ -90,6 +89,7 @@ struct node_info {
     uint8_t    sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
     uint16_t   distance_q2; //! 当前测距点距离
+    uint16_t   distance_q; //! 当前测距点距离
     uint64_t   stamp; //! 时间戳
     uint8_t    scan_frequence;//! 特定版本此值才有效,无效值是0
 } __attribute__((packed)) ;
@@ -224,6 +224,9 @@ using namespace serial;
 
 namespace ydlidar{
 
+    std::string format(const char *fmt, ...);
+
+
 	class YDlidarDriver
 	{
 	public:
@@ -231,7 +234,7 @@ namespace ydlidar{
         * A constructor.
         * A more elaborate description of the constructor.
         */
-        explicit YDlidarDriver(uint8_t drivertype = DEVICE_DRIVER_TYPE_SERIALPORT);
+        YDlidarDriver();
 
         /**
         * A destructor.
@@ -274,7 +277,7 @@ namespace ydlidar{
 		* @retval true     正在扫图
     	* @retval false    扫图关闭
     	*/
-        const bool isscanning() const;
+        bool isscanning() const;
 
 		/**
 		* @brief 连接雷达状态 \n
@@ -282,7 +285,7 @@ namespace ydlidar{
 		* @retval true     成功
     	* @retval false    失败
     	*/
-        const bool isconnected() const;
+        bool isconnected() const;
 
 		/**
 		* @brief 设置雷达是否带信号质量 \n
@@ -300,7 +303,7 @@ namespace ydlidar{
     	* @retval true     掉电保护开启
     	* @retval false    掉电保护关闭
     	*/
-        const bool getHeartBeat() const;
+        bool getHeartBeat() const;
 
 		/**
 		* @brief 设置雷达掉电保护使能 \n
@@ -745,6 +748,11 @@ namespace ydlidar{
         */
         result_t sendHeartBeat();
 
+        /**
+         * @brief checkTransDelay
+         */
+        void checkTransDelay();
+
 
 		/**
 		* @brief 关闭数据获取通道 \n
@@ -774,19 +782,33 @@ namespace ydlidar{
 			DEFAULT_TIMEOUT = 2000,    /**< 默认超时时间. */ 
 			DEFAULT_HEART_BEAT = 1000, /**< 默认检测掉电功能时间. */ 
 			MAX_SCAN_NODES = 2048,	   /**< 最大扫描点数. */ 
-            DEFAULT_TIMEOUT_COUNT = 10,
+            DEFAULT_TIMEOUT_COUNT = 2,
 		};
-		enum { 
-			YDLIDAR_F4=1, /**< F4雷达型号代号. */ 
-			YDLIDAR_T1=2, /**< T1雷达型号代号. */ 
-			YDLIDAR_F2=3, /**< F2雷达型号代号. */ 
-			YDLIDAR_S4=4, /**< S4雷达型号代号. */ 
-			YDLIDAR_G4=5, /**< G4雷达型号代号. */ 
-			YDLIDAR_X4=6, /**< X4雷达型号代号. */ 
-			YDLIDAR_F4PRO=6, /**< F4PRO雷达型号代号. */ 
-			YDLIDAR_G4C=9, /**< G4C雷达型号代号. */ 
+        enum {
+            YDLIDAR_F4=1,
+            YDLIDAR_T1=2,
+            YDLIDAR_F2=3,
+            YDLIDAR_S4=4,
+            YDLIDAR_G4=5,
+            YDLIDAR_X4=6,
+            YDLIDAR_G4PRO=7,
+            YDLIDAR_F4PRO=8,
+            YDLIDAR_G4C=9,
+            YDLIDAR_G10=10,//256000
+            YDLIDAR_S4B = 11,//153600
+            YDLIDAR_S2 = 12,//115200
+            YDLIDAR_G25 = 13,//512000
+            YDLIDAR_Tail,
+        };
 
-		};
+        enum {
+            YDLIDAR_RATE_4K = 0,
+            YDLIDAR_RATE_8K = 1,
+            YDLIDAR_RATE_9K = 2,
+            YDLIDAR_RATE_10K = 3,
+        };
+
+
 		node_info      scan_node_buf[2048];  ///< 激光点信息
 		size_t         scan_node_count;      ///< 激光点数
 		Event          _dataEvent;			 ///< 数据同步事件
@@ -796,13 +818,13 @@ namespace ydlidar{
 
 	private:
         int PackageSampleBytes;             ///< 一个包包含的激光点数
-        ChannelDevice *_serial;			///< 串口
+        serial::Serial *_serial;			///< 串口
 		bool m_intensities;					///< 信号质量状体
-		int _sampling_rate;					///< 采样频率
+        int m_sampling_rate;                ///< 采样频率
 		int model;							///< 雷达型号
-		uint32_t _baudrate;					///< 波特率
+        uint32_t m_baudrate;				///< 波特率
 		bool isSupportMotorCtrl;			///< 是否支持电机控制
-		uint64_t m_ns;						///< 时间戳
+        uint64_t m_node_time_ns;			///< 时间戳
 		uint32_t m_pointTime;				///< 激光点直接时间间隔
 		uint32_t trans_delay;				///< 串口传输一个byte时间
         uint16_t firmware_version;          ///< 雷达固件版本号
@@ -824,7 +846,6 @@ namespace ydlidar{
         uint16_t Valu8Tou16;
 
         std::string serial_port;///< 雷达端口      
-        uint8_t     m_driver_type;
 
 	};
 }

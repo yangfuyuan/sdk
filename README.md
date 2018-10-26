@@ -1,7 +1,7 @@
-YDLIDAR SDK PACKAGE V1.3.6
+YDLIDAR SDK PACKAGE V1.3.7
 =====================================================================
 
-SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
+SDK [test](https://github.com/yangfuyuan/sdk/tree/samsung) application for YDLIDAR
 
 Visit EAI Website for more details about [YDLIDAR](http://www.ydlidar.com/) .
 
@@ -9,126 +9,73 @@ How to build YDLIDAR SDK samples
 =====================================================================
     $ git clone https://github.com/yangfuyuan/sdk
     $ cd sdk
-    $ git checkout non-singleton
+    $ git checkout samsung
     $ cd ..
     $ mkdir build
     $ cd build
     $ cmake ../sdk
     $ make			###linux
     $ vs open Project.sln	###windows
-    
+
 How to run YDLIDAR SDK samples
 =====================================================================
     $ cd samples
 
 linux:
 
-    $ ./ydlidar_test
-    $Please enter the lidar serial port or IP:/dev/ttyUSB0
-    $Please enter the lidar serial baud rate or network port:230400
+    $ ./ydlidar_test LidarAngleCalibration.ini
+    $Please enter the lidar serial port:/dev/ttyUSB0
+    $Please enter the lidar serial baud rate:230400
+    &Please enter the lidar intensity:0
 
 windows:
 
-    $ ydlidar_test.exe
-    $Please enter the lidar serial port or IP:COM3
-    $Please enter the lidar serial baud rate or network port:230400
+    $ ydlidar_test.exe LidarAngleCalibration.ini
+    $Please enter the lidar serial port:/dev/ttyUSB0
+    $Please enter the lidar serial baud rate:230400
+    &Please enter the lidar intensity:0
 
 =====================================================================
 
 You should see YDLIDAR's scan result in the console:
 
-    Yd Lidar running correctly ! The health status: good
-    [YDLIDAR] Connection established in [/dev/ttyUSB0]:
-    Firmware version: 2.0.9
-    Hardware version: 2
-    Model: G4
-    Serial: 2018022700000003
-    [YDLIDAR INFO] Current Sampling Rate : 9K
-    [YDLIDAR INFO] Current Scan Frequency : 7.400000Hz
-    [YDLIDAR INFO] Now YDLIDAR is scanning ......
-    Scan received: 43 ranges
-    Scan received: 1361 ranges
-    Scan received: 1412 ranges
+      [YDLIDAR]:SDK Version: 1.3.7
 
+      [YDLIDAR]:Lidar running correctly ! The health status: good
 
-Lidar point data structure
-=====================================================================
+      [YDLIDAR] Connection established in [/dev/ttyUSB0][230400]:
 
-data structure:
+      Firmware version: 1.1
 
-    struct node_info {
+      Hardware version: 3
 
-       uint8_t    sync_quality;//!intensity
+      Model: G2-SS-1
 
-       uint16_t   angle_q6_checkbit; //!angle
+      Serial: 2018072000000203
 
-       uint16_t   distance_q2; //! distance
+      [YDLIDAR INFO] Current Sampling Rate : 9K
 
-       uint64_t   stamp; //! time stamp
+      [YDLIDAR INFO] Successfully obtained the calibration value[-0.500000] from the calibration file[LidarAngleCalibration.ini]
 
-       uint8_t    scan_frequence;//! current_frequence = scan_frequence/10.0, If the current value equals zero, it is an invalid value
- 
-    } __attribute__((packed)) ;
+      [YDLIDAR INFO] Current AngleOffset : -0.500000°
 
-example:
+      [YDLIDAR INFO] Current Scan Frequency : 8.000000Hz
 
-    if(data[i].scan_frequence != 0) {
+      [YDLIDAR INFO] Now YDLIDAR is scanning ......
 
-        current_frequence = data[i].scan_frequence/10.0;
-    }
+      Scan received: 801 ranges
 
-    current_time_stamp = data[i].stamp;
+      Scan received: 938 ranges
 
-    current_distance = data[i].distance_q2;
-
-    current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
-
-    current_intensity = (float)(data[i].sync_quality);
-
-    ###note:current_frequence = data[0].scan_frequence/10.0.
-
-    ###if the current_frequence value equals zero, it is an invalid value.
-
-code:
-        
-        void ParseScan(node_info* data, const size_t& size) {
-
-            double current_frequence, current_distance, current_angle, current_intensity;
-
-            uint64_t current_time_stamp;
-
-            for (size_t i = 0; i < size; i++ ) {
-
-                if( data[i].scan_frequence != 0) {
-
-                    current_frequence =  data[i].scan_frequence;//or current_frequence = data[0].scan_frequence
-
-                }
-
-                current_time_stamp = data[i].stamp;
-
-                current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
-
-                current_distance =  data[i].distance_q2;
-
-                current_intensity = (float)(data[i].sync_quality);
-
-            }
-
-            if (current_frequence != 0 ) {
-
-                printf("current lidar scan frequency: %f\n", current_frequence);
-
-            } else {
-
-                printf("Current lidar does not support return scan frequency\n");
-
-            }
-        }
 
 
 Upgrade Log
 =====================================================================
+2018-10-15 version:1.3.7
+
+   1.add input angle calibration file.
+   
+   2.remove network.
 
 2018-10-15 version:1.3.6
 
@@ -153,4 +100,3 @@ Upgrade Log
 2018-04-16 version:1.3.1
 
    1.Compensate for each laser point timestamp.
-
