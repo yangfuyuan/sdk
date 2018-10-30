@@ -89,6 +89,6 @@ install (FILES
 )
 
 if(BUILD_EXAMPLE)
-  add_subdirectory(Test)
+  #add_subdirectory(Test)
 endif()
 

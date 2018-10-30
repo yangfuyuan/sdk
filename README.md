@@ -97,14 +97,14 @@ How to run YDLIDAR SDK samples
 linux:
 
     $ ./ydlidar_test
-    $请输入端口号:/dev/ttyUSB0
-    $请输入雷达波特率:230400
+    $请输入串口号或雷达IP: /dev/ttyUSB0
+    $请输入雷达波特率或网络端口:230400
 
 windows:
 
     $ ydlidar_test.exe
-    $请输入端口号:COM3
-    $请输入雷达波特率:230400
+    $请输入串口号或雷达IP: COM3
+    $请输入雷达波特率或网络端口::230400
 
 You should see YDLIDAR's scan result in the console:
 
@@ -236,3 +236,4 @@ Upgrade Log
 
 
 ####备注:雷达安装位置和角度根据实际情况设定, 注意实际屏幕和操作屏幕的换算比例. 如果安装角度是120度, 直接把雷达安装角度设置为120, 不用更改雷达零点.
+请输入串口号或雷达IP:
