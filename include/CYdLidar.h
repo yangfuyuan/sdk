@@ -27,6 +27,9 @@
 #endif
 
 #define DEG2RAD(x) ((x)*M_PI/180.)
+#define SUNNOISEINTENSITY 0xff
+#define GLASSNOISEINTENSITY 0xfe
+
 
 using namespace ydlidar;
 
@@ -44,6 +47,10 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(bool,HeartBeat,private)///< 设置和获取激光是否开启掉电保护, 之后版本号大于等于2.0.9的(G4, F4PRO, G4C)支持
     PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
     PropertyBuilderByName(bool,AutoReconnect, private)///< 设置异常是否开启重新连接
+    PropertyBuilderByName(bool,GlassNoise, private)///< 设置是否关闭玻璃噪声干扰
+    PropertyBuilderByName(bool,SunNoise, private)///< 设置是否关闭太阳干扰
+
+
 
 
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率

@@ -654,12 +654,13 @@ std::string format(const char *fmt, ...)
 
         if (CheckSunResult) {
             if (m_intensities) {
-				(*node).sync_quality = (uint8_t((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03)<< (8-LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT) ) || (package.packageSample[package_Sample_Index].PakageSampleQuality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT));
-				(*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
+                (*node).sync_quality = ((uint16_t)((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03) << LIDAR_RESP_MEASUREMENT_ANGLE_SAMPLE_SHIFT) | ( package.packageSample[package_Sample_Index].PakageSampleQuality));
+                (*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
                 (*node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance ;
             } else {
 				(*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index] >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
                 (*node).distance_q = packages.packageSampleDistance[package_Sample_Index];
+                (*node).sync_quality =  ((uint16_t)(0xfc | packages.packageSampleDistance[package_Sample_Index]&0x0003)) <<LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
 			}	  
             if ((*node).distance_q != 0) {

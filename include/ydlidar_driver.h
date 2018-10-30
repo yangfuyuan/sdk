@@ -39,6 +39,7 @@
 #define LIDAR_RESP_MEASUREMENT_CHECKBIT       (0x1<<0)
 #define LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT    1
 #define LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT  2
+#define LIDAR_RESP_MEASUREMENT_ANGLE_SAMPLE_SHIFT 8
 
 #define LIDAR_CMD_RUN_POSITIVE             0x06
 #define LIDAR_CMD_RUN_INVERSION            0x07
@@ -86,7 +87,7 @@ typedef enum {
 
 struct node_info {
 	uint8_t    sync_flag;  //sync flag
-    uint8_t    sync_quality;//!信号质量
+    uint16_t   sync_quality;//!信号质量
     uint16_t   angle_q6_checkbit; //!测距点角度
     uint16_t   distance_q2; //! 当前测距点距离
     uint16_t   distance_q; //! 当前测距点距离
