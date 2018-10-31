@@ -939,6 +939,9 @@ int main(int argc, char * argv[]) {
     laser.setSerialBaudrate(baud);
     laser.setAutoReconnect(true);//串口异常自动重新
     laser.setDeviceType(driver_type);
+    laser.setHeartBeat(true);
+    laser.setScanFrequency(8);
+    laser.setIntensities(false);
 
 
     laser.setMax_x(width/resolution_x);
