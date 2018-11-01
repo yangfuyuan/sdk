@@ -20,10 +20,15 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_AutoReconnect     = false;
     m_MaxAngle          = 180.f;
     m_MinAngle          = -180.f;
+    m_ArcDetectMinAngle = -60.f;
+    m_ArcDetectMaxAngle = 60.f;
     m_MaxRange          = 16.0;
     m_MinRange          = 0.08;
+    m_Threshold         = 2.0;
+    m_CheckLidarArc     = false;
     isScanning          = false;
     isConnected         = false;
+    m_CheckOut          = true;
     node_counts         = 720;
     each_angle          = 0.5;
     m_IgnoreArray.clear();
@@ -62,6 +67,13 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
     node_info nodes[2048];
     size_t   count = _countof(nodes);
     size_t all_nodes_counts = node_counts;
+
+    std::vector<gline> lines;
+    lines.clear();
+    std::vector<double> bearings;
+    std::vector<unsigned int> indices;
+    RangeData  rangedata;
+    int current_index = 0;
 
     //  wait Scan data:
     uint64_t tim_scan_start = getTime();
@@ -169,8 +181,50 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
                 if (0<= pos && pos < counts) {
                     scan_msg.ranges[pos] =  range;
                     scan_msg.intensities[pos] = intensity;
+
+                    if(m_CheckLidarArc) {
+                        double angle = scan_msg.config.min_angle + scan_msg.config.ang_increment*pos;
+                        double lx = range*cos(angle);
+                        double ly = range*sin(angle);
+
+                        if(range >= scan_msg.config.min_range&& angle > DEG2RAD(m_ArcDetectMinAngle) && angle < DEG2RAD(m_ArcDetectMaxAngle)) {
+                            bearings.push_back(angle);
+                            indices.push_back(current_index);
+                            rangedata.ranges.push_back(range);
+                            rangedata.xs.push_back(lx);
+                            rangedata.ys.push_back(ly);
+                            current_index++;
+                        }
+                    }
+
+
                 }
             }
+
+            if(m_CheckLidarArc) {
+                m_line_feature.setCachedRangeData(bearings, indices, rangedata);
+                m_line_feature.extractLines(lines);
+                printf("detected line size: %d\n", lines.size());
+                fflush(stdout);
+                m_CheckOut = true;
+                double arc_angle = -1;
+                for(std::vector<gline>::const_iterator it = lines.begin(); it != lines.end(); it++) {
+                    if(arc_angle == -1) {
+                        arc_angle = it->angle;
+                    }
+                    if(fabs(arc_angle - it->angle) > DEG2RAD(m_Threshold)) {
+                        m_CheckOut = false;
+                    }
+                }
+                if(m_CheckOut) {
+                    printf("good\n");
+                }else {
+                    printf("bad\n");
+                }
+                fflush(stdout);
+            }
+
+
 
             scan_msg.system_time_stamp = tim_scan_start;
             scan_msg.self_time_stamp = tim_scan_start;

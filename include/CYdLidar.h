@@ -1,5 +1,6 @@
 ﻿
 #pragma once
+#include "line_feature.h"
 #include "utils.h"
 #include "ydlidar_driver.h"
 #include <math.h>
@@ -28,6 +29,7 @@
 #define DEG2RAD(x) ((x)*M_PI/180.)
 
 using namespace ydlidar;
+using namespace line_feature;
 
 class YDLIDAR_API CYdLidar
 {
@@ -35,6 +37,15 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(float,MinRange,private)///< 设置和获取激光最小测距范围
     PropertyBuilderByName(float,MaxAngle,private)///< 设置和获取激光最大角度, 最大值180度
     PropertyBuilderByName(float,MinAngle,private)///< 设置和获取激光最小角度, 最小值-180度
+
+    PropertyBuilderByName(float,ArcDetectMaxAngle,private)///< 畸变检测开始角度
+    PropertyBuilderByName(float,ArcDetectMinAngle,private)///< 畸变检测结束角度
+    PropertyBuilderByName(bool,CheckOut,private)///< 是否合格(有无畸变)
+    PropertyBuilderByName(bool,CheckLidarArc,private)///< 是否开启检测雷达畸变
+    PropertyBuilderByName(float,Threshold,private)///< (畸变角度阈值)
+
+
+
 
     PropertyBuilderByName(bool,FixedResolution,private)///< 设置和获取激光是否是固定角度分辨率
     PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
@@ -100,6 +111,7 @@ private:
     int node_counts ;
     double each_angle;
     YDlidarDriver *lidarPtr;
+    LineFeature    m_line_feature;
 
 };	// End of class
 
