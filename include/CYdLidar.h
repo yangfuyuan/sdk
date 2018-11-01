@@ -38,8 +38,8 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(float,MaxAngle,private)///< 设置和获取激光最大角度, 最大值180度
     PropertyBuilderByName(float,MinAngle,private)///< 设置和获取激光最小角度, 最小值-180度
 
-    PropertyBuilderByName(float,ArcDetectMaxAngle,private)///< 畸变检测开始角度
-    PropertyBuilderByName(float,ArcDetectMinAngle,private)///< 畸变检测结束角度
+    PropertyBuilderByName(float,ArcDetectMinAngle,private)///< 畸变检测开始角度
+    PropertyBuilderByName(float,ArcDetectMaxAngle,private)///< 畸变检测结束角度
     PropertyBuilderByName(bool,CheckOut,private)///< 是否合格(有无畸变)
     PropertyBuilderByName(bool,CheckLidarArc,private)///< 是否开启检测雷达畸变
     PropertyBuilderByName(float,Threshold,private)///< (畸变角度阈值)
