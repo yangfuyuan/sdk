@@ -67,11 +67,24 @@ typedef uint64_t TTimeStamp;
 
 #define INVALID_TIMESTAMP (0)
 
+#define IS_OK(x)    ( (x) == RESULT_OK )
+#define IS_TIMEOUT(x)  ( (x) == RESULT_TIMEOUT )
+#define IS_FAIL(x)  ( (x) == RESULT_FAIL )
+
+
 enum {
     DEVICE_DRIVER_TYPE_SERIALPORT = 0x0,
     DEVICE_DRIVER_TYPE_TCP = 0x1,
 };
 
+
+#if !defined(_countof)
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#endif
+
+#ifndef M_PI
+#define M_PI 3.1415926
+#endif
 
 // Determine if sigaction is available
 #if __APPLE__ || _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE

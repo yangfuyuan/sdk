@@ -4,10 +4,9 @@
 #include <string>
 #include <signal.h>
 #include <memory>
-#include <regex>
+#include <string.h>
 using namespace std;
 using namespace ydlidar;
-CYdLidar laser;
 
 #if defined(_MSC_VER)
 #pragma comment(lib, "ydlidar_driver.lib")
@@ -18,39 +17,35 @@ int main(int argc, char * argv[])
 	printf(" YDLIDAR C++ TEST\n");
     std::string port;
     std::string baudrate;
-    printf("Please enter the lidar serial port or IP:");
-    std::cin>>port;
-    printf("Please enter the lidar serial baud rate or network port:");
-    std::cin>>baudrate;
-    const int baud = atoi(baudrate.c_str());
-    const int intensities =  0;
+    int baud = 115200;
 
-    regex reg("(\\d{1,3}).(\\d{1,3}).(\\d{1,3}).(\\d{1,3})");
-    smatch m;
-
-    uint8_t driver_type;
-    if(regex_match(port, m, reg)) {
-        driver_type = 1;
+    std::map<std::string, std::string> lidars = YDlidarDriver::lidarPortList();
+    if(lidars.size()==1) {
+        std::map<string, string>::iterator iter = lidars.begin();
+        port = iter->second;
     }else {
-        driver_type = 0;
+        printf("Please enter the lidar serial port:");
+        std::cin>>port;
+        printf("Please enter the lidar serial baud rate:");
+        std::cin>>baudrate;
+        baud = atoi(baudrate.c_str());
+
     }
 
 
+
+
     ydlidar::init(argc, argv);
+    CYdLidar laser;
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
-    laser.setDeviceType(driver_type);
     laser.setFixedResolution(false);
-    laser.setHeartBeat(true);
     laser.setReversion(false);
-    laser.setIntensities(intensities);
-    laser.setScanFrequency(12);
-    laser.setAutoReconnect(true);//异常是否重新连接
+    laser.setAutoReconnect(true);
     laser.initialize();
     while(ydlidar::ok()){
 		bool hardError;
 		LaserScan scan;
-
 		if(laser.doProcessSimple(scan, hardError )){
             fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
             fflush(stdout);

@@ -7,7 +7,6 @@
 #include <cstring>
 #include <sstream>
 #include "v8stdint.h"
-#include "ChannelDevice.h"
 
 namespace serial {
 
@@ -105,7 +104,7 @@ namespace serial {
 	/*!
 	* Class that provides a portable serial port interface.
 	*/
-    class Serial : public ChannelDevice {
+    class Serial  {
 	public:
 		/*!
 		* Creates a Serial object and opens the port if a port is specified,
@@ -150,8 +149,6 @@ namespace serial {
 		virtual ~Serial ();
 
 
-        virtual bool bindport(const char *, uint32_t);
-
 		/*!
 		* Opens the serial port as long as the port is set and the port isn't
 		* already open.
@@ -189,12 +186,15 @@ namespace serial {
 		void waitByteTimes (size_t count);
 
 
+        /**
+         * @brief waitfordata
+         * @param data_count
+         * @param timeout
+         * @param returned_size
+         * @return
+         */
 		int waitfordata(size_t data_count, uint32_t timeout, size_t * returned_size);
 
-
-        virtual size_t writeData(const uint8_t * data, size_t size);
-
-        virtual size_t readData(uint8_t * data, size_t size);
 
 		/*! Read a given amount of bytes from the serial port into a given buffer.
 		*
@@ -575,30 +575,35 @@ namespace serial {
 	};
 
 
-	/*!
-	* Structure that describes a serial device.
-	*/
-	struct PortInfo {
+    /*!
+     * Structure that describes a serial device.
+     */
+    struct PortInfo {
 
-		/*! Address of the serial port (this can be passed to the constructor of Serial). */
-		std::string port;
+        /*! Address of the serial port (this can be passed to the constructor of Serial). */
+        std::string port;
 
-		/*! Human readable description of serial device if available. */
-		std::string description;
+        /*! Human readable description of serial device if available. */
+        std::string description;
 
-		/*! Hardware ID (e.g. VID:PID of USB serial devices) or "n/a" if not available. */
-		std::string hardware_id;
+        /*! Hardware ID (e.g. VID:PID of USB serial devices) or "n/a" if not available. */
+        std::string hardware_id;
 
-	};
+        /*! Hardware Device ID or "" if not available. */
+        std::string device_id;
 
-	/* Lists the serial ports available on the system
-	*
-	* Returns a vector of available serial ports, each represented
-	* by a serial::PortInfo data structure:
-	*
-	* \return vector of serial::PortInfo.
-	*/
-	//std::vector<PortInfo> list_ports();
+    };
+
+    /* Lists the serial ports available on the system
+    *
+    * Returns a vector of available serial ports, each represented
+    * by a serial::PortInfo data structure:
+    *
+    * \return vector of serial::PortInfo.
+    */
+    std::vector<PortInfo>
+        list_ports();
+
 
 } // namespace serial
 

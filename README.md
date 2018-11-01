@@ -1,20 +1,29 @@
 YDLIDAR SDK PACKAGE V1.3.6
 =====================================================================
 
-SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
+SDK [test](https://github.com/yangfuyuan/sdk/tree/s2) application for YDLIDAR
 
 Visit EAI Website for more details about [YDLIDAR](http://www.ydlidar.com/) .
 
 How to build YDLIDAR SDK samples
 =====================================================================
+   
     $ git clone https://github.com/yangfuyuan/sdk
+    
     $ cd sdk
-    $ git checkout non-singleton
+    
+    $ git checkout s2
+    
     $ cd ..
+    
     $ mkdir build
+    
     $ cd build
+    
     $ cmake ../sdk
+    
     $ make			###linux
+    
     $ vs open Project.sln	###windows
     
 How to run YDLIDAR SDK samples
@@ -24,31 +33,30 @@ How to run YDLIDAR SDK samples
 linux:
 
     $ ./ydlidar_test
-    $Please enter the lidar serial port or IP:/dev/ttyUSB0
-    $Please enter the lidar serial baud rate or network port:230400
+    $Please enter the lidar serial port :/dev/ttyUSB0
+    $Please enter the lidar serial baud rate:115200
 
 windows:
 
     $ ydlidar_test.exe
-    $Please enter the lidar serial port or IP:COM3
-    $Please enter the lidar serial baud rate or network port:230400
+    $Please enter the lidar serial port:COM3
+    $Please enter the lidar serial baud rate:115200
 
-=====================================================================
 
 You should see YDLIDAR's scan result in the console:
 
-    Yd Lidar running correctly ! The health status: good
-    [YDLIDAR] Connection established in [/dev/ttyUSB0]:
-    Firmware version: 2.0.9
-    Hardware version: 2
-    Model: G4
-    Serial: 2018022700000003
-    [YDLIDAR INFO] Current Sampling Rate : 9K
-    [YDLIDAR INFO] Current Scan Frequency : 7.400000Hz
-    [YDLIDAR INFO] Now YDLIDAR is scanning ......
-    Scan received: 43 ranges
-    Scan received: 1361 ranges
-    Scan received: 1412 ranges
+     	YDLIDAR C++ TEST
+     	
+	[YDLIDAR INFO] Now YDLIDAR SDK VERSION: 1.3.6
+	
+	fhs_lock: creating lockfile:      11796
+
+	[YDLIDAR INFO] Connection established in /dev/ttyUSB0[115200]:
+	
+	[YDLIDAR INFO] Now YDLIDAR is scanning ......
+	
+	Scan received: 272 ranges
+	
 
 
 Lidar point data structure
@@ -79,7 +87,7 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q2;
+    current_distance = data[i].distance_q2/4.f;
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
@@ -109,7 +117,7 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q2;
+                current_distance =  data[i].distance_q2/4.f;
 
                 current_intensity = (float)(data[i].sync_quality);
 
@@ -130,9 +138,9 @@ code:
 Upgrade Log
 =====================================================================
 
-2018-10-15 version:1.3.6
+2018-11-1 version:1.3.6
 
-   1.add network support.
+   1.remove unwanted code.
 
 2018-05-23 version:1.3.4
 

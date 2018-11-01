@@ -1,23 +1,14 @@
 var searchData=
 [
   ['cachescandata',['cacheScanData',['../classydlidar_1_1_y_dlidar_driver.html#ab462b22dc3a4d39fef4f722345a87d5e',1,'ydlidar::YDlidarDriver']]],
-  ['cactivesocket',['CActiveSocket',['../classydlidar_1_1_c_active_socket.html',1,'ydlidar']]],
-  ['channeldevice',['ChannelDevice',['../class_channel_device.html',1,'']]],
   ['checkcomms',['checkCOMMs',['../class_c_yd_lidar.html#ab43ca6b1d054aa464a36bea0d4b7934c',1,'CYdLidar']]],
   ['checkhardware',['checkHardware',['../class_c_yd_lidar.html#ab3c24f8f59fee87aa4e829ca5c8f90d2',1,'CYdLidar']]],
   ['checkstatus',['checkStatus',['../class_c_yd_lidar.html#a8b401544eb4c992c7eff8d5fd47e5676',1,'CYdLidar']]],
   ['cleardtr',['clearDTR',['../classydlidar_1_1_y_dlidar_driver.html#a67fe00d7458cdb52b4160d745b8ecd32',1,'ydlidar::YDlidarDriver']]],
-  ['close',['Close',['../classydlidar_1_1_c_simple_socket.html#afbb30cef80ae0faec59403184cab3bb1',1,'ydlidar::CSimpleSocket']]],
   ['closeport',['closePort',['../classserial_1_1_serial.html#afb659db0159a6f4bcefe760fa20df18e',1,'serial::Serial']]],
   ['cmd_5fpacket',['cmd_packet',['../structcmd__packet.html',1,'']]],
   ['config',['config',['../struct_laser_scan.html#a5c7dd0b85432e62cf319f2ad4ec058b4',1,'LaserScan']]],
   ['connect',['connect',['../classydlidar_1_1_y_dlidar_driver.html#a2c5eeecccaa6ed874635de1617e8d7d8',1,'ydlidar::YDlidarDriver']]],
-  ['cpassivesocket',['CPassiveSocket',['../classydlidar_1_1_c_passive_socket.html',1,'ydlidar']]],
   ['createthread',['createThread',['../classydlidar_1_1_y_dlidar_driver.html#a2d2b317fa6381009222e03670812e917',1,'ydlidar::YDlidarDriver']]],
-  ['cshutdownmode',['CShutdownMode',['../classydlidar_1_1_c_simple_socket.html#a7eae391e0dcbafd740488b9a269c8eee',1,'ydlidar::CSimpleSocket']]],
-  ['csimplesocket',['CSimpleSocket',['../classydlidar_1_1_c_simple_socket.html',1,'ydlidar']]],
-  ['csocketerror',['CSocketError',['../classydlidar_1_1_c_simple_socket.html#a30314453fd304767763767da7cb5c482',1,'ydlidar::CSimpleSocket']]],
-  ['csockettype',['CSocketType',['../classydlidar_1_1_c_simple_socket.html#a8ac1428be55f3b5128d122b90c63ef0b',1,'ydlidar::CSimpleSocket']]],
-  ['cstattimer',['CStatTimer',['../class_c_stat_timer.html',1,'']]],
   ['cydlidar',['CYdLidar',['../class_c_yd_lidar.html',1,'']]]
 ];

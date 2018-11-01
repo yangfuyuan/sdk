@@ -35,20 +35,13 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(float,MinRange,private)///< 设置和获取激光最小测距范围
     PropertyBuilderByName(float,MaxAngle,private)///< 设置和获取激光最大角度, 最大值180度
     PropertyBuilderByName(float,MinAngle,private)///< 设置和获取激光最小角度, 最小值-180度
-    PropertyBuilderByName(int,ScanFrequency,private)///< 设置和获取激光扫描频率(范围5HZ~12HZ)
 
-    PropertyBuilderByName(bool,Intensities,private)///< 设置和获取激光带信号质量(只有S4B雷达支持)
     PropertyBuilderByName(bool,FixedResolution,private)///< 设置和获取激光是否是固定角度分辨率
-    PropertyBuilderByName(bool,Exposure,private)///< 设置和获取激光时候开启低光功率曝光模式 只有S4雷达支持
-    PropertyBuilderByName(bool,HeartBeat,private)///< 设置和获取激光是否开启掉电保护, 之后版本号大于等于2.0.9的(G4, F4PRO, G4C)支持
     PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
     PropertyBuilderByName(bool,AutoReconnect, private)///< 设置异常是否开启重新连接
 
 
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率
-    PropertyBuilderByName(int,SampleRate,private)///< 设置和获取激光采样频率
-    PropertyBuilderByName(int,DeviceType,private)///< 设备连接类型
-
     PropertyBuilderByName(std::string,SerialPort,private)///< 设置和获取激光端口号
     PropertyBuilderByName(std::vector<float>,IgnoreArray,private)///< 设置和获取激光剔除点
 
@@ -103,9 +96,9 @@ protected:
 
 private:
     bool isScanning;
+    bool isConnected;
     int node_counts ;
     double each_angle;
-    int show_error;
     YDlidarDriver *lidarPtr;
 
 };	// End of class

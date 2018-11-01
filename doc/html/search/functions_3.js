@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['describeerror',['DescribeError',['../classydlidar_1_1_c_simple_socket.html#a0ee13f2a8edcbf5aab5ad512cc35ad67',1,'ydlidar::CSimpleSocket']]],
-  ['disableconstfreq',['disableConstFreq',['../classydlidar_1_1_y_dlidar_driver.html#ae4b3883dd18bf01737bc4783d2dae974',1,'ydlidar::YDlidarDriver']]],
-  ['disabledatagrabbing',['disableDataGrabbing',['../classydlidar_1_1_y_dlidar_driver.html#ae66565bee3cdb8b74698b691f2ab1e63',1,'ydlidar::YDlidarDriver']]],
-  ['disablelowerpower',['disableLowerPower',['../classydlidar_1_1_y_dlidar_driver.html#a18895e94f42ce61890b4912727cdfbd8',1,'ydlidar::YDlidarDriver']]],
-  ['disablenaglealgoritm',['DisableNagleAlgoritm',['../classydlidar_1_1_c_simple_socket.html#a91843dc1e8c8026316bcc9e4617c014e',1,'ydlidar::CSimpleSocket']]],
-  ['disconnect',['disconnect',['../classydlidar_1_1_y_dlidar_driver.html#aa26790ae49d33936229fa67739a8ff5f',1,'ydlidar::YDlidarDriver']]]
+  ['flush',['flush',['../classserial_1_1_serial.html#a45a7676a6e6c775cd549e889e714b5bb',1,'serial::Serial']]],
+  ['flushinput',['flushInput',['../classserial_1_1_serial.html#aa7432cbada95a7eac6d71a107cf2eaa3',1,'serial::Serial']]],
+  ['flushoutput',['flushOutput',['../classserial_1_1_serial.html#a95e0d6dcf2b7b9aa45225bfb1647c427',1,'serial::Serial']]]
 ];
