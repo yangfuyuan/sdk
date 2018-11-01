@@ -111,13 +111,12 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 
 
 	// Fill in scan data:
-	if (op_result == RESULT_OK)
+    if (IS_OK(op_result))
 	{
 		op_result = YDlidarDriver::singleton()->ascendScanData(nodes, count);
-		//同步后的时间
         uint64_t max_time =nodes[0].stamp ;
         uint64_t min_time = nodes[0].stamp;
-		if (op_result == RESULT_OK)
+        if (IS_OK(op_result))
 		{
             if(!m_FixedResolution){
                 all_nodes_counts = count;
@@ -196,7 +195,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 
 
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)(angle_compensate_nodes[i].distance_q)/1000.f;
+                range = (float)(angle_compensate_nodes[i].distance_q)/4000.f;
                 intensity = (float)(angle_compensate_nodes[i].sync_quality);
 
                 if (i<all_nodes_counts/2) {
@@ -290,7 +289,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
 		}
 
     } else {
-        if (op_result==RESULT_FAIL) {
+        if (IS_FAIL(op_result)) {
 			// Error? Retry connection
 			//this->disconnect();
 		}
@@ -336,7 +335,7 @@ bool CYdLidar::getDeviceHealth() const {
     device_health healthinfo;
 
 	op_result = YDlidarDriver::singleton()->getHealth(healthinfo);
-    if (op_result == RESULT_OK) {
+    if (IS_OK(op_result)) {
         printf("Yd Lidar running correctly ! The health status: %s\n", (int)healthinfo.status==0?"good":"bad");
 
         if (healthinfo.status == 2) {
@@ -360,7 +359,8 @@ bool CYdLidar::getDeviceInfo(int &type) {
 	if (!YDlidarDriver::singleton()) return false;
 
 	device_info devinfo;
-    if (YDlidarDriver::singleton()->getDeviceInfo(devinfo) != RESULT_OK ) {
+    result_t op_result = YDlidarDriver::singleton()->getDeviceInfo(devinfo);
+    if (!IS_OK(op_result)) {
         if (show_error == 3)
             fprintf(stderr, "get DeviceInfo Error\n" );
 		return false;
@@ -389,7 +389,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
         {
             model="G4";
             ans = YDlidarDriver::singleton()->getSamplingRate(_rate);
-            if (ans == RESULT_OK) {
+            if (IS_OK(ans)) {
                 switch (m_SampleRate) {
                 case 4:
                     _samp_rate=0;
@@ -407,7 +407,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
 
                 while (_samp_rate != _rate.rate) {
                     ans = YDlidarDriver::singleton()->setSamplingRate(_rate);
-                    if (ans != RESULT_OK) {
+                    if (!IS_OK(ans)) {
                         bad++;
                         if(bad>5){
                             break;
@@ -444,7 +444,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
         {
             model="F4Pro";
             ans = YDlidarDriver::singleton()->getSamplingRate(_rate);
-            if (ans == RESULT_OK) {
+            if (IS_OK(ans)) {
                 switch (m_SampleRate) {
                 case 4:
                     _samp_rate=0;
@@ -458,7 +458,7 @@ bool CYdLidar::getDeviceInfo(int &type) {
                 }
                 while (_samp_rate != _rate.rate) {
                     ans = YDlidarDriver::singleton()->setSamplingRate(_rate);
-                    if (ans != RESULT_OK) {
+                    if (!IS_OK(ans)) {
                         bad++;
                         if(bad>5){
                             break;
@@ -662,7 +662,7 @@ bool  CYdLidar::checkCOMMs()
 	// make connection...
     YDlidarDriver::singleton()->setSaveParse(m_EnableDebug, "/tmp/ydldiar_scan.txt");
     result_t op_result = YDlidarDriver::singleton()->connect(m_SerialPort.c_str(), m_SerialBaudrate);
-    if (op_result != RESULT_OK) {
+    if (!IS_OK(op_result)) {
         fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port %s\n",  m_SerialPort.c_str() );
 		return false;
 	}
@@ -748,7 +748,7 @@ bool CYdLidar::checkStatus()
 
      // start scan...
     result_t s_result= YDlidarDriver::singleton()->startScan();
-    if (s_result != RESULT_OK) {
+    if (!IS_OK(s_result)) {
         fprintf(stderr, "[CYdLidar] Error starting scanning mode: %x\n", s_result);
         isScanning = false;
         return false;

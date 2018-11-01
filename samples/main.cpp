@@ -3,21 +3,10 @@
 #include "timer.h"
 #include <iostream>
 #include <string>
-#include <signal.h>
 #include <memory>
-//#include <unistd.h>
 using namespace std;
 using namespace ydlidar;
-CYdLidar laser;
-static bool running = false;
 
-static void Stop(int signo)
-{
-
-    printf("Received exit signal\n");
-    running = true;
-
-}
 
 int main(int argc, char * argv[])
 {
@@ -37,8 +26,9 @@ int main(int argc, char * argv[])
     const int baud = atoi(baudrate.c_str());
     bool intensities = atoi(intensity.c_str()) ==0?false:true;
 
-    signal(SIGINT, Stop);
-    signal(SIGTERM, Stop);
+    ydlidar::init(argc, argv);
+
+    CYdLidar laser;
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baud);
     laser.setIntensities(intensities);
@@ -61,7 +51,7 @@ int main(int argc, char * argv[])
 
     laser.initialize();
 
-    while(!running){
+    while(ydlidar::ok()){
 		bool hardError;
         LaserScan scan;//原始激光数据
         LaserScan syncscan;//同步后激光数据

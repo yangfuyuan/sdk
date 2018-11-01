@@ -699,14 +699,6 @@ namespace ydlidar{
     	*/
 		result_t setPointsForOneRingFlag(scan_points& points,uint32_t timeout = DEFAULT_TIMEOUT);
 
-		/**
-		* @brief 解析激光信息数据到scanDot数据类型 \n
-    	* @param[in] scan_data 解析后激光数据
-    	* @param[in] buffer    解析前激光信息数据		
-		* @param[in] count      一圈激光点数
-		* @note 解析之前，必须使用::ascendScanData函数获取激光数据成功
-    	*/
-		void simpleScanData(std::vector<scanDot> * scan_data , node_info *buffer, size_t count);
 
 	protected:
 	   /**
@@ -844,6 +836,11 @@ namespace ydlidar{
 		* @brief 清除串口DTR \n
     	*/
 		void clearDTR();
+
+        /**
+         * @brief checkTransTime
+         */
+        void checkTransTime();
 
 
 	public:

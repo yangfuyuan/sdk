@@ -143,7 +143,7 @@ example:
 
     current_time_stamp = data[i].stamp;
 
-    current_distance = data[i].distance_q;　//v1.3.5版本之后距离不用右移２位
+    current_distance = data[i].distance_q;　
 
     current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
@@ -173,7 +173,7 @@ code:
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q;
+                current_distance =  data[i].distance_q/4.0;
 
                 current_intensity = (float)(data[i].sync_quality );
 
