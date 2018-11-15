@@ -826,6 +826,7 @@ namespace ydlidar{
         uint32_t m_baudrate;				///< 波特率
 		bool isSupportMotorCtrl;			///< 是否支持电机控制
         uint64_t m_node_time_ns;			///< 时间戳
+        uint64_t m_node_last_time_ns;       ///< 时间戳
 		uint32_t m_pointTime;				///< 激光点直接时间间隔
 		uint32_t trans_delay;				///< 串口传输一个byte时间
         uint16_t firmware_version;          ///< 雷达固件版本号

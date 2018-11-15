@@ -60,6 +60,7 @@ std::string format(const char *fmt, ...)
         m_pointTime         = 1e9/4000;
         trans_delay         = 0;
         m_node_time_ns      = 0;
+        m_node_last_time_ns = 0;
 
         //解析参数
         PackageSampleBytes  = 2;
@@ -694,12 +695,15 @@ std::string format(const char *fmt, ...)
 		}
 
         if ((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT) {
-            m_node_time_ns = getTime() - (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
+            m_node_last_time_ns = m_node_time_ns ;
+            m_node_time_ns = getTime()- (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
+            int time_diff = (m_node_time_ns - m_node_last_time_ns);
+            if(time_diff < 0) {
+               m_node_time_ns = m_node_last_time_ns;
+            }
+
 		}
-
-
         (*node).stamp = m_node_time_ns + package_Sample_Index*m_pointTime;
-
 		package_Sample_Index++;
 
         if (package_Sample_Index >= nowPackageNum) {

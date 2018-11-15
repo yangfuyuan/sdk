@@ -84,6 +84,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
         op_result = lidarPtr->ascendScanData(nodes, count);
         tim_scan_start = nodes[0].stamp;
         tim_scan_end   = nodes[0].stamp;
+
         double scan_time = tim_scan_end - tim_scan_start;
         if (IS_OK(op_result)) {
             if (!m_FixedResolution) {
@@ -139,8 +140,6 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
             int node_start = all_nodes_counts*(angle_start/360.0f);
 
             scan_time = tim_scan_end - tim_scan_start;
-
-
             scan_msg.ranges.resize(counts);
             scan_msg.intensities.resize(counts);
             float range = 0.0;
