@@ -367,7 +367,10 @@ namespace ydlidar{
                             }
 
                             while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
-                                delay(200);
+                                delay(500);
+                                uint64_t time = getTime();
+                                fprintf(stderr, "[%lu]: wait %s is available\n",time, serial_port.c_str());
+                                fflush(stderr);
                             }
                             if(!isAutoReconnect) {
                                 isScanning = false;
@@ -377,6 +380,11 @@ namespace ydlidar{
                                 if(startAutoScan() == RESULT_OK){
                                     timeout_count =0;
                                     isAutoconnting = false;
+                                }else {
+                                    uint64_t time = getTime();
+                                    fprintf(stderr, "[%lu]:Failed to start lidar scan\n", time);
+                                    fflush(stderr);
+                                    delay(500);
                                 }
 
                             }
