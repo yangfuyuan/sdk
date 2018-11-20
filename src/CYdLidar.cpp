@@ -18,8 +18,8 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_SerialBaudrate = 115200;
     m_Intensities = false;
     m_Exposure = false;
-    m_HeartBeat = false;
-    m_AutoReconnect = false;
+    m_HeartBeat = true;
+    m_AutoReconnect = true;
     m_DeviceType    = DEVICE_DRIVER_TYPE_SERIALPORT;
     m_Max_x = 1920;
     m_Min_x = 0;

@@ -20,8 +20,8 @@ namespace ydlidar{
 		isScanning = false;
         //串口配置参数
 		m_intensities = false;
-		isHeartbeat = false;
-        isAutoReconnect = false;
+        isHeartbeat = true;
+        isAutoReconnect = true;
         isAutoconnting = false;
 
 		_baudrate = 115200;
