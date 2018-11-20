@@ -20,7 +20,7 @@ CYdLidar::CYdLidar(): lidarPtr(0)
     m_Exposure = false;
     m_HeartBeat = false;
     m_Reversion = false;
-    m_AutoReconnect = false;
+    m_AutoReconnect = true;
     m_MaxAngle = 180.f;
     m_MinAngle = -180.f;
     m_MaxRange = 16.0;

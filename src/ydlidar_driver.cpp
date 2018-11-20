@@ -386,9 +386,9 @@ namespace ydlidar{
 
 
                 } else {
-                    fprintf(stderr, "timout\n");
-                    fflush(stderr);
                     timeout_count++;
+                    fprintf(stderr, "timout: %d\n",timeout_count);
+                    fflush(stderr);
                 }
             }else {
                 timeout_count = 0;
