@@ -60,7 +60,7 @@ namespace ydlidar{
         ScopedLocker lk(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-                _serial->flush();
+                //_serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -100,14 +100,11 @@ namespace ydlidar{
 			if(!_serial->open()){
 				return RESULT_FAIL;
 			}
-		}
-
-		isConnected = true;
-        {
-            ScopedLocker l(_lock);
+            isConnected = true;
             sendCommand(LIDAR_CMD_FORCE_STOP);
             sendCommand(LIDAR_CMD_STOP);
-        }
+
+		}
 		clearDTR();
 
 		return RESULT_OK;
@@ -121,7 +118,7 @@ namespace ydlidar{
 
         ScopedLocker lk(_serial_lock);
 		if(_serial){
-            _serial->flush();
+            //_serial->flush();
 			_serial->setDTR(1);
 		}
 
@@ -134,7 +131,7 @@ namespace ydlidar{
 
         ScopedLocker lk(_serial_lock);
 		if(_serial){
-            _serial->flush();
+            //_serial->flush();
 			_serial->setDTR(0);
 		}
 	}
@@ -173,7 +170,7 @@ namespace ydlidar{
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-                _serial->flush();
+                //_serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -352,12 +349,15 @@ namespace ydlidar{
                         return RESULT_FAIL;
                     }else {//做异常处理, 重新连接
                         isAutoconnting = true;
+                        uint64_t time = getTime();
+                        fprintf(stderr, "[%lu]: start reconnecting in %s\n",time, serial_port.c_str());
+                        fflush(stderr);
                         while (isAutoReconnect&&isAutoconnting) {
                             {
                                 ScopedLocker l(_serial_lock);
                                 if(_serial){
                                     if(_serial->isOpen()){
-                                        _serial->flush();
+                                        //_serial->flush();
                                         _serial->closePort();
                                         delete _serial;
                                         _serial = NULL;
@@ -368,7 +368,7 @@ namespace ydlidar{
 
                             while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
                                 delay(500);
-                                uint64_t time = getTime();
+                                time = getTime();
                                 fprintf(stderr, "[%lu]: wait %s is available\n",time, serial_port.c_str());
                                 fflush(stderr);
                             }
@@ -381,7 +381,7 @@ namespace ydlidar{
                                     timeout_count =0;
                                     isAutoconnting = false;
                                 }else {
-                                    uint64_t time = getTime();
+                                    time = getTime();
                                     fprintf(stderr, "[%lu]:Failed to start lidar scan\n", time);
                                     fflush(stderr);
                                     delay(500);
