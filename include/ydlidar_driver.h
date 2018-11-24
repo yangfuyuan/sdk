@@ -274,7 +274,7 @@ namespace ydlidar{
 		* @retval true     正在扫图
     	* @retval false    扫图关闭
     	*/
-        const bool isscanning() const;
+        bool isscanning() const;
 
 		/**
 		* @brief 连接雷达状态 \n
@@ -282,7 +282,9 @@ namespace ydlidar{
 		* @retval true     成功
     	* @retval false    失败
     	*/
-        const bool isconnected() const;
+        bool isconnected() const;
+
+		bool checkHeartBeat();
 
 		/**
 		* @brief 设置雷达是否带信号质量 \n
@@ -745,6 +747,11 @@ namespace ydlidar{
         */
         result_t sendHeartBeat();
 
+        /**
+         * @brief checkTransTime
+         */
+        void checkTransTime();
+
 
 		/**
 		* @brief 关闭数据获取通道 \n
@@ -803,6 +810,7 @@ namespace ydlidar{
 		uint32_t _baudrate;					///< 波特率
 		bool isSupportMotorCtrl;			///< 是否支持电机控制
 		uint64_t m_ns;						///< 时间戳
+        uint64_t m_last_ns;
 		uint32_t m_pointTime;				///< 激光点直接时间间隔
 		uint32_t trans_delay;				///< 串口传输一个byte时间
         uint16_t firmware_version;          ///< 雷达固件版本号

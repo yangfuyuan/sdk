@@ -500,6 +500,7 @@ bool CYdLidar::checkHeartBeat() const
 {
     bool ret = false;
     scan_heart_beat beat;
+    int cnt = 0;
     if( m_HeartBeat ) {
         do{
             result_t ans = lidarPtr->setScanHeartbeat(beat);
@@ -519,8 +520,9 @@ bool CYdLidar::checkHeartBeat() const
                     return ret;
                 }
             }
+            cnt++;
 
-        }while(true);
+        }while(true&& cnt < 3);
 
     }else {
         lidarPtr->setHeartBeat(false);
@@ -582,6 +584,9 @@ bool CYdLidar::checkStatus()
         return false;
     if (lidarPtr->isscanning())
         return true;
+    if(isScanning) {
+        return true;
+    }
 
     std::map<int, bool> checkmodel;
     checkmodel.insert(std::map<int, bool>::value_type(115200, false));
@@ -651,9 +656,13 @@ bool CYdLidar::checkStatus()
      // start scan...
     result_t s_result= lidarPtr->startScan();
     if (s_result != RESULT_OK) {
-        fprintf(stderr, "[CYdLidar] Error starting scanning mode: %x\n", s_result);
-        isScanning = false;
-        return false;
+        s_result = lidarPtr->startScan();
+        if(s_result != RESULT_OK) {
+            fprintf(stderr, "[CYdLidar] Error starting scanning mode: %x\n", s_result);
+            isScanning = false;
+            return false;
+        }
+
     }
     lidarPtr->setAutoReconnect(m_AutoReconnect);
     printf("[YDLIDAR INFO] Now YDLIDAR is scanning ......\n");

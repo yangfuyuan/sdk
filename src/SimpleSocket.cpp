@@ -43,6 +43,7 @@
 #include "SimpleSocket.h"
 using namespace ydlidar;
 
+
 CSimpleSocket::CSimpleSocket(CSocketType nType) :
     m_socket(INVALID_SOCKET),
     m_socketErrno(CSimpleSocket::SocketInvalidSocket),
@@ -51,7 +52,7 @@ CSimpleSocket::CSimpleSocket(CSocketType nType) :
     m_nBytesSent(-1), m_nFlags(0),
     m_bIsBlocking(true),m_open(false)
 {
-    SetConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_SEC, 0);
+    SetConnectTimeout(1, 0);
     memset(&m_stRecvTimeout, 0, sizeof(struct timeval));
     memset(&m_stSendTimeout, 0, sizeof(struct timeval));
     memset(&m_stLinger, 0, sizeof(struct linger));
@@ -136,6 +137,7 @@ bool CSimpleSocket::bindport(const char* addr, uint32_t port) {
     SetConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_SEC, DEFAULT_CONNECTION_TIMEOUT_USEC);
     SetReceiveTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
     SetSendTimeout(DEFAULT_REV_TIMEOUT_SEC, DEFAULT_REV_TIMEOUT_USEC);
+    Flush();
     return true;
 }
 
@@ -148,6 +150,7 @@ bool CSimpleSocket::open() {
     SetNonblocking();
     m_open = Open(m_addr.c_str(), m_port);
     SetBlocking();
+    //SetNonblocking();
     return m_open;
 }
 
@@ -158,10 +161,24 @@ bool CSimpleSocket::isOpen() {
 void CSimpleSocket::closePort() {
     Close();
     m_open = false;
+#if defined(_WIN32)
+    //WSACleanup();
+#endif
+
 }
 
 void CSimpleSocket::flush() {
     Flush();
+	if (isOpen()) {
+		size_t size = 0;
+		int ret = waitfordata(1024, 2000, &size);
+		if (size > 0) {
+			uint8_t *buf = new uint8_t[size];
+			readData(buf, size);
+			delete[] buf;
+		}
+
+	}
 }
 
 int CSimpleSocket::waitfordata(size_t data_count,uint32_t timeout, size_t * returned_size ) {
@@ -429,11 +446,11 @@ int32_t CSimpleSocket::Send(const uint8_t *pBuf, size_t bytesToSend)
                 //---------------------------------------------------------
                 do
                 {
-                    m_timer.SetEndTime();
-                    if(m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC*1000){
-                        SetSocketError(CSimpleSocket::SocketTimedout);
-                        break;
-                    }
+					m_timer.SetEndTime();
+					if (m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC * 1000) {
+						SetSocketError(CSimpleSocket::SocketTimedout);
+						break;
+					}
                     m_nBytesSent = SEND(m_socket, pBuf, bytesToSend, 0);
                     TranslateSocketError();
                 } while (GetSocketError() == CSimpleSocket::SocketInterrupted);
@@ -467,11 +484,6 @@ int32_t CSimpleSocket::Send(const uint8_t *pBuf, size_t bytesToSend)
                 {
                     do
                     {
-                        m_timer.SetEndTime();
-                        if(m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC*1000){
-                            SetSocketError(CSimpleSocket::SocketTimedout);
-                            break;
-                        }
                         m_nBytesSent = SENDTO(m_socket, pBuf, bytesToSend, 0, (const sockaddr *)&m_stServerSockaddr, sizeof(m_stServerSockaddr));
                         TranslateSocketError();
                     } while (GetSocketError() == CSimpleSocket::SocketInterrupted);
@@ -551,9 +563,11 @@ bool CSimpleSocket::Flush()
     uint8_t tmpbuf = 0;
     bool  bRetVal = false;
 
-    if(IsSocketValid()) {
-        return bRetVal;
-    }
+	if (!IsSocketValid()) {
+		return false;
+	}
+
+
     //--------------------------------------------------------------------------
     // Get the current setting of the TCP_NODELAY flag.
     //--------------------------------------------------------------------------
@@ -752,6 +766,10 @@ int32_t CSimpleSocket::Receive(int32_t nMaxBytes, uint8_t * pBuffer )
         return m_nBytesReceived;
     }
 
+    if(!SetNonblocking()) {
+        return m_nBytesReceived;
+    }
+
     uint8_t * pWorkBuffer = pBuffer;
     if ( pBuffer == NULL )
     {
@@ -782,6 +800,10 @@ int32_t CSimpleSocket::Receive(int32_t nMaxBytes, uint8_t * pBuffer )
     m_timer.Initialize();
     m_timer.SetStartTime();
 
+    fd_set recvfds;
+    struct timeval timeout;
+    int nNumDescriptors = -1;
+
     switch (m_nSocketType)
     {
         //----------------------------------------------------------------------
@@ -792,17 +814,40 @@ int32_t CSimpleSocket::Receive(int32_t nMaxBytes, uint8_t * pBuffer )
     {
         do
         {
-            m_timer.SetEndTime();
-            if(m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC*1000){
-                SetSocketError(CSimpleSocket::SocketTimedout);
+			m_timer.SetEndTime();
+			if (m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC*1000) {
+				SetSocketError(CSimpleSocket::SocketTimedout);
+                break;
+			}
+            FD_ZERO(&recvfds);
+            FD_SET(m_socket, &recvfds);
+            timeout.tv_sec = DEFAULT_REV_TIMEOUT_SEC;
+            timeout.tv_usec = DEFAULT_REV_TIMEOUT_USEC;
+            nNumDescriptors = SELECT((m_socket +1),&m_readFds, NULL, NULL, &timeout);
+            if(nNumDescriptors <= 0) {
+                printf("select: %d", nNumDescriptors);
+                if(!SetBlocking()) {
+                    printf("set Blocking  failed\n");
+                }
                 break;
             }
+
             m_nBytesReceived = RECV(m_socket, (pWorkBuffer + m_nBytesReceived),
                                     nMaxBytes, m_nFlags);
             TranslateSocketError();
             if(m_nBytesReceived >= nMaxBytes)
                 break;
+            if(m_nBytesReceived <= 0) {
+                if(!SetBlocking()) {
+                    printf("set Blocking  failed\n");
+                }
+                break;
+            }
+
         } while ((GetSocketError() == CSimpleSocket::SocketInterrupted));
+        if(!SetBlocking()) {
+            printf("set Blocking  failed\n");
+        }
 
         break;
     }
@@ -816,23 +861,27 @@ int32_t CSimpleSocket::Receive(int32_t nMaxBytes, uint8_t * pBuffer )
         {
             do
             {
-                m_timer.SetEndTime();
-                if(m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC*1000){
-                    SetSocketError(CSimpleSocket::SocketTimedout);
+				m_timer.SetEndTime();
+				if (m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC * 1000) {
+					SetSocketError(CSimpleSocket::SocketTimedout);
                     break;
-                }
+				}
                 m_nBytesReceived = RECVFROM(m_socket, pWorkBuffer, nMaxBytes, 0,
                                             &m_stMulticastGroup, &srcSize);
                 TranslateSocketError();
                 if(m_nBytesReceived >= nMaxBytes)
                     break;
-
             } while (GetSocketError() == CSimpleSocket::SocketInterrupted);
         }
         else
         {
             do
             {
+				m_timer.SetEndTime();
+				if (m_timer.GetMilliSeconds()> DEFAULT_REV_TIMEOUT_SEC * 1000) {
+					SetSocketError(CSimpleSocket::SocketTimedout);
+                    break;
+				}
                 m_nBytesReceived = RECVFROM(m_socket, pWorkBuffer, nMaxBytes, 0,
                                             &m_stClientSockaddr, &srcSize);
                 TranslateSocketError();
@@ -1274,7 +1323,7 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
             return -1;
         }
 
-        nNumDescriptors = SELECT(/*max_fd*/NULL, &m_readFds, NULL, NULL, &timeout_val);
+        nNumDescriptors = SELECT(max_fd, &m_readFds, NULL, NULL, &timeout_val);
 
 
         if(nNumDescriptors < 0){
@@ -1301,7 +1350,7 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
         }else{
             // data avaliable
             assert (FD_ISSET(m_socket, &m_readFds));
-#ifdef _WIN32
+/*#ifdef _WIN32
             if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
                     *returned_size = data_count;
@@ -1309,12 +1358,13 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
                 return 0;
             }
 
-#endif
+#endif*/
 
             if(m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
                     *returned_size = data_count;
                 }
+                m_timer.SetEndTime();
                 return 0;
             }
 
@@ -1326,10 +1376,12 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
                 }
 
                 TranslateSocketError();
+                m_timer.SetEndTime();
                 return -2;
             }
 
             if (*returned_size >= data_count) {
+                m_timer.SetEndTime();
                 return 0;
             }else{
                 std::this_thread::sleep_for(std::chrono::microseconds(5));

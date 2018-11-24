@@ -32,6 +32,7 @@ namespace ydlidar{
         m_pointTime         = 1e9/4000;
         trans_delay         = 0;
         m_ns                = 0;
+        m_last_ns           = 0;
 
         //解析参数
         PackageSampleBytes  = 2;
@@ -60,7 +61,6 @@ namespace ydlidar{
         ScopedLocker lk(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-                //_serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -100,13 +100,17 @@ namespace ydlidar{
 			if(!_serial->open()){
 				return RESULT_FAIL;
 			}
-            isConnected = true;
+			isConnected = true;
+
+
+        }
+        {
+            ScopedLocker l(_lock);
             sendCommand(LIDAR_CMD_FORCE_STOP);
             sendCommand(LIDAR_CMD_STOP);
 
-		}
+        }
 		clearDTR();
-
 		return RESULT_OK;
 	}
 
@@ -118,7 +122,6 @@ namespace ydlidar{
 
         ScopedLocker lk(_serial_lock);
 		if(_serial){
-            //_serial->flush();
 			_serial->setDTR(1);
 		}
 
@@ -131,7 +134,6 @@ namespace ydlidar{
 
         ScopedLocker lk(_serial_lock);
 		if(_serial){
-            //_serial->flush();
 			_serial->setDTR(0);
 		}
 	}
@@ -170,7 +172,6 @@ namespace ydlidar{
         ScopedLocker l(_serial_lock);
 		if(_serial){
 			if(_serial->isOpen()){
-                //_serial->flush();
                 _serial->closePort();
 			}
 		}
@@ -181,21 +182,61 @@ namespace ydlidar{
 
 	void YDlidarDriver::disableDataGrabbing() {
 		{
-			isScanning = false;
+            if(isScanning) {
+                isScanning = false;
+                _dataEvent.set();
+            }
 		}
 		_thread.join();
 	}
 
-    const bool YDlidarDriver::isscanning() const
+    bool YDlidarDriver::isscanning() const
 	{
 		return isScanning;
 	}
-    const bool YDlidarDriver::isconnected() const
+    bool YDlidarDriver::isconnected() const
     {
         return isConnected;
     }
 
+	bool YDlidarDriver::checkHeartBeat()
+	{
+		bool ret = false;
+		scan_heart_beat beat;
+		int cnt = 0;
+		if (isHeartbeat) {
+			do {
+				result_t ans = setScanHeartbeat(beat);
+				if (ans == RESULT_OK) {
+					if (beat.enable) {
+						ans = setScanHeartbeat(beat);
+						if (ans == RESULT_OK) {
+							if (!beat.enable) {
+								setHeartBeat(true);
+								ret = true;
+								return ret;
+							}
+						}
+					}
+					else {
+						setHeartBeat(true);
+						ret = true;
+						return ret;
+					}
+				}
+				cnt++;
 
+			} while (true && cnt < 3);
+
+		}
+		else {
+			setHeartBeat(false);
+			ret = true;
+		}
+
+		return ret;
+
+	}
 
 	result_t YDlidarDriver::sendCommand(uint8_t cmd, const void * payload, size_t payloadsize) {
 		uint8_t pkt_header[10];
@@ -349,15 +390,15 @@ namespace ydlidar{
                         return RESULT_FAIL;
                     }else {//做异常处理, 重新连接
                         isAutoconnting = true;
-                        uint64_t time = getTime();
-                        fprintf(stderr, "[%lu]: start reconnecting in %s\n",time, serial_port.c_str());
-                        fflush(stderr);
+						uint64_t time = getTime();
+                        fprintf(stderr, "[%llu]: start reconnecting in  %s \n", time, serial_port.c_str());
+						fflush(stderr);
                         while (isAutoReconnect&&isAutoconnting) {
                             {
                                 ScopedLocker l(_serial_lock);
                                 if(_serial){
                                     if(_serial->isOpen()){
-                                        //_serial->flush();
+										_serial->flush();
                                         _serial->closePort();
                                         delete _serial;
                                         _serial = NULL;
@@ -369,7 +410,7 @@ namespace ydlidar{
                             while(isAutoReconnect&&connect(serial_port.c_str(), _baudrate) != RESULT_OK){
                                 delay(500);
                                 time = getTime();
-                                fprintf(stderr, "[%lu]: wait %s is available\n",time, serial_port.c_str());
+                                fprintf(stderr, "[%llu]: wait %s is available\n",time, serial_port.c_str());
                                 fflush(stderr);
                             }
                             if(!isAutoReconnect) {
@@ -377,14 +418,47 @@ namespace ydlidar{
                                 return RESULT_FAIL;
                             }
                             if(isconnected()) {
-                                if(startAutoScan() == RESULT_OK){
+
+								bool ret = false;
+								{
+									ScopedLocker l(_serial_lock);
+									ret = checkHeartBeat();
+									_serial->flush();
+								
+								}
+								if (!ret) {
+									time = getTime();
+									fprintf(stderr, "[%llu]:Failed to check heartbeat\n", time);
+									fflush(stderr);
+									continue;
+
+								}
+                                {
+                                    ScopedLocker l(_serial_lock);
+                                    ans = startAutoScan();
+									if (ans != RESULT_OK) {
+										delay(1000);
+										ans = startAutoScan();
+									}
+                                }
+                                if(ans == RESULT_OK){
                                     timeout_count =0;
                                     isAutoconnting = false;
                                 }else {
+									{
+										ScopedLocker l(_serial_lock);
+										{
+											ScopedLocker l(_lock);
+											sendCommand(LIDAR_CMD_FORCE_STOP);
+											sendCommand(LIDAR_CMD_STOP);
+										}
+										delay(500);
+									}
+									
                                     time = getTime();
-                                    fprintf(stderr, "[%lu]:Failed to start lidar scan\n", time);
+                                    fprintf(stderr, "[%llu]:Failed to start lidar scan\n", time);
                                     fflush(stderr);
-                                    delay(500);
+                                    delay(1000);
                                 }
 
                             }
@@ -395,8 +469,8 @@ namespace ydlidar{
 
                 } else {
                     timeout_count++;
-                    fprintf(stderr, "timout: %d\n",timeout_count);
-                    fflush(stderr);
+                    //fprintf(stderr, "timout: %d\n",timeout_count);
+                    //fflush(stderr);
                 }
             }else {
                 timeout_count = 0;
@@ -675,7 +749,13 @@ namespace ydlidar{
 		}
 
 		if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
+            m_last_ns = m_ns;
             m_ns = getTime() - (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
+            uint64_t time_diff = m_ns - m_last_ns;
+            if(time_diff < 0) {
+                m_ns = m_last_ns;
+
+            }
 		}
 
 
@@ -933,7 +1013,8 @@ namespace ydlidar{
     void YDlidarDriver::setAutoReconnect(const bool& enable) {
         isAutoReconnect = enable;
     }
-        
+
+
 	/************************************************************************/
 	/* send heartbeat function package                                      */
 	/************************************************************************/
@@ -946,21 +1027,10 @@ namespace ydlidar{
 		return ans;
 	}
 
-	/************************************************************************/
-	/*  start to scan                                                       */
-	/************************************************************************/
-	result_t YDlidarDriver::startScan(bool force, uint32_t timeout ) {
-		result_t ans;
-		if (!isConnected) {
-			return RESULT_FAIL;
-		}
-		if (isScanning) {
-			return RESULT_OK;
-		}
-
-		stop();   
-		startMotor();
-
+    /**
+     * @brief YDlidarDriver::checkTransTime
+     */
+    void YDlidarDriver::checkTransTime() {
         {
             //calc stamp
             m_pointTime = 1e9/4000;
@@ -1023,7 +1093,24 @@ namespace ydlidar{
                 }
             }
         }
+    }
 
+
+	/************************************************************************/
+	/*  start to scan                                                       */
+	/************************************************************************/
+	result_t YDlidarDriver::startScan(bool force, uint32_t timeout ) {
+		result_t ans;
+		if (!isConnected) {
+			return RESULT_FAIL;
+		}
+		if (isScanning) {
+			return RESULT_OK;
+		}
+
+		stop();   
+		startMotor();
+        checkTransTime();
 		{
 			ScopedLocker l(_lock);
 			if ((ans = sendCommand(force?LIDAR_CMD_FORCE_SCAN:LIDAR_CMD_SCAN)) != RESULT_OK) {
@@ -1106,6 +1193,7 @@ namespace ydlidar{
             sendCommand(LIDAR_CMD_FORCE_STOP);
 			sendCommand(LIDAR_CMD_STOP);
 		}
+        _serial->flush();
 
 		stopMotor();
 
@@ -1806,7 +1894,7 @@ namespace ydlidar{
         if (!isConnected) {
             return RESULT_FAIL;
         }
-        disableDataGrabbing();
+        //disableDataGrabbing();
         {
             ScopedLocker lock(_lock);
             if ((ans = sendCommand(LIDAR_CMD_SET_HEART_BEAT)) != RESULT_OK) {
