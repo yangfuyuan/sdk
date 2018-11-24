@@ -15,11 +15,11 @@ Release Notes
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Title      |  Version |  Data |
 | :-------- | --------:|  :--: |
-| SDK     |  1.3.7 |   2018-10-26  |
+| SDK     |  1.3.8 |   2018-11-24  |
 
 
-- [new feature] add G2-SS-1 Model.
-- [new feature] support ini file calibration zero angle.
+- [new feature] Reduce abnormal situation recovery time.
+- [new feature] fix timestamp from zero.
 
 
 
@@ -72,7 +72,7 @@ windows:
 
 You should see YDLIDAR's scan result in the console:
 
-	[YDLIDAR]:SDK Version: 1.3.7
+	[YDLIDAR]:SDK Version: 1.3.8
 	[YDLIDAR]:Lidar running correctly ! The health status: good
 	[YDLIDAR] Connection established in [/dev/ttyUSB0][230400]:
 	Firmware version: 1.1
@@ -214,6 +214,12 @@ Coordinate System
 
 Upgrade Log
 ---------------
+2018-11-24 version:1.3.8
+
+   1.Reduce abnormal situation recovery time.
+   
+   2.fix timestamp from zero.
+
 2018-10-26 version:1.3.7
 
    1.add input angle calibration file.
