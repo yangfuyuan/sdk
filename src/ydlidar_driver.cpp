@@ -398,8 +398,13 @@ namespace ydlidar{
                                 return RESULT_FAIL;
                             }
                             if(isconnected()) {
-                                ScopedLocker lk(_serial_lock);
-                                if(startAutoScan() == RESULT_OK){
+				{
+                                	ScopedLocker lk(_serial_lock);
+					ans = startAutoScan();
+
+
+				}
+                                if(ans == RESULT_OK){
                                     timeout_count =0;
                                     isAutoconnting = false;
                                     continue;
