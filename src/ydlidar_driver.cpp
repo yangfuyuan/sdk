@@ -115,14 +115,11 @@ std::string format(const char *fmt, ...)
 			if(!_serial->open()){
 				return RESULT_FAIL;
 			}
-		}
-
-		isConnected = true;
-        {
-            ScopedLocker l(_lock);
-            sendCommand(LIDAR_CMD_FORCE_STOP);
+			isConnected = true;
+			sendCommand(LIDAR_CMD_FORCE_STOP);
             sendCommand(LIDAR_CMD_STOP);
-        }
+		}
+		
 		clearDTR();
 
 		return RESULT_OK;
@@ -386,19 +383,19 @@ std::string format(const char *fmt, ...)
                             }
 
                             while (isAutoReconnect&&connect(serial_port.c_str(), m_baudrate) != RESULT_OK) {
-                                delay(400);
+                                delay(200);
                             }
                             if (!isAutoReconnect) {
                                 isScanning = false;
                                 return RESULT_FAIL;
                             }
                             if(isconnected()) {
-                                delay(500);
+                                delay(100);
                                 ans = startAutoScan();
                                 if(IS_OK(ans)){
                                     timeout_count =0;
                                     isAutoconnting = false;
-                                    delay(1000);
+                                    delay(100);
                                     continue;
                                 }
 
@@ -695,9 +692,9 @@ std::string format(const char *fmt, ...)
 		}
 
         if ((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT) {
-            m_node_last_time_ns = m_node_time_ns ;
+            m_node_last_time_ns = m_node_time_ns;
             m_node_time_ns = getTime()- (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
-            int time_diff = (m_node_time_ns - m_node_last_time_ns);
+            uint64_t time_diff = (m_node_time_ns - m_node_last_time_ns);
             if(time_diff < 0) {
                m_node_time_ns = m_node_last_time_ns;
             }

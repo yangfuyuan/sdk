@@ -1,7 +1,7 @@
 #include "CYdLidar.h"
 #include "common.h"
 #include <map>
-
+#include <chrono>
 
 using namespace std;
 using namespace ydlidar;
@@ -642,9 +642,9 @@ bool CYdLidar::checkStatus()
         return true;
 
     std::map<int, bool> checkmodel;
-    checkmodel.insert(std::map<int, bool>::value_type(115200, false));
-    checkmodel.insert(std::map<int, bool>::value_type(128000, false));
-    checkmodel.insert(std::map<int, bool>::value_type(153600, false));
+    //checkmodel.insert(std::map<int, bool>::value_type(115200, false));
+    //checkmodel.insert(std::map<int, bool>::value_type(128000, false));
+    //checkmodel.insert(std::map<int, bool>::value_type(153600, false));
     checkmodel.insert(std::map<int, bool>::value_type(230400, false));
 
     again:
@@ -716,7 +716,7 @@ bool CYdLidar::checkStatus()
     fflush(stdout);
     fflush(stderr);
     isScanning = true;
-    delay(1000);
+    delay(100);
     return true;
 
 }

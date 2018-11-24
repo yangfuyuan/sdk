@@ -985,6 +985,18 @@ struct serial_struct {
 				return false;
 			}
 
+            /*struct flock file_lock;
+            file_lock.l_type = F_WRLCK;
+            file_lock.l_whence = SEEK_SET;
+            file_lock.l_start = 0;
+            file_lock.l_len = 0;
+            file_lock.l_pid = getpid();
+            if (fcntl(fd_, F_SETLK, &file_lock) != 0) {
+              return false;
+            }*/
+
+
+
 			if (::ioctl(fd_, TCSETS2, &tio2) != -1 && ::ioctl(fd_, TCGETS2, &tio2) != -1) {
 				return true;
 			}
