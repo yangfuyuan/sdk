@@ -52,7 +52,7 @@ CSimpleSocket::CSimpleSocket(CSocketType nType) :
     m_nBytesSent(-1), m_nFlags(0),
     m_bIsBlocking(true),m_open(false)
 {
-    SetConnectTimeout(1, 0);
+    SetConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_SEC, DEFAULT_CONNECTION_TIMEOUT_USEC);
     memset(&m_stRecvTimeout, 0, sizeof(struct timeval));
     memset(&m_stSendTimeout, 0, sizeof(struct timeval));
     memset(&m_stLinger, 0, sizeof(struct linger));
@@ -144,13 +144,16 @@ bool CSimpleSocket::bindport(const char* addr, uint32_t port) {
 bool CSimpleSocket::open() {
     if(!IsSocketValid()) {
         if(!Initialize()) {
+#if defined(_WIN32)
+			WSACleanup();
+#endif
             return false;
         }
     }
     SetNonblocking();
     m_open = Open(m_addr.c_str(), m_port);
-    SetBlocking();
-    //SetNonblocking();
+    //SetBlocking();
+    SetNonblocking();
     return m_open;
 }
 
@@ -162,7 +165,7 @@ void CSimpleSocket::closePort() {
     Close();
     m_open = false;
 #if defined(_WIN32)
-    //WSACleanup();
+    WSACleanup();
 #endif
 
 }
@@ -1318,7 +1321,7 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
     m_timer.SetStartTime();
     while (IsSocketValid()) {
         m_timer.SetEndTime();
-        if(m_timer.GetMilliSeconds()> timeout){
+        if(m_timer.GetMilliSeconds() > timeout){
             SetSocketError(CSimpleSocket::SocketTimedout);
             return -1;
         }
@@ -1350,7 +1353,7 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
         }else{
             // data avaliable
             assert (FD_ISSET(m_socket, &m_readFds));
-/*#ifdef _WIN32
+#ifdef _WIN32
             if(m_nSocketType == CSimpleSocket::SocketTypeTcp || m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
                     *returned_size = data_count;
@@ -1358,7 +1361,7 @@ int CSimpleSocket::WaitForData(size_t data_count, uint32_t timeout, size_t *retu
                 return 0;
             }
 
-#endif*/
+#endif
 
             if(m_nSocketType == CSimpleSocket::SocketTypeUdp) {
                 if(returned_size) {
