@@ -228,7 +228,7 @@ extern "C"
 #define DEFAULT_REV_TIMEOUT_SEC 2
 #define DEFAULT_REV_TIMEOUT_USEC 0
 
-#define DEFAULT_CONNECTION_TIMEOUT_SEC 2
+#define DEFAULT_CONNECTION_TIMEOUT_SEC 10
 #define DEFAULT_CONNECTION_TIMEOUT_USEC 0
 
 /*---------------------------------------------------------------------------*/
