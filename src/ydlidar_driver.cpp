@@ -61,6 +61,7 @@ std::string format(const char *fmt, ...)
         trans_delay         = 0;
         m_node_time_ns      = 0;
         m_node_last_time_ns = 0;
+        scan_frequence      = 0;
 
         //解析参数
         PackageSampleBytes  = 2;
@@ -102,23 +103,25 @@ std::string format(const char *fmt, ...)
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
         m_baudrate = baudrate;
         serial_port = string(port_path);
-        {
 
-            ScopedLocker lk(_serial_lock);
-            if (!_serial) {
-                _serial = new serial::Serial(port_path, m_baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
-            }
+        ScopedLocker lk(_serial_lock);
+        if (!_serial) {
+            _serial = new serial::Serial(port_path, m_baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
         }
-
-		{
+        {
 			ScopedLocker l(_lock);
 			if(!_serial->open()){
 				return RESULT_FAIL;
 			}
 			isConnected = true;
-			sendCommand(LIDAR_CMD_FORCE_STOP);
+
+        }
+        {
+            ScopedLocker l(_lock);
+            sendCommand(LIDAR_CMD_FORCE_STOP);
             sendCommand(LIDAR_CMD_STOP);
-		}
+
+        }
 		
 		clearDTR();
 
@@ -130,8 +133,6 @@ std::string format(const char *fmt, ...)
         if (!isConnected) {
 			return ;
 		}
-
-        ScopedLocker lk(_serial_lock);
         if (_serial) {
             _serial->flush();
 			_serial->setDTR(1);
@@ -143,8 +144,6 @@ std::string format(const char *fmt, ...)
         if (!isConnected) {
 			return ;
 		}
-
-        ScopedLocker lk(_serial_lock);
         if (_serial) {
             _serial->flush();
 			_serial->setDTR(0);
@@ -391,11 +390,16 @@ std::string format(const char *fmt, ...)
                             }
                             if(isconnected()) {
                                 delay(100);
-                                ans = startAutoScan();
+                                {
+                                    ScopedLocker l(_serial_lock);
+                                    ans = startAutoScan();
+                                    if(!IS_OK(ans)) {
+                                        ans = startAutoScan();
+                                    }
+                                }
                                 if(IS_OK(ans)){
                                     timeout_count =0;
                                     isAutoconnting = false;
-                                    delay(100);
                                     continue;
                                 }
 
@@ -449,18 +453,17 @@ std::string format(const char *fmt, ...)
 	}
 
 	result_t YDlidarDriver::waitPackage(node_info * node, uint32_t timeout) {
-		int recvPos = 0;
-		uint32_t startTs = getms();
-		uint32_t size = (m_intensities)?sizeof(node_package):sizeof(node_packages);
+        int recvPos         = 0;
+        uint32_t startTs    = getms();
+        uint32_t size       = (m_intensities)?sizeof(node_package):sizeof(node_packages);
 		uint8_t* recvBuffer = new uint8_t[size];
 
-        uint32_t waitTime = 0;
-		uint8_t *packageBuffer = (m_intensities)?(uint8_t*)&package.package_Head:(uint8_t*)&packages.package_Head;
-		uint8_t  package_Sample_Num = 0;
-        int32_t AngleCorrectForDistance = 0;
+        uint32_t waitTime   = 0;
+        uint8_t  *packageBuffer = (m_intensities)?(uint8_t*)&package.package_Head:(uint8_t*)&packages.package_Head;
+        uint8_t  package_Sample_Num         = 0;
+        int32_t  AngleCorrectForDistance    = 0;
         int  package_recvPos    = 0;
         uint8_t package_type    = 0;
-        uint8_t scan_frequence  = 0;
 
         if (package_Sample_Index == 0) {
 			recvPos = 0;
@@ -504,7 +507,6 @@ std::string format(const char *fmt, ...)
                         if ((package_type == CT_Normal) || (package_type == CT_RingStart)) {
                             if (package_type == CT_RingStart) {
                                 scan_frequence = (currentByte&0xFE)>>1;
-                                (*node).scan_frequence = scan_frequence;
                             }
                         } else {
                             recvPos = 0;
@@ -676,11 +678,13 @@ std::string format(const char *fmt, ...)
 				} 
 			}
         } else {
-			(*node).sync_flag = Node_NotSync;
-			(*node).sync_quality = Node_Default_Quality;
+            (*node).sync_flag       = Node_NotSync;
+            (*node).sync_quality    = Node_Default_Quality;
 			(*node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
-			(*node).distance_q2 = 0;
-            (*node).distance_q = 0;
+            (*node).distance_q2     = 0;
+            (*node).distance_q      = 0;
+            (*node).scan_frequence  = 0;
+
 		}
 
 
@@ -694,12 +698,12 @@ std::string format(const char *fmt, ...)
         if ((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT) {
             m_node_last_time_ns = m_node_time_ns;
             m_node_time_ns = getTime()- (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
-            uint64_t time_diff = (m_node_time_ns - m_node_last_time_ns);
-            if(time_diff < 0) {
+            if(m_node_time_ns < m_node_last_time_ns) {
                m_node_time_ns = m_node_last_time_ns;
             }
 
 		}
+        (*node).scan_frequence  = scan_frequence;
         (*node).stamp = m_node_time_ns + package_Sample_Index*m_pointTime;
 		package_Sample_Index++;
 
@@ -717,10 +721,10 @@ std::string format(const char *fmt, ...)
 			return RESULT_FAIL;
 		}
 
-		size_t     recvNodeCount =  0;
-		uint32_t   startTs = getms();
-        uint32_t   waitTime = 0;
-        result_t   ans = RESULT_FAIL;
+        size_t     recvNodeCount    =  0;
+        uint32_t   startTs          = getms();
+        uint32_t   waitTime         = 0;
+        result_t   ans              = RESULT_FAIL;
 
 		while ((waitTime = getms() - startTs) <= timeout && recvNodeCount < count) {
 			node_info node;
@@ -1019,7 +1023,7 @@ std::string format(const char *fmt, ...)
                     }
                     trans_delay = _serial->getByteTime();
                     break;
-                    case YDLIDAR_G4C://g4c
+                    case YDLIDAR_G2_SS_1://G2-SS-1
                     trans_delay = _serial->getByteTime();
                     m_pointTime = 1e9/5000;
                     if(firmware_version < 521&& firmware_version != 0){
@@ -1412,6 +1416,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&rate), sizeof(rate));
             m_sampling_rate=rate.rate;
 		}
@@ -1451,6 +1456,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&roation), sizeof(roation));
 		}
 		return RESULT_OK;
@@ -1484,6 +1490,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&roation), sizeof(roation));
 		}
 		return RESULT_OK;
@@ -1520,6 +1527,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&state), sizeof(state));
 		}
 		return RESULT_OK;
@@ -1556,6 +1564,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&state), sizeof(state));
 		}
 		return RESULT_OK;
@@ -1592,6 +1601,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&state), sizeof(state));
 		}
 		return RESULT_OK;
@@ -1628,6 +1638,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&state), sizeof(state));
 		}
 		return RESULT_OK;
@@ -1664,6 +1675,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&state), sizeof(state));
 		}
 		return RESULT_OK;
@@ -1700,6 +1712,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&low_exposure), sizeof(low_exposure));
 		}
 		return RESULT_OK;
@@ -1738,6 +1751,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&low_exposure), sizeof(low_exposure));
 		}
 		return RESULT_OK;
@@ -1776,6 +1790,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&exposure), sizeof(exposure));
 		}
 		return RESULT_OK;
@@ -1814,6 +1829,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&exposure), sizeof(exposure));
 		}
 		return RESULT_OK;
@@ -1853,10 +1869,8 @@ std::string format(const char *fmt, ...)
             if (waitForData(response_header.size, timeout) != RESULT_OK) {
                 return RESULT_FAIL;
             }
+
             getData(reinterpret_cast<uint8_t *>(&beat), sizeof(beat));
-
-
-
         }
 
         return RESULT_OK;
@@ -1895,6 +1909,7 @@ std::string format(const char *fmt, ...)
 			if (waitForData(response_header.size, timeout) != RESULT_OK) {
 				return RESULT_FAIL;
 			}
+
 			getData(reinterpret_cast<uint8_t *>(&points), sizeof(points));
 		}
 		return RESULT_OK;

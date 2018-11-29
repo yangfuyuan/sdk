@@ -783,7 +783,7 @@ namespace ydlidar{
 			DEFAULT_TIMEOUT = 2000,    /**< 默认超时时间. */ 
 			DEFAULT_HEART_BEAT = 1000, /**< 默认检测掉电功能时间. */ 
 			MAX_SCAN_NODES = 2048,	   /**< 最大扫描点数. */ 
-            DEFAULT_TIMEOUT_COUNT = 2,
+            DEFAULT_TIMEOUT_COUNT = 1,
 		};
         enum {
             YDLIDAR_F4=1,
@@ -794,7 +794,7 @@ namespace ydlidar{
             YDLIDAR_X4=6,
             YDLIDAR_G4PRO=7,
             YDLIDAR_F4PRO=8,
-            YDLIDAR_G4C=9,
+            YDLIDAR_G2_SS_1=9,
             YDLIDAR_G10=10,//256000
             YDLIDAR_S4B = 11,//153600
             YDLIDAR_S2 = 12,//115200
@@ -840,6 +840,7 @@ namespace ydlidar{
         uint16_t FirstSampleAngle;
         uint16_t LastSampleAngle;
         uint16_t CheckSun;
+        uint8_t scan_frequence;
 
         uint16_t CheckSunCal;
         uint16_t SampleNumlAndCTCal;
