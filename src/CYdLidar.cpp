@@ -146,7 +146,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError){
             float intensity = 0.0;
             int index = 0;
             for (size_t i = 0; i < all_nodes_counts; i++) {
-                range = (float)angle_compensate_nodes[i].distance_q/4000.f;
+                range = (float)angle_compensate_nodes[i].distance_q/1000.f;
                 uint8_t intensities = (uint8_t)(angle_compensate_nodes[i].sync_quality >> LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT);
                 intensities = (float)intensities;
                 if(m_GlassNoise&&intensities == GLASSNOISEINTENSITY ) {

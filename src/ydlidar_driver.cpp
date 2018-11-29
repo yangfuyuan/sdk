@@ -655,16 +655,14 @@ std::string format(const char *fmt, ...)
         if (CheckSunResult) {
             if (m_intensities) {
                 (*node).sync_quality = ((uint16_t)((package.packageSample[package_Sample_Index].PakageSampleDistance&0x03) << LIDAR_RESP_MEASUREMENT_ANGLE_SAMPLE_SHIFT) | ( package.packageSample[package_Sample_Index].PakageSampleQuality));
-                (*node).distance_q2 = package.packageSample[package_Sample_Index].PakageSampleDistance >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
-                (*node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance ;
+                (*node).distance_q = package.packageSample[package_Sample_Index].PakageSampleDistance >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
             } else {
-				(*node).distance_q2 = packages.packageSampleDistance[package_Sample_Index] >>LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
-                (*node).distance_q = packages.packageSampleDistance[package_Sample_Index];
+                (*node).distance_q = packages.packageSampleDistance[package_Sample_Index] >> LIDAR_RESP_MEASUREMENT_DISTANCE_SHIFT;
                 (*node).sync_quality =  ((uint16_t)(0xfc | packages.packageSampleDistance[package_Sample_Index]&0x0003)) <<LIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
 			}	  
             if ((*node).distance_q != 0) {
-                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q/4.0)) )/155.3)/((*node).distance_q/4.0)))*180.0/3.1415) * 64.0);
+                AngleCorrectForDistance = (int32_t)(((atan(((21.8*(155.3 - ((*node).distance_q)) )/155.3)/((*node).distance_q)))*180.0/3.1415) * 64.0);
             } else {
 				AngleCorrectForDistance = 0;		
 			}
@@ -681,7 +679,6 @@ std::string format(const char *fmt, ...)
             (*node).sync_flag       = Node_NotSync;
             (*node).sync_quality    = Node_Default_Quality;
 			(*node).angle_q6_checkbit = LIDAR_RESP_MEASUREMENT_CHECKBIT;
-            (*node).distance_q2     = 0;
             (*node).distance_q      = 0;
             (*node).scan_frequence  = 0;
 
