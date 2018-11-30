@@ -15,7 +15,7 @@ Release Notes
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Title      |  Version |  Data |
 | :-------- | --------:|  :--: |
-| SDK     |  1.3.8 |   2018-11-24  |
+| SDK     |  1.3.8 |   2018-11-30  |
 
 
 - [new feature] Reduce abnormal situation recovery time.
@@ -37,13 +37,13 @@ Support LIDAR Model(Only S4Pro and S4B support intensity)
 | X4     |  128000 |   5000  |  0.12-10   |5-12|0-40| ~5|4.8-5.2|330-380|
 | F4     | 115200 |   4000 |  0.1-12        |5-12|0-40| ~5|4.8-5.2|400-480|
 | S4     |  115200|    4000 |  0.1-8        |6-12|0-40| ~5|4.8-5.2|330-380|
-| S4Pro |  153600|    4000 |  0.1-8        |6-12|0-40| ~5|4.8-5.2|330-380|
+| S4B |  153600|    4000 |  0.1-8        |6-12|0-40| ~5|4.8-5.2|330-380|
 
 How to build YDLIDAR SDK samples
 ---------------
     $ git clone https://github.com/yangfuyuan/sdk
     $ cd sdk
-    $ git checkout samsung
+    $ git checkout tuobang
     $ cd ..
     $ mkdir build
     $ cd build
@@ -57,35 +57,51 @@ How to run YDLIDAR SDK samples
 
 linux:
 
-    $ ./ydlidar_test LidarAngleCalibration.ini
-    $Please enter the lidar serial port:/dev/ttyUSB0
-    $Please enter the lidar serial baud rate:230400
-    &Please enter the lidar intensity:0
+    $  YDLIDAR C++ TEST
+    $Lidar[ydlidar7] detected, whether to select current radar(yes/no)?:yes
+	0. 115200
+	1. 128000
+	2. 153600
+	3. 230400
+	4. 500000
+    $Please enter the lidar serial baud rate:2
+	0. false
+	1. true
+    $Please enter the lidar intensity:1
+
 
 windows:
 
-    $ ydlidar_test.exe LidarAngleCalibration.ini
-    $Please enter the lidar serial port:/dev/ttyUSB0
-    $Please enter the lidar serial baud rate:230400
-    &Please enter the lidar intensity:0
+      YDLIDAR C++ TEST
+    $Lidar[ydlidar7] detected, whether to select current radar(yes/no)?:yes
+	0. 115200
+	1. 128000
+	2. 153600
+	3. 230400
+	4. 500000
+    $Please enter the lidar serial baud rate:2
+	0. false
+	1. true
+    $Please enter the lidar intensity:1
 
 
 You should see YDLIDAR's scan result in the console:
 
 	[YDLIDAR]:SDK Version: 1.3.8
 	[YDLIDAR]:Lidar running correctly ! The health status: good
-	[YDLIDAR] Connection established in [/dev/ttyUSB0][230400]:
-	Firmware version: 1.1
-	Hardware version: 3
-	Model: G2-SS-1
-	Serial: 2018101800011111
-	[YDLIDAR INFO] Current Sampling Rate : 5K
-	[YDLIDAR INFO] Successfully obtained the calibration value[0.000000] from the calibration file[LidarAngleCalibration.ini]
-	[YDLIDAR INFO] Current AngleOffset : 0.000000°
-	[YDLIDAR INFO] Current Scan Frequency : 8.000000Hz
+	[YDLIDAR] Connection established in [/dev/ttyUSB0][153600]:
+	Firmware version: 1.20
+	Hardware version: 1
+	Model: S4B
+	Serial: 2018091100006004
+	[YDLIDAR INFO] Current Sampling Rate : 4K
+	[YDLIDAR INFO] Current Scan Frequency : 7.000000Hz
+	set low exposure model failed!!!
 	[YDLIDAR INFO] Now YDLIDAR is scanning ......
-	Scan received: 625 ranges
-	Scan received: 626 ranges
+	Scan received: 488 ranges
+	Scan received: 487 ranges
+	Scan received: 491 ranges
+
 	
 	
 code:
@@ -108,7 +124,7 @@ code:
                 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 
-                current_distance =  data[i].distance_q/4.f;
+                current_distance =  data[i].distance_q;
 
                 current_intensity = (float)(data[i].sync_quality);
 

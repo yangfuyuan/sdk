@@ -305,6 +305,9 @@ bool CYdLidar::getDeviceInfo(int &lidar_model) {
         break;
     case YDlidarDriver::YDLIDAR_S4:
         model="S4";
+        if(m_SerialBaudrate==153600) {
+            model="S4B";
+        }
         break;
     case YDlidarDriver::YDLIDAR_G4:
     {
@@ -450,7 +453,7 @@ bool CYdLidar::getDeviceInfo(int &lidar_model) {
     }
     printf("%s\n", serial_number.c_str());
     printf("[YDLIDAR INFO] Current Sampling Rate : %dK\n" , m_samp_rate);
-    checkCalibrationAngle(serial_number);
+    //checkCalibrationAngle(serial_number);
 
     float frequency = 7.0f;
     if (devinfo.model == YDlidarDriver::YDLIDAR_G4 ||
@@ -640,9 +643,9 @@ bool CYdLidar::checkStatus()
         return true;
 
     std::map<int, bool> checkmodel;
-    //checkmodel.insert(std::map<int, bool>::value_type(115200, false));
-    //checkmodel.insert(std::map<int, bool>::value_type(128000, false));
-    //checkmodel.insert(std::map<int, bool>::value_type(153600, false));
+    checkmodel.insert(std::map<int, bool>::value_type(115200, false));
+    checkmodel.insert(std::map<int, bool>::value_type(128000, false));
+    checkmodel.insert(std::map<int, bool>::value_type(153600, false));
     checkmodel.insert(std::map<int, bool>::value_type(230400, false));
 
     again:

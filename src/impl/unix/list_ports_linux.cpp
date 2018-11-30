@@ -39,7 +39,7 @@ static string basename(const string& path);
 static string dirname(const string& path);
 static bool path_exists(const string& path);
 static string realpath(const string& path);
-static string usb_sysfs_friendly_name(const string& sys_usb_path);
+static string usb_sysfs_friendly_name(const string& sys_usb_path, string& device_id);
 static vector<string> get_sysfs_info(const string& device_path);
 static string read_line(const string& file);
 static string usb_sysfs_hw_string(const string& sysfs_path);
@@ -127,7 +127,7 @@ realpath(const string& path)
 }
 
 string
-usb_sysfs_friendly_name(const string& sys_usb_path)
+usb_sysfs_friendly_name(const string& sys_usb_path, string& device_id)
 {
     unsigned int device_number = 0;
 
@@ -139,10 +139,12 @@ usb_sysfs_friendly_name(const string& sys_usb_path)
 
     string serial = read_line( sys_usb_path + "/serial" );
 
-    if( manufacturer.empty() && product.empty() && serial.empty() )
+    device_id = read_line( sys_usb_path + "/devpath" );
+
+    if( manufacturer.empty() && product.empty() && serial.empty())
         return "";
 
-    return format("%s %s %s", manufacturer.c_str(), product.c_str(), serial.c_str() );
+    return format("%s %s %s", manufacturer.c_str(), product.c_str(), serial.c_str());
 }
 
 vector<string>
@@ -154,6 +156,8 @@ get_sysfs_info(const string& device_path)
 
     string hardware_id;
 
+    string device_id;
+
     string sys_device_path = format( "/sys/class/tty/%s/device", device_name.c_str() );
 
     if( device_name.compare(0,6,"ttyUSB") == 0 )
@@ -162,7 +166,7 @@ get_sysfs_info(const string& device_path)
 
         if( path_exists( sys_device_path ) )
         {
-            friendly_name = usb_sysfs_friendly_name( sys_device_path );
+            friendly_name = usb_sysfs_friendly_name( sys_device_path, device_id );
 
             hardware_id = usb_sysfs_hw_string( sys_device_path );
         }
@@ -173,7 +177,7 @@ get_sysfs_info(const string& device_path)
 
         if( path_exists( sys_device_path ) )
         {
-            friendly_name = usb_sysfs_friendly_name( sys_device_path );
+            friendly_name = usb_sysfs_friendly_name( sys_device_path, device_id );
 
             hardware_id = usb_sysfs_hw_string( sys_device_path );
         }
@@ -197,6 +201,7 @@ get_sysfs_info(const string& device_path)
     vector<string> result;
     result.push_back(friendly_name);
     result.push_back(hardware_id);
+    result.push_back(device_id);
 
     return result;
 }
@@ -321,12 +326,20 @@ serial::list_ports()
 
         string hardware_id = sysfs_info[1];
 
-        PortInfo device_entry;
-        device_entry.port = device;
-        device_entry.description = friendly_name;
-        device_entry.hardware_id = hardware_id;
+        string device_id = sysfs_info[2];
 
-        results.push_back( device_entry );
+        std::size_t found = hardware_id.find("10c4:ea60");
+
+        if(found != std::string::npos) {
+            PortInfo device_entry;
+            device_entry.port = device;
+            device_entry.description = friendly_name;
+            device_entry.hardware_id = hardware_id;
+            device_entry.device_id = device_id;
+            results.push_back( device_entry );
+        }
+
+
 
     }
 

@@ -16,29 +16,96 @@ CYdLidar laser;
 int main(int argc, char * argv[])
 {
 	printf(" YDLIDAR C++ TEST\n");
-    printf(" ydlidar_test calibration_filename\n");
     std::string port;
-    std::string baudrate;
+    int baudrate;
     std::string intensity;
-    std::string calibration_filename = "LidarAngleCalibration.ini";
-    if( argc > 1) {
-        calibration_filename = (std::string)argv[1];
+    ydlidar::init(argc, argv);
+
+    std::map<std::string, std::string> ports =  ydlidar::YDlidarDriver::lidarPortList();
+    std::map<std::string,std::string>::iterator it;
+    if(ports.size()==1) {
+        it = ports.begin();
+        printf("Lidar[%s] detected, whether to select current radar(yes/no)?:", it->first.c_str());
+        std::string ok;
+        std::cin>>ok;
+        for (size_t i=0; i <ok.size(); i++) {
+            ok[i] = tolower(ok[i]);
+        }
+        if(ok.find("yes") != std::string::npos ||atoi(ok.c_str()) == 1 ) {
+            port = it->second;
+        }else{
+            printf("Please enter the lidar serial port:");
+            std::cin>>port;
+        }
+    }else {
+        int id = 0;
+        for(it = ports.begin(); it != ports.end(); it++) {
+            printf("%d. %s\n", id, it->first.c_str());
+            id++;
+        }
+
+        if(ports.empty()) {
+            printf("Not Lidar was detected. Please enter the lidar serial port:");
+            std::cin>>port;
+        } else {
+            while(ydlidar::ok()) {
+                printf("Please select the lidar port:");
+                std::string number;
+                std::cin>>number;
+                if((size_t)atoi(number.c_str()) >= ports.size()) {
+                    continue;
+                }
+                it = ports.begin();
+                id = atoi(number.c_str());
+                while (id) {
+                    id--;
+                    it++;
+                }
+                port = it->second;
+                break;
+            }
+        }
+    }
+    std::vector<unsigned int> baudrateList;
+    baudrateList.push_back(115200);
+    baudrateList.push_back(128000);
+    baudrateList.push_back(153600);
+    baudrateList.push_back(230400);
+    baudrateList.push_back(500000);
+    for( unsigned int i = 0; i < baudrateList.size(); i ++) {
+        printf("%u. %u\n", i, baudrateList[i]);
+    }
+    while (ydlidar::ok()) {
+        printf("Please enter the lidar serial baud rate:");
+        std::string index;
+        std::cin>>index;
+        if(atoi(index.c_str()) >= baudrateList.size()) {
+            printf("Invalid serial number, Please re-select\n");
+            continue;
+        }
+        baudrate = baudrateList[atoi(index.c_str())];
+        break;
+
     }
 
-    printf("lidar angle calibration file: %s\n" ,calibration_filename.c_str());
-    printf("Please enter the lidar serial port:");
-    std::cin>>port;
-    printf("Please enter the lidar serial baud rate:");
-    std::cin>>baudrate;
-    printf("Please enter the lidar intensity:");
-    std::cin>>intensity;
 
-    int baud = atoi(baudrate.c_str());
-    int intensities =  atoi(intensity.c_str());
+    int intensities  = 0;
+    printf("0. false\n");
+    printf("1. true\n");
+    while (ydlidar::ok()) {
+        printf("Please enter the lidar intensity:");
+        std::cin>>intensity;
+        if(atoi(intensity.c_str()) >= 2) {
+            printf("Invalid serial number, Please re-select\n");
+            continue;
+        }
 
-    ydlidar::init(argc, argv);
+        intensities = atoi(intensity.c_str());
+        break;
+    }
+
     laser.setSerialPort(port);
-    laser.setSerialBaudrate(baud);
+    laser.setSerialBaudrate(baudrate);
     laser.setIntensities(intensities);//intensity
     laser.setFixedResolution(false);
     laser.setHeartBeat(false);//
@@ -59,8 +126,6 @@ int main(int argc, char * argv[])
 
     //unit: Hz
     laser.setScanFrequency(8);
-
-    laser.setCalibrationFileName(calibration_filename);//Zero angle offset filename
 
     std::vector<float> ignore_array;
     ignore_array.clear();

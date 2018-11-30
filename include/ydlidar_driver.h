@@ -5,6 +5,7 @@
 #include "serial.h"
 #include "locker.h"
 #include "thread.h"
+#include <map>
 
 #if !defined(__cplusplus)
 #ifndef __cplusplus
@@ -241,6 +242,13 @@ namespace ydlidar{
         * A more elaborate description of the destructor.
         */
          virtual ~YDlidarDriver();
+
+
+        /**
+         * @brief lidarPortList 获取雷达端口
+         * @return
+         */
+        static std::map<std::string, std::string> lidarPortList();
 
 		/**
 		* @brief 连接雷达 \n

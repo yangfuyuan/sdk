@@ -100,6 +100,15 @@ std::string format(const char *fmt, ...)
 		}
 	}
 
+    std::map<std::string, std::string>  YDlidarDriver::lidarPortList() {
+        std::vector<PortInfo> lst = list_ports();
+        std::map<std::string, std::string> ports;
+        for(std::vector<PortInfo>::iterator it = lst.begin(); it != lst.end(); it++) {
+            std::string port = "ydlidar" + (*it).device_id;
+            ports[port] = (*it).port;        }
+        return ports;
+    }
+
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
         m_baudrate = baudrate;
         serial_port = string(port_path);
