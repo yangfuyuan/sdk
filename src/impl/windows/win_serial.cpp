@@ -206,7 +206,7 @@ namespace serial {
 		return input;
 	}
 
-	Serial::SerialImpl::SerialImpl (const string &port, unsigned long baudrate,
+	SerialImpl::SerialImpl (const string &port, unsigned long baudrate,
 		bytesize_t bytesize,
 		parity_t parity, stopbits_t stopbits,
 		flowcontrol_t flowcontrol)

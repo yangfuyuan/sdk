@@ -68,10 +68,7 @@ int main(int argc, char * argv[])
     }
     std::vector<unsigned int> baudrateList;
     baudrateList.push_back(115200);
-    baudrateList.push_back(128000);
     baudrateList.push_back(153600);
-    baudrateList.push_back(230400);
-    baudrateList.push_back(500000);
     for( unsigned int i = 0; i < baudrateList.size(); i ++) {
         printf("%u. %u\n", i, baudrateList[i]);
     }
@@ -107,36 +104,21 @@ int main(int argc, char * argv[])
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baudrate);
     laser.setIntensities(intensities);//intensity
-    laser.setFixedResolution(false);
-    laser.setHeartBeat(false);//
-    laser.setReversion(false); //
     laser.setAutoReconnect(true);//hot plug
-    laser.setExposure(false);
-
     //unit: °C
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
 
     //unit: m
     laser.setMinRange(0.1);
-    laser.setMaxRange(16.0);
-
-    //unit: K
-    laser.setSampleRate(5);
-
-    //unit: Hz
-    laser.setScanFrequency(8);
-
-    std::vector<float> ignore_array;
-    ignore_array.clear();
-    laser.setIgnoreArray(ignore_array);
-
+    laser.setMaxRange(12.0);
     laser.initialize();
     while(ydlidar::ok()){
 		bool hardError;
-		LaserScan scan;
-		if(laser.doProcessSimple(scan, hardError )){
-            fprintf(stdout,"Scan received: %u ranges\n",(unsigned int)scan.ranges.size());
+        node_info nodes[2048];
+        size_t count = _countof(nodes);
+        if(laser.doProcessSimple(nodes, count, hardError )){
+            fprintf(stdout,"Scan received: %lu ranges\n",count);
             fflush(stdout);
         }else {
             fprintf(stderr,"get Scan Data failed\n");
