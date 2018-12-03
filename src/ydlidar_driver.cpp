@@ -72,7 +72,8 @@ std::string format(const char *fmt, ...)
         Valu8Tou16          = 0;
 
         package_Sample_Index= 0;
-        IntervalSampleAngle_LastPackage = 0.0;
+        IntervalSampleAngle_LastPackage = 0.0;	
+        fd = NULL;
 	}
 
 	YDlidarDriver::~YDlidarDriver(){
@@ -94,6 +95,8 @@ std::string format(const char *fmt, ...)
 			delete _serial;
 			_serial = NULL;
 		}
+        if (NULL != fd)
+            fclose(fd);
 	}
 
     std::map<std::string, std::string>  YDlidarDriver::lidarPortList() {
@@ -117,10 +120,16 @@ std::string format(const char *fmt, ...)
         {
 			ScopedLocker l(_lock);
 			if(!_serial->open()){
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "connect %s failed in %d\n", port_path, baudrate);
+                }
 				return RESULT_FAIL;
 			}
 			isConnected = true;
 
+        }
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "connect %s success in %d\n", port_path, baudrate);
         }
         {
             ScopedLocker l(_lock);
@@ -198,6 +207,27 @@ std::string format(const char *fmt, ...)
 
 	}
 
+    bool YDlidarDriver::setSaveParse(bool parse, const std::string& filename) {
+        bool ret = false;
+        save_parsing = parse;
+        if(save_parsing) {
+            if(fd == NULL){
+                 fd=fopen("ydlidar_scan.txt","w");
+                 ret = true;
+                 if (NULL == fd){
+                     fd =fopen(filename.c_str(), "w");
+                     ret = false;
+                 }
+            }
+        } else {
+            if(fd != NULL) {
+                fclose(fd);
+            }
+        }
+
+        return ret;
+    }
+
 
 	void YDlidarDriver::disableDataGrabbing() {
 		{
@@ -262,13 +292,25 @@ std::string format(const char *fmt, ...)
 		if (data == NULL || size ==0) {
 			return RESULT_FAIL;
 		}
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "[send]: ");
+            for( int i =0; i < size; i++ )
+                fprintf(fd, "%02x ", *(data +i));
+        }
 		size_t r;
         while (size) {
             r = _serial->writeData(data, size);
-            if (r < 1)
+            if (r < 1) {
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[failed]\n");
+                }
                 return RESULT_FAIL;
+            }
             size -= r;
             data += r;
+        }
+        if (NULL != fd&& save_parsing){
+            fprintf(fd, "[success]\n");
         }
         return RESULT_OK;
 
@@ -370,6 +412,9 @@ std::string format(const char *fmt, ...)
                         }
                         return RESULT_FAIL;
                     } else {
+                        if (NULL != fd&& save_parsing){
+                            fprintf(fd, "reconnecting lidar!!\n");
+                        }
                         isAutoconnting = true;
                         while (isAutoReconnect&&isAutoconnting) {
                             {
@@ -405,6 +450,9 @@ std::string format(const char *fmt, ...)
                                     timeout_count =0;
                                     isAutoconnting = false;
                                     continue;
+                                }
+                                if (NULL != fd&& save_parsing){
+                                    fprintf(fd, "reconnecting lidar success, start scan failed!!\n");
                                 }
 
                             }
@@ -460,6 +508,7 @@ std::string format(const char *fmt, ...)
         int32_t  AngleCorrectForDistance    = 0;
         int  package_recvPos    = 0;
         uint8_t package_type    = 0;
+        bool eol             = false;
 
         if (package_Sample_Index == 0) {
 			recvPos = 0;
@@ -483,8 +532,17 @@ std::string format(const char *fmt, ...)
 					switch (recvPos) {
 					case 0:
 						if(currentByte==(PH&0xFF)){
+                            if (NULL != fd&& save_parsing&&eol){
+                                fprintf(fd, "[end]\n");
+                                eol = false;
+                            }
 
                         } else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x]", currentByte);
+                                eol = true;
+
+                            }
 							continue;
 						}
 						break;
@@ -493,6 +551,9 @@ std::string format(const char *fmt, ...)
                         if (currentByte==(PH>>8)) {
 
                         } else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][header error]\n", currentByte);
+                            }
 							recvPos = 0;
 							continue;
 						}
@@ -504,8 +565,14 @@ std::string format(const char *fmt, ...)
                             if (package_type == CT_RingStart) {
                                 scan_frequence = (currentByte&0xFE)>>1;
                                 m_pointTime 	= 1e9/(480*scan_frequence/10);
+                                if((*node).scan_frequence != 0 && NULL != fd && save_parsing) {
+                                    fprintf(fd, "[[%02x][SCAN FREQUENCE]]\n", currentByte);
+                                }
                             }
                         } else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][CT error]\n", currentByte);
+                            }
                             recvPos = 0;
                             continue;
                         }
@@ -518,6 +585,9 @@ std::string format(const char *fmt, ...)
 						if (currentByte & LIDAR_RESP_MEASUREMENT_CHECKBIT) {
 							FirstSampleAngle = currentByte;
 						} else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][ first sample angle error]\n", currentByte);
+                            }
 							recvPos = 0;
 							continue;
 						}
@@ -531,6 +601,9 @@ std::string format(const char *fmt, ...)
 						if (currentByte & LIDAR_RESP_MEASUREMENT_CHECKBIT) {
 							LastSampleAngle = currentByte;
 						} else {
+                            if (NULL != fd&& save_parsing){
+                                fprintf(fd, "[%02x][ last sample angle error]\n", currentByte);
+                            }
 							recvPos = 0;
 							continue;
 						}
@@ -562,6 +635,13 @@ std::string format(const char *fmt, ...)
 						CheckSun += (currentByte*0x100);
 						break;
 					}
+                    if (NULL != fd&& save_parsing){
+                        if(recvPos ==3|| recvPos==8 || recvPos ==9){
+                           fprintf(fd, "[%02x]", currentByte);
+                        }else{
+                           fprintf(fd, "%02x", currentByte);
+                        }
+                    }
 					packageBuffer[recvPos++] = currentByte;
 				}
 
@@ -610,6 +690,11 @@ std::string format(const char *fmt, ...)
 
 						packageBuffer[package_recvPos+recvPos] = recvBuffer[pos];
 						recvPos++;
+
+                        if (NULL != fd&& save_parsing){
+                            fprintf(fd, "%02x", recvBuffer[pos]);
+
+                        }
 					}
 
                     if (package_Sample_Num*PackageSampleBytes == recvPos) {
@@ -630,8 +715,14 @@ std::string format(const char *fmt, ...)
 
             if (CheckSunCal != CheckSun) {
 				CheckSunResult = false;
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[%02x][%02x][checksum error]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+                }
             } else {
 				CheckSunResult = true;
+                if (NULL != fd&& save_parsing){
+                    fprintf(fd, "[%02x][%02x]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+                }
 			}
 
 		}

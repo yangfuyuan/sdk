@@ -18,6 +18,7 @@ CYdLidar::CYdLidar(): lidarPtr(nullptr)
     m_MinAngle          = -180.f;
     m_MaxRange          = 12.0;
     m_MinRange          = 0.08;
+    m_EnableDebug       = false;
     isScanning          = false;
 
 }
@@ -55,12 +56,8 @@ bool  CYdLidar::doProcessSimple(node_info *nodes, size_t& count, bool &hardwareE
     //wait Scan data:
     result_t op_result =  lidarPtr->grabScanData(nodes, count);
 	// Fill in scan data:
-    if (IS_OK(op_result)) {
-        op_result = lidarPtr->ascendScanData(nodes, count);
-        if (IS_OK(op_result)) {
-            return true;
-		}
-
+    if (IS_OK(op_result)) {   
+        return true;
     } else {
         if (IS_FAIL(op_result)) {
 		}
@@ -68,6 +65,15 @@ bool  CYdLidar::doProcessSimple(node_info *nodes, size_t& count, bool &hardwareE
 
 	return false;
 
+}
+
+bool CYdLidar::ascendScanData(node_info *nodebuffer, size_t count) {
+    bool ret = false;
+    result_t op_result = lidarPtr->ascendScanData(nodebuffer, count);
+    if(IS_OK(op_result)) {
+        ret = true;
+    }
+    return ret;
 }
 
 
@@ -248,6 +254,7 @@ bool  CYdLidar::checkCOMMs()
 	}
 
 	// make connection...
+    lidarPtr->setSaveParse(m_EnableDebug, "ydldiar_scan.txt");
     result_t op_result = lidarPtr->connect(m_SerialPort.c_str(), m_SerialBaudrate);
     if (!IS_OK(op_result)) {
         fprintf(stderr, "[CYdLidar] Error, cannot bind to the specified serial port[%s] and baudrate[%d]\n",  m_SerialPort.c_str(), m_SerialBaudrate );

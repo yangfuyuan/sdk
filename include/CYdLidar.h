@@ -28,6 +28,8 @@ class CYdLidar
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率
     PropertyBuilderByName(std::string,SerialPort,private)///< 设置和获取激光端口号
 
+    PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件
+
 
 public:
 	CYdLidar(); //!< Constructor
@@ -37,6 +39,17 @@ public:
 
     // Return true if laser data acquistion succeeds, If it's not
     bool doProcessSimple(node_info *nodes, size_t& count, bool &hardwareError);
+    /**
+    * @brief 补偿激光角度 \n
+    * 把角度限制在0到360度之间
+    * @param[in] nodebuffer 激光点信息
+    * @param[in] count      一圈激光点数
+    * @return 返回执行结果
+    * @retval true       成功
+    * @retval false    失败
+    * @note 补偿之前，必须使用::grabScanData函数获取激光数据成功
+    */
+    bool ascendScanData(node_info * nodebuffer, size_t count);
 
     //Turn on the motor enable
 	bool  turnOn();  //!< See base class docs

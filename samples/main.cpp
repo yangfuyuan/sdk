@@ -101,10 +101,14 @@ int main(int argc, char * argv[])
         break;
     }
 
+    if(!ydlidar::ok()) {
+        return 0;
+    }
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baudrate);
     laser.setIntensities(intensities);//intensity
     laser.setAutoReconnect(true);//hot plug
+    laser.setEnableDebug(true);
     //unit: °C
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
@@ -118,8 +122,14 @@ int main(int argc, char * argv[])
         node_info nodes[2048];
         size_t count = _countof(nodes);
         if(laser.doProcessSimple(nodes, count, hardError )){
-            fprintf(stdout,"Scan received: %lu ranges\n",count);
-            fflush(stdout);
+            if(laser.ascendScanData(nodes, count)) {
+                fprintf(stdout,"Scan received: %lu ranges\n",count);
+                fflush(stdout);
+            } else {
+                fprintf(stderr,"ascend Scan data failed\n");
+                fflush(stderr);
+            }
+
         }else {
             fprintf(stderr,"get Scan Data failed\n");
             fflush(stderr);
