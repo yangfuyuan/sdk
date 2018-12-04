@@ -89,16 +89,6 @@ namespace ydlidar{
     	*/
         bool isconnected() const;
 
-		/**
-		* @brief 设置雷达是否带信号质量 \n
-    	* 连接成功后，必须使用::disconnect函数关闭
-    	* @param[in] isintensities    是否带信号质量:
-		*     true	带信号质量
-		*	  false 无信号质量
-        * @note只有S4B(波特率是153600)雷达支持带信号质量, 别的型号雷达暂不支持
-    	*/
-        void setIntensities(const bool& isintensities);
-
         /**
          * @brief 设置雷达异常自动重新连接 \n
          * @param[in] enable    是否开启自动重连:
@@ -374,62 +364,6 @@ namespace ydlidar{
     	*/
 		result_t disableConstFreq(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
 
-		/**	
-		* @brief 保存当前激光曝光值 \n
-		* @param[in] low_exposure    低光功能状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作, 当前操作需在非低光功率模式下, \n
-		* 只有S4雷达支持此功能
-    	*/
-		result_t setSaveLowExposure(scan_exposure& low_exposure, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置低光功率模式 \n
-		* @param[in] low_exposure    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作, 当前操作是开关量,只有S4雷达支持此功能
-    	*/
-		result_t setLowExposure(scan_exposure& low_exposure, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 增加激光曝光值 \n
-		* @param[in] exposure     曝光值
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作,只有S4雷达支持此功能
-    	*/
-		result_t setLowExposureAdd(scan_exposure & exposure, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 减小激光曝光值 \n
-		* @param[in] exposure     曝光值
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作,只有S4雷达支持此功能
-    	*/
-		result_t setLowExposurerDis(scan_exposure & exposure, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置扫描一圈固定激光点数 \n
-		* @param[in] points    	  固定点数状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作, 当前操作是开关量,只有S4雷达支持此功能
-    	*/
-		result_t setPointsForOneRingFlag(scan_points& points,uint32_t timeout = DEFAULT_TIMEOUT);
-
 	protected:
 
 		/**
@@ -620,7 +554,6 @@ namespace ydlidar{
 	private:
         int PackageSampleBytes;             ///< 一个包包含的激光点数
 		serial::Serial *_serial;			///< 串口
-		bool m_intensities;					///< 信号质量状体
         int m_sampling_rate;					///< 采样频率
 		int model;							///< 雷达型号
         uint32_t m_baudrate;					///< 波特率
@@ -630,7 +563,6 @@ namespace ydlidar{
 		uint32_t m_pointTime;				///< 激光点直接时间间隔
 		uint32_t trans_delay;				///< 串口传输一个byte时间
 
-        node_package package;
         node_packages packages;
 
         uint16_t package_Sample_Index;

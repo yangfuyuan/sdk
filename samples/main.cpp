@@ -73,7 +73,6 @@ int main(int argc, char * argv[])
     std::vector<unsigned int> baudrateList;
     baudrateList.push_back(115200);
     baudrateList.push_back(128000);
-    baudrateList.push_back(153600);
     baudrateList.push_back(230400);
     baudrateList.push_back(512000);
 
@@ -94,28 +93,12 @@ int main(int argc, char * argv[])
 
     }
 
-
-    int intensities  = 0;
-    ydlidar::console.show("0. false\n");
-    ydlidar::console.show("1. true\n");
-    while (ydlidar::ok()) {
-        ydlidar::console.show("Please enter the lidar intensity:");
-        std::cin>>intensity;
-        if(atoi(intensity.c_str()) >= 2) {
-            ydlidar::console.warning("Invalid serial number, Please re-select");
-            continue;
-        }
-        intensities = atoi(intensity.c_str());
-        break;
-    }
-
     if(!ydlidar::ok()) {
         return 0;
     }
 
     laser.setSerialPort(port);
     laser.setSerialBaudrate(baudrate);
-    laser.setIntensities(intensities);//intensity
     laser.setAutoReconnect(true);//hot plug
     laser.setMaxRange(16.0);
     laser.setMinRange(0.26);

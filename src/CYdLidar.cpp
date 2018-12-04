@@ -16,9 +16,7 @@ CYdLidar::CYdLidar() : lidarPtr(nullptr)
 {
     m_SerialPort        = "";
     m_SerialBaudrate    = 115200;
-    m_Intensities       = false;
     m_FixedResolution   = false;
-    m_Exposure          = false;
     m_Reversion         = false;
     m_AutoReconnect     = true;
     m_MaxAngle          = 180.f;
@@ -600,7 +598,6 @@ bool CYdLidar::checkStatus()
     std::map<int, bool> checkmodel;
     checkmodel.insert(std::map<int, bool>::value_type(115200, false));
     checkmodel.insert(std::map<int, bool>::value_type(128000, false));
-    checkmodel.insert(std::map<int, bool>::value_type(153600, false));
     checkmodel.insert(std::map<int, bool>::value_type(230400, false));
     checkmodel.insert(std::map<int, bool>::value_type(512000, false));
 
@@ -638,29 +635,6 @@ bool CYdLidar::checkStatus()
         }
     }
 
-    m_Intensities = false;
-    if (m_type == YDlidarDriver::YDLIDAR_S4 || m_type == YDlidarDriver::YDLIDAR_S4B) {
-        if (m_SerialBaudrate == 153600||m_type == YDlidarDriver::YDLIDAR_S4B)
-            m_Intensities = true;
-
-        if (m_Intensities) {
-            scan_exposure exposure;
-            int cnt = 0;
-            while ((lidarPtr->setLowExposure(exposure) == RESULT_OK) && (cnt<3)) {
-                if (exposure.exposure != m_Exposure) {
-                    ydlidar::console.message("set EXPOSURE MODEL SUCCESS!!!");
-                    break;
-                }
-                cnt++;
-            }
-            if (cnt >=4 ) {
-                ydlidar::console.warning("set LOW EXPOSURE MODEL FALIED!!!");
-            }
-        }
-    }
-
-    lidarPtr->setIntensities(m_Intensities);
-
      // start scan...
     result_t s_result= lidarPtr->startScan();
     if (!IS_OK(s_result)) {
@@ -674,6 +648,7 @@ bool CYdLidar::checkStatus()
     lidarPtr->setAutoReconnect(m_AutoReconnect);
     ydlidar::console.message("[YDLIDAR INFO] Now YDLIDAR is scanning ......\n");
     isScanning = true;
+    delay(2000);
     return true;
 
 }
