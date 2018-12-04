@@ -27,6 +27,7 @@ namespace ydlidar{
         m_signalpointTime   = 1e9/4000;
         trans_delay         = 0;
         m_ns                = 0;
+        m_last_ns           = 0;
 
         //解析参数
         PackageSampleBytes  = 2;
@@ -68,21 +69,13 @@ namespace ydlidar{
 	result_t YDlidarDriver::connect(const char * port_path, uint32_t baudrate) {
         m_baudrate  = baudrate;
         serial_port = string(port_path);
-        {
-
-            ScopedLocker lk(_serial_lock);
-            if(!_serial){  
-                _serial = new serial::Serial(port_path, m_baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
-            }
+        ScopedLocker lk(_serial_lock);
+        if(!_serial){
+            _serial = new serial::Serial(port_path, m_baudrate, serial::Timeout::simpleTimeout(DEFAULT_TIMEOUT));
         }
-
-		{
-			ScopedLocker l(_lock);
-			if(!_serial->open()){
-				return RESULT_FAIL;
-			}
-		}
-
+        if(!_serial->open()){
+            return RESULT_FAIL;
+        }
 		isConnected = true;
         {
             ScopedLocker l(_lock);
@@ -100,7 +93,6 @@ namespace ydlidar{
 			return ;
 		}
 
-        ScopedLocker lk(_serial_lock);
 		if(_serial){
             _serial->flush();
 			_serial->setDTR(1);
@@ -113,7 +105,6 @@ namespace ydlidar{
 			return ;
 		}
 
-        ScopedLocker lk(_serial_lock);
 		if(_serial){
             _serial->flush();
 			_serial->setDTR(0);
@@ -319,7 +310,7 @@ namespace ydlidar{
         int timeout_count = 0;
 		while(isScanning) {
 			if ((ans=waitScanData(local_buf, count)) != RESULT_OK) {
-                if (ans != RESULT_TIMEOUT|| timeout_count >DEFAULT_TIMEOUT_COUNT ) {
+                if (!IS_TIMEOUT(ans)|| timeout_count >DEFAULT_TIMEOUT_COUNT ) {
                     if(!isAutoReconnect) {//不重新连接, 退出线程
                         fprintf(stderr, "exit scanning thread!!\n");
                         fflush(stderr);
@@ -351,7 +342,12 @@ namespace ydlidar{
                                 return RESULT_FAIL;
                             }
                             if(isconnected()) {
-                                if(startAutoScan() == RESULT_OK){
+                                {
+                                    ScopedLocker l(_serial_lock);
+                                    ans = startAutoScan();
+                                }
+
+                                if(IS_OK(ans)){
                                     timeout_count =0;
                                     isAutoconnting = false;
                                 }
@@ -606,7 +602,11 @@ namespace ydlidar{
 
 
 		if((*node).sync_flag&LIDAR_RESP_MEASUREMENT_SYNCBIT){
+            m_last_ns = m_ns;
             m_ns = getTime() - (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_signalpointTime;
+            if(m_ns < m_last_ns) {
+                m_ns = m_last_ns;
+            }
 		}
 
         (*node).stamp = m_ns + package_Sample_Index*m_signalpointTime;

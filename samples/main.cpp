@@ -2,9 +2,7 @@
 #include "CYdLidar.h"
 #include <iostream>
 #include <string>
-#include <signal.h>
 #include <memory>
-#include <string.h>
 using namespace std;
 using namespace ydlidar;
 
@@ -14,10 +12,17 @@ using namespace ydlidar;
 
 int main(int argc, char * argv[])
 {
-	printf(" YDLIDAR C++ TEST\n");
+
     std::string port;
     std::string baudrate;
     int baud = 115200;
+    printf("__   ______  _     ___ ____    _    ____  \n");
+    printf("\\ \\ / /  _ \\| |   |_ _|  _ \\  / \\  |  _ \\ \n");
+    printf(" \\ V /| | | | |    | || | | |/ _ \\ | |_) | \n");
+    printf("  | | | |_| | |___ | || |_| / ___ \\|  _ <  \n");
+    printf("  |_| |____/|_____|___|____/_/   \\_\\_| \\_\\ \n");
+    printf("\n");
+    fflush(stdout);
 
     std::map<std::string, std::string> lidars = YDlidarDriver::lidarPortList();
     if(lidars.size()==1) {

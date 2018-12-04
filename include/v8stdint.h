@@ -4,12 +4,13 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
 #include <string.h>
+#include <string>
 #include <signal.h>
 #include <cerrno>
 #include <stdexcept>
 #include <csignal>
+#include <sstream>
 
 
 #define UNUSED(x) (void)x
@@ -86,6 +87,9 @@ enum {
 #define M_PI 3.1415926
 #endif
 
+#define DEG2RAD(x) ((x)*M_PI/180.)
+
+
 // Determine if sigaction is available
 #if __APPLE__ || _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
 #define HAS_SIGACTION
@@ -139,8 +143,10 @@ set_signal_handler(int signal_value, signal_handler_t signal_handler)
     strerror_s(error_string, error_length, errno);
 #endif
     // *INDENT-OFF* (prevent uncrustify from making unnecessary indents here)
+    std::ostringstream stm ;
+    stm << errno ;
     throw std::runtime_error(
-      std::string("Failed to set SIGINT signal handler: (" + std::to_string(errno) + ")") +
+      std::string("Failed to set SIGINT signal handler: (" + stm.str() + ")") +
       error_string);
     // *INDENT-ON*
   }

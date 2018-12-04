@@ -306,6 +306,7 @@ namespace ydlidar{
         bool        CheckSunResult;
         uint32_t    m_baudrate;					///< 波特率
         uint64_t    m_ns;						///< 时间戳
+        uint64_t    m_last_ns;						///< 时间戳
         uint32_t    m_signalpointTime;			///< 两个激光点时间间隔
         uint32_t    trans_delay;				///< 串口传输一个byte时间
         uint16_t    package_Sample_Index;
