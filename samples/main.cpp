@@ -72,10 +72,7 @@ int main(int argc, char * argv[])
     }
     std::vector<unsigned int> baudrateList;
     baudrateList.push_back(115200);
-    baudrateList.push_back(128000);
     baudrateList.push_back(153600);
-    baudrateList.push_back(230400);
-    baudrateList.push_back(512000);
 
 
     for( unsigned int i = 0; i < baudrateList.size(); i ++) {
@@ -118,10 +115,9 @@ int main(int argc, char * argv[])
     laser.setIntensities(intensities);//intensity
     laser.setAutoReconnect(true);//hot plug
     laser.setMaxRange(16.0);
-    laser.setMinRange(0.26);
+    laser.setMinRange(0.1);
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
-    laser.setReversion(false);
     laser.setFixedResolution(false);
     laser.initialize();
 

@@ -29,16 +29,12 @@ class YDLIDAR_API CYdLidar
     PropertyBuilderByName(float,MinRange,private)///< 设置和获取激光最小测距范围
     PropertyBuilderByName(float,MaxAngle,private)///< 设置和获取激光最大角度, 最大值180度
     PropertyBuilderByName(float,MinAngle,private)///< 设置和获取激光最小角度, 最小值-180度
-    PropertyBuilderByName(int,ScanFrequency,private)///< 设置和获取激光扫描频率(范围5HZ~12HZ)
 
     PropertyBuilderByName(bool,Intensities,private)///< 设置和获取激光带信号质量(只有S4B雷达支持)
     PropertyBuilderByName(bool,FixedResolution,private)///< 设置和获取激光是否是固定角度分辨率
     PropertyBuilderByName(bool,Exposure,private)///< 设置和获取激光时候开启低光功率曝光模式 只有S4雷达支持
-    PropertyBuilderByName(bool,Reversion, private)///< 设置和获取是否旋转激光180度
     PropertyBuilderByName(bool,AutoReconnect, private)///< 设置异常是否自动重新连接
-
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率
-    PropertyBuilderByName(int,SampleRate,private)///< 设置和获取激光采样频率
 
     PropertyBuilderByName(std::string,SerialPort,private)///< 设置和获取激光端口号
     PropertyBuilderByName(std::vector<float>,IgnoreArray,private)///< 设置和获取激光剔除点
@@ -63,9 +59,6 @@ public:
 
     /** Returns true if the device information is correct, If it's not*/
     bool getDeviceInfo(int &type);
-
-    /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
-    bool checkScanFrequency();
 
     //Turn off lidar connection
     void disconnecting(); //!< Closes the comms with the laser. Shouldn't have to be directly needed by the user
@@ -93,10 +86,6 @@ private:
     bool isScanning;
     int node_counts ;
     double each_angle;
-    int print_error_info;
-    bool m_isMultipleRate;
-    double m_FrequencyOffset;
-
     YDlidarDriver *lidarPtr;
 };	// End of class
 

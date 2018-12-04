@@ -107,22 +107,6 @@ namespace ydlidar{
          */
         void setAutoReconnect(const bool& enable);
 
- 		/**
-         * @brief 设置雷达采样倍频 \n
-         * @param[in] enable    是否开启采样倍频:
-         *     true	开启
-         *	  false 关闭
-         */
-        void setMultipleRate(const bool& enable);
-
-		/**
-		* @brief 获取当前雷达掉电保护功能 \n
-		* @return 返回掉电保护是否开启
-    	* @retval true     掉电保护开启
-    	* @retval false    掉电保护关闭
-    	*/
-        bool getMultipleRate() const;
-
 		/**
 		 * @brief 检测传输时间 \n
 		 * */
@@ -217,163 +201,6 @@ namespace ydlidar{
     	*/
 		result_t stopMotor();
 
-
-		/**	
-		* @brief 获取激光雷达当前扫描频率 \n
-		* @param[in] frequency    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t getScanFrequency(scan_frequency & frequency, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置增加扫描频率1HZ \n
-		* @param[in] frequency    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setScanFrequencyAdd(scan_frequency & frequency, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置减小扫描频率1HZ \n
-		* @param[in] frequency    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setScanFrequencyDis(scan_frequency & frequency, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置增加扫描频率0.1HZ \n
-		* @param[in] frequency    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setScanFrequencyAddMic(scan_frequency & frequency, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置减小扫描频率0.1HZ \n
-		* @param[in] frequency    扫描频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setScanFrequencyDisMic(scan_frequency & frequency, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 获取激光雷达当前采样频率 \n
-		* @param[in] frequency    采样频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t getSamplingRate(sampling_rate & rate, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置激光雷达当前采样频率 \n
-		* @param[in] frequency    采样频率
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setSamplingRate(sampling_rate & rate, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置电机顺时针旋转 \n
-		* @param[in] rotation    旋转方向
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setRotationPositive(scan_rotation & rotation, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置电机逆顺时针旋转 \n
-		* @param[in] rotation    旋转方向
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t setRotationInversion(scan_rotation & rotation, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 低功耗使能 \n
-		* @param[in] state    低功耗状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作,低功耗关闭,关闭后 G4 在空闲模式下电\n
-		* 机和测距单元仍然工作
-    	*/
-		result_t enableLowerPower(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 关闭低功耗 \n
-		* @param[in] state    低功耗状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作,关闭后 G4 在空闲模式下电\n
-		* 机和测距单元仍然工作
-    	*/
-		result_t disableLowerPower(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 获取电机状态 \n
-		* @param[in] state    电机状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t getMotorState(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 开启恒频功能 \n
-		* @param[in] state    	  恒频状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t enableConstFreq(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 关闭恒频功能 \n
-		* @param[in] state    	  恒频状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作
-    	*/
-		result_t disableConstFreq(function_state & state, uint32_t timeout = DEFAULT_TIMEOUT);
-
 		/**	
 		* @brief 保存当前激光曝光值 \n
 		* @param[in] low_exposure    低光功能状态
@@ -418,17 +245,6 @@ namespace ydlidar{
 		* @note 停止扫描后再执行当前操作,只有S4雷达支持此功能
     	*/
 		result_t setLowExposurerDis(scan_exposure & exposure, uint32_t timeout = DEFAULT_TIMEOUT);
-
-		/**	
-		* @brief 设置扫描一圈固定激光点数 \n
-		* @param[in] points    	  固定点数状态
-		* @param[in] timeout      超时时间
-    	* @return 返回执行结果
-    	* @retval RESULT_OK       成功
-    	* @retval RESULT_FAILE    失败
-		* @note 停止扫描后再执行当前操作, 当前操作是开关量,只有S4雷达支持此功能
-    	*/
-		result_t setPointsForOneRingFlag(scan_points& points,uint32_t timeout = DEFAULT_TIMEOUT);
 
 	protected:
 
@@ -540,16 +356,6 @@ namespace ydlidar{
     	*/
 		result_t sendData(const uint8_t * data, size_t size);
 
-        /**
-        * @brief 发送掉电保护命令 \n
-        * @return 返回执行结果
-        * @retval RESULT_OK       发送成功
-        * @retval RESULT_FAILE    发送失败
-        * @note只有(G4, G4C, F4PRO)雷达支持掉电保护功能, 别的型号雷达暂不支持
-        */
-        result_t sendHeartBeat();
-
-
 		/**
 		* @brief 关闭数据获取通道 \n
     	*/
@@ -631,8 +437,6 @@ namespace ydlidar{
         int PackageSampleBytes;             ///< 一个包包含的激光点数
 		serial::Serial *_serial;			///< 串口
 		bool m_intensities;					///< 信号质量状体
-        int m_sampling_rate;					///< 采样频率
-		int model;							///< 雷达型号
         uint32_t m_baudrate;					///< 波特率
 		bool isSupportMotorCtrl;			///< 是否支持电机控制
 		uint64_t m_ns;						///< 时间戳
@@ -655,7 +459,6 @@ namespace ydlidar{
         uint16_t LastSampleAngleCal;
         bool CheckSunResult;
         uint16_t Valu8Tou16;
-		bool isMultipleRate;
         uint8_t scan_frequence;
 
         std::string serial_port;///< 雷达端口
