@@ -418,12 +418,14 @@ bool CYdLidar::checkStatus()
                 lidarPtr = nullptr;
                 m_SerialBaudrate = it->first;
 
-                bool ret = checkCOMMs();
-                if (!ret) {
+                if (!checkCOMMs()) {
                     return false;
+                }else {
+                    break;
                 }
             }
-            return false;
+            if(it == checkmodel.end())
+                return false;
         } else {
             ret = true;
             break;
