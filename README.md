@@ -15,11 +15,11 @@ Release Notes
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Title      |  Version |  Data |
 | :-------- | --------:|  :--: |
-| SDK     |  1.3.8 |   2018-11-24  |
+| SDK     |  1.3.9 |   2018-12-07  |
 
 
-- [new feature] Reduce abnormal situation recovery time.
-- [new feature] fix timestamp from zero.
+- [new feature] Remove other lidar model interfaces functions.
+- [new feature] Remove heartbeat.
 
 
 
@@ -214,6 +214,13 @@ Coordinate System
 
 Upgrade Log
 ---------------
+
+2018-12-07 version:1.3.9
+
+   1.Remove other lidar model interfaces functions.
+
+   2.Remove heartbeat
+
 2018-11-24 version:1.3.8
 
    1.Reduce abnormal situation recovery time.
