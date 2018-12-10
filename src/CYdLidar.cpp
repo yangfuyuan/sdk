@@ -200,7 +200,8 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError) {
       scan_msg.self_time_stamp = tim_scan_start;
       scan_msg.config.min_angle = DEG2RAD(m_MinAngle);
       scan_msg.config.max_angle = DEG2RAD(m_MaxAngle);
-      if ((scan_msg.config.max_angle - scan_msg.config.min_angle) == 2*M_PI) {
+
+      if ((scan_msg.config.max_angle - scan_msg.config.min_angle) == 2 * M_PI) {
         scan_msg.config.ang_increment = (scan_msg.config.max_angle - scan_msg.config.min_angle) /
                                         (double)counts;
         scan_msg.config.time_increment = scan_time / (double)counts;
@@ -209,6 +210,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError) {
                                         (double)(counts - 1);
         scan_msg.config.time_increment = scan_time / (double)(counts - 1);
       }
+
       scan_msg.config.scan_time = scan_time;
       scan_msg.config.min_range = m_MinRange;
       scan_msg.config.max_range = m_MaxRange;
