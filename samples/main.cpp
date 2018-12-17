@@ -118,7 +118,7 @@ int main(int argc, char * argv[])
     laser.setIntensities(intensities);//intensity
     laser.setAutoReconnect(true);//hot plug
     laser.setMaxRange(16.0);
-    laser.setMinRange(0.26);
+    laser.setMinRange(0.1);
     laser.setMaxAngle(180);
     laser.setMinAngle(-180);
     laser.setReversion(false);
