@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ydlidar_20sdk_20package_20v1_2e3_2e9',['YDLIDAR SDK PACKAGE V1.3.9',['../md__home_yang_gaussian_sdk_README.html',1,'']]],
+  ['ydlidar_20sdk_20package_20v1_2e3_2e9',['YDLIDAR SDK PACKAGE V1.3.9',['../md_README.html',1,'']]],
   ['ydlidar_5ff2',['YDLIDAR_F2',['../classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a7d64a3d3e3d3ef6d1db5c0a8740a523a',1,'ydlidar::YDlidarDriver']]],
   ['ydlidar_5ff2_5fbaud',['YDLIDAR_F2_BAUD',['../classydlidar_1_1_y_dlidar_driver.html#a9f392158233eedf4d9fa42a77ce3d8f5ac2216e8d52a0e138878f44f8f5ef9abd',1,'ydlidar::YDlidarDriver']]],
   ['ydlidar_5ff4',['YDLIDAR_F4',['../classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a3303d67e56b0dd5a36397a5326965713',1,'ydlidar::YDlidarDriver']]],
