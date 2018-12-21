@@ -1,4 +1,4 @@
-YDLIDAR SDK PACKAGE V1.3.6
+YDLIDAR SDK PACKAGE V1.3.7
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/non-singleton) application for YDLIDAR
@@ -129,6 +129,10 @@ code:
 
 Upgrade Log
 =====================================================================
+
+2018-10-15 version:1.3.7
+
+   1.fix auto connecting.
 
 2018-10-15 version:1.3.6
 
