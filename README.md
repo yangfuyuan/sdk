@@ -1,4 +1,4 @@
-YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.1
+YDLIDAR SDK BIG SCREEN INTERACTION PACKAGE V1.1.3
 =====================================================================
 
 SDK [test](https://github.com/yangfuyuan/sdk/tree/big-screen) application for YDLIDAR
@@ -123,6 +123,10 @@ You should see YDLIDAR's scan result in the console:
 Upgrade Log
 =====================================================================
 
+2018-12-21 version:1.1.3
+
+   1.fix network auto connecting.
+
 2018-10-11 version:1.1.2
 
    1.add network support.
@@ -140,7 +144,6 @@ Upgrade Log
    2.remove python mouse event.
 
    3.add simple right mouse button, left button, middle button demo.
-
 
 2018-05-02 version:1.0.0
 

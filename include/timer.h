@@ -42,7 +42,7 @@
 	}   _instance_##_blockname_;
 
 
-#if defined(_WIN32)  
+#if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #define delay(x)   ::Sleep(x)
@@ -50,25 +50,26 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-static inline void delay(uint32_t ms){
-	while (ms>=1000){
-		usleep(1000*1000);
-		ms-=1000;
-	};
-	if (ms!=0){
-		usleep(ms*1000);
-	}
+static inline void delay(uint32_t ms) {
+  while (ms >= 1000) {
+    usleep(1000 * 1000);
+    ms -= 1000;
+  };
+
+  if (ms != 0) {
+    usleep(ms * 1000);
+  }
 }
 #endif
 
 
-namespace impl{
+namespace impl {
 
-#if defined(_WIN32)  
-	void HPtimer_reset();
+#if defined(_WIN32)
+void HPtimer_reset();
 #endif
-    uint32_t getHDTimer();
-    uint64_t getCurrentTime();
+uint32_t getHDTimer();
+uint64_t getCurrentTime();
 }
 
 
