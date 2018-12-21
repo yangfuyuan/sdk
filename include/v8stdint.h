@@ -17,8 +17,8 @@
 #if defined(_WIN32) && !defined(__MINGW32__)
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
-typedef short int16_t;
-typedef unsigned short uint16_t;
+typedef short int16_t;  
+typedef unsigned short uint16_t;  
 typedef int int32_t;
 typedef unsigned int uint32_t;
 typedef __int64 int64_t;
@@ -38,7 +38,7 @@ typedef unsigned __int64 uint64_t;
 
 #ifdef _AVR_
 typedef uint8_t        _size_t;
-#define THREAD_PROC
+#define THREAD_PROC    
 #elif defined (WIN64)
 typedef uint64_t       _size_t;
 #define THREAD_PROC    __stdcall
@@ -50,13 +50,13 @@ typedef uint64_t       _size_t;
 #define THREAD_PROC    __stdcall
 #elif defined (__GNUC__)
 typedef unsigned long  _size_t;
-#define THREAD_PROC
+#define THREAD_PROC   
 #elif defined (__ICCARM__)
 typedef uint32_t       _size_t;
-#define THREAD_PROC
+#define THREAD_PROC  
 #endif
 
-typedef _size_t (THREAD_PROC *thread_proc_t)(void *);
+typedef _size_t (THREAD_PROC * thread_proc_t ) ( void * );
 
 typedef int32_t result_t;
 typedef uint64_t TTimeStamp;
@@ -68,8 +68,8 @@ typedef uint64_t TTimeStamp;
 #define INVALID_TIMESTAMP (0)
 
 enum {
-  DEVICE_DRIVER_TYPE_SERIALPORT = 0x0,
-  DEVICE_DRIVER_TYPE_TCP = 0x1,
+    DEVICE_DRIVER_TYPE_SERIALPORT = 0x0,
+    DEVICE_DRIVER_TYPE_TCP = 0x1,
 };
 
 
@@ -90,7 +90,7 @@ static signal_handler_t old_signal_handler = 0;
 
 #ifdef HAS_SIGACTION
 inline struct sigaction
-set_sigaction(int signal_value, const struct sigaction &action)
+set_sigaction(int signal_value, const struct sigaction & action)
 #else
 inline signal_handler_t
 set_signal_handler(int signal_value, signal_handler_t signal_handler)
@@ -99,11 +99,9 @@ set_signal_handler(int signal_value, signal_handler_t signal_handler)
 #ifdef HAS_SIGACTION
   struct sigaction old_action;
   ssize_t ret = sigaction(signal_value, &action, &old_action);
-
   if (ret == -1)
 #else
   signal_handler_t old_signal_handler = std::signal(signal_value, signal_handler);
-
   // NOLINTNEXTLINE(readability/braces)
   if (old_signal_handler == SIG_ERR)
 #endif
@@ -113,20 +111,16 @@ set_signal_handler(int signal_value, signal_handler_t signal_handler)
     char error_string[error_length];
 #ifndef _WIN32
 #if (defined(_GNU_SOURCE) && !defined(ANDROID))
-    char *msg = strerror_r(errno, error_string, error_length);
-
+    char * msg = strerror_r(errno, error_string, error_length);
     if (msg != error_string) {
       strncpy(error_string, msg, error_length);
       msg[error_length - 1] = '\0';
     }
-
 #else
     int error_status = strerror_r(errno, error_string, error_length);
-
     if (error_status != 0) {
       throw std::runtime_error("Failed to get error string for errno: " + std::to_string(errno));
     }
-
 #endif
 #else
     strerror_s(error_string, error_length, errno);
@@ -146,13 +140,13 @@ set_signal_handler(int signal_value, signal_handler_t signal_handler)
 }
 
 inline void trigger_interrupt_guard_condition(int signal_value) {
-  g_signal_status = signal_value;
-  signal(signal_value, SIG_DFL);
+    g_signal_status = signal_value;
+    signal(signal_value, SIG_DFL);
 }
 
 inline void
 #ifdef HAS_SIGACTION
-signal_handler(int signal_value, siginfo_t *siginfo, void *context)
+signal_handler(int signal_value, siginfo_t * siginfo, void * context)
 #else
 signal_handler(int signal_value)
 #endif
@@ -161,7 +155,6 @@ signal_handler(int signal_value)
   printf("signal_handler(%d)\n", signal_value);
 
 #ifdef HAS_SIGACTION
-
   if (old_action.sa_flags & SA_SIGINFO) {
     if (old_action.sa_sigaction != NULL) {
       old_action.sa_sigaction(signal_value, siginfo, context);
@@ -170,17 +163,15 @@ signal_handler(int signal_value)
     if (
       old_action.sa_handler != NULL &&  // Is set
       old_action.sa_handler != SIG_DFL &&  // Is not default
-      old_action.sa_handler != SIG_IGN) { // Is not ignored
+      old_action.sa_handler != SIG_IGN)  // Is not ignored
+    {
       old_action.sa_handler(signal_value);
     }
   }
-
 #else
-
   if (old_signal_handler) {
     old_signal_handler(signal_value);
   }
-
 #endif
 
   trigger_interrupt_guard_condition(signal_value);
@@ -189,8 +180,8 @@ signal_handler(int signal_value)
 namespace ydlidar {
 
 inline void init(int argc, char *argv[]) {
-  UNUSED(argc);
-  UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 #ifdef HAS_SIGACTION
   struct sigaction action;
   memset(&action, 0, sizeof(action));

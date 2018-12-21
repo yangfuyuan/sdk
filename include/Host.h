@@ -57,42 +57,42 @@ extern "C"
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
 #ifndef __WORDSIZE
-/* Assume 32 */
-#define __WORDSIZE 32
+  /* Assume 32 */
+  #define __WORDSIZE 32
 #endif
 
 #if defined(__linux__) || defined(_DARWIN)
 #include <stdint.h>
-typedef int            SOCKET;
+    typedef int            SOCKET;
 #endif
 
 
 #if defined(_WIN32)
-struct iovec {
-  void  *iov_base;
-  size_t iov_len;
-};
+    struct iovec {
+        void  *iov_base;
+        size_t iov_len;
+    };
 
-typedef unsigned char  uint8_t;
-// typedef char           int8_t;
-typedef unsigned short uint16_t;
-typedef short          int16_t;
-typedef unsigned int   uint32_t;
-typedef int            int32_t;
+    typedef unsigned char  uint8_t;
+   // typedef char           int8_t;
+    typedef unsigned short uint16_t;
+    typedef short          int16_t;
+    typedef unsigned int   uint32_t;
+    typedef int            int32_t;
 #endif
 
 #if defined(_WIN32)
-typedef int socklen_t;
+    typedef int socklen_t;
 #endif
 
 #if defined(_WIN32)
-typedef unsigned long long int uint64_t;
-typedef long long int          int64_t;
+    typedef unsigned long long int uint64_t;
+    typedef long long int          int64_t;
 #elif (__WORDSIZE == 32)
-__extension__
-typedef long long int          int64_t;
-__extension__
-typedef unsigned long long int uint64_t;
+    __extension__
+    typedef long long int          int64_t;
+    __extension__
+    typedef unsigned long long int uint64_t;
 #elif (__WORDSIZE == 64)
 //    typedef unsigned long int uint64_t;
 //    typedef long int          int64_t;
@@ -100,27 +100,27 @@ typedef unsigned long long int uint64_t;
 
 #if defined(_WIN32)
 
-#ifndef UINT8_MAX
-#define UINT8_MAX  (UCHAR_MAX)
-#endif
-#ifndef UINT16_MAX
-#define UINT16_MAX (USHRT_MAX)
-#endif
-#ifndef UINT32_MAX
-#define UINT32_MAX (ULONG_MAX)
-#endif
+  #ifndef UINT8_MAX
+    #define UINT8_MAX  (UCHAR_MAX)
+  #endif
+  #ifndef UINT16_MAX
+    #define UINT16_MAX (USHRT_MAX)
+  #endif
+  #ifndef UINT32_MAX
+    #define UINT32_MAX (ULONG_MAX)
+  #endif
 
-#if __WORDSIZE == 64
-#define SIZE_MAX (18446744073709551615UL)
-#else
-#ifndef SIZE_MAX
-#define SIZE_MAX (4294967295U)
-#endif
-#endif
+  #if __WORDSIZE == 64
+    #define SIZE_MAX (18446744073709551615UL)
+  #else
+    #ifndef SIZE_MAX
+    #define SIZE_MAX (4294967295U)
+  #endif
+  #endif
 #endif
 
 #if defined(_WIN32)
-#define ssize_t size_t
+  #define ssize_t size_t
 #endif
 
 #define __small_endian
@@ -130,11 +130,11 @@ typedef unsigned long long int uint64_t;
 #endif
 
 #ifndef TRUE
-#define TRUE 1
+  #define TRUE 1
 #endif
 
 #ifndef FALSE
-#define FALSE 0
+  #define FALSE 0
 #endif
 
 #ifndef htonll
@@ -219,9 +219,9 @@ typedef unsigned long long int uint64_t;
 #define FFLUSH(x)           fflush(x)
 #define FILENO(s)           fileno(s)
 #define FOPEN(x,y)          fopen(x, y)
-//#define FREAD(a,b,c,d)      fread(a, b, c, d)
+  //#define FREAD(a,b,c,d)      fread(a, b, c, d)
 #define FSTAT(s, st)        fstat(FILENO(s), st)
-//#define FWRITE(a,b,c,d)     fwrite(a, b, c, d)
+    //#define FWRITE(a,b,c,d)     fwrite(a, b, c, d)
 #define STAT_BLK_SIZE(x)    ((x).st_blksize)
 
 #define DEFAULT_CONNECTION_TIMEOUT_SEC 2
@@ -239,27 +239,27 @@ typedef unsigned long long int uint64_t;
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
 #if defined(_WIN32)
-#define GET_CLOCK_COUNT(x) QueryPerformanceCounter((LARGE_INTEGER *)x)
+  #define GET_CLOCK_COUNT(x) QueryPerformanceCounter((LARGE_INTEGER *)x)
 #else
-#define GET_CLOCK_COUNT(x) gettimeofday(x, NULL)
+  #define GET_CLOCK_COUNT(x) gettimeofday(x, NULL)
 #endif
 
 #if defined(_WIN32)
-#define STRTOULL(x) _atoi64(x)
+  #define STRTOULL(x) _atoi64(x)
 #else
-#define STRTOULL(x) strtoull(x, NULL, 10)
+  #define STRTOULL(x) strtoull(x, NULL, 10)
 #endif
 
 #if defined(_WIN32)
-#define SNPRINTF _snprintf
-#define PRINTF   printf
-#define VPRINTF  vprintf
-#define FPRINTF  fprintf
+  #define SNPRINTF _snprintf
+  #define PRINTF   printf
+  #define VPRINTF  vprintf
+  #define FPRINTF  fprintf
 #else
-#define SNPRINTF snprintf
-#define PRINTF   printf
-#define VPRINTF  vprintf
-#define FPRINTF  fprintf
+  #define SNPRINTF snprintf
+  #define PRINTF   printf
+  #define VPRINTF  vprintf
+  #define FPRINTF  fprintf
 #endif
 
 #ifdef __cplusplus
