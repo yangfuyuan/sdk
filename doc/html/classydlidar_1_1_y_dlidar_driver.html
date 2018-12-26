@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="ydlidar.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">YDLIDAR SDK
-   &#160;<span id="projectnumber">V1.3.8</span>
+   &#160;<span id="projectnumber">V1.3.9</span>
    </div>
   </td>
  </tr>
@@ -136,7 +136,7 @@ Public Types</h2></td></tr>
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a60b16d0468bb4fa5547de578ea6bda7e">YDLIDAR_S4B</a> = 11, 
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a99ba8286a5265e554cfba5c9d755c8be">YDLIDAR_S2</a> = 12, 
 <br />
-&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a453de597c65673b47601ca29b606d0b2">YDLIDAR_G25</a> = 13, 
+&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a47bc5fa1ceb0d5eda94e7e70bfa03f53">YDLIDAR_G6</a> = 13, 
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1edd5634ea00ca122a0882d875f42853a37f9bd0b07a7f67f1d5c2aae6ea453ac">YDLIDAR_Tail</a>
 <br />
  }</td></tr>
@@ -163,7 +163,7 @@ Public Types</h2></td></tr>
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9f392158233eedf4d9fa42a77ce3d8f5a963232a105788cc385dbc674752ff0bb">YDLIDAR_S4B_BAUD</a> = 153600, 
 <a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9f392158233eedf4d9fa42a77ce3d8f5a2c0f95005b7f01e75cd7ff69913d8b14">YDLIDAR_S2_BAUD</a> = 115200, 
 <br />
-&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9f392158233eedf4d9fa42a77ce3d8f5ac6fa8fb411dbdd419d74bbb0160cc5c9">YDLIDAR_G25_BAUD</a> = 512000
+&#160;&#160;<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a9f392158233eedf4d9fa42a77ce3d8f5a1b8d1cf1248b7b1682d6bb1349cc6b89">YDLIDAR_G6_BAUD</a> = 512000
 <br />
  }</td></tr>
 <tr class="separator:a9f392158233eedf4d9fa42a77ce3d8f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,7 +176,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a87a50f9f1093a93b4d985f3e8bf27fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c5eeecccaa6ed874635de1617e8d7d8"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a2c5eeecccaa6ed874635de1617e8d7d8">connect</a> (const char *port_path, uint32_t baudrate)</td></tr>
 <tr class="memdesc:a2c5eeecccaa6ed874635de1617e8d7d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">连接雷达 <br />
-连接成功后，必须使用::disconnect函数关闭  <a href="#a2c5eeecccaa6ed874635de1617e8d7d8">More...</a><br /></td></tr>
+ 连接成功后，必须使用::disconnect函数关闭  <a href="#a2c5eeecccaa6ed874635de1617e8d7d8">More...</a><br /></td></tr>
 <tr class="separator:a2c5eeecccaa6ed874635de1617e8d7d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa26790ae49d33936229fa67739a8ff5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa26790ae49d33936229fa67739a8ff5f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aa26790ae49d33936229fa67739a8ff5f">disconnect</a> ()</td></tr>
@@ -190,22 +190,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a918486cdb4f3fbe863ec2e1231168538"><td class="mdescLeft">&#160;</td><td class="mdescRight">连接雷达状态 <br />
  <a href="#a918486cdb4f3fbe863ec2e1231168538">More...</a><br /></td></tr>
 <tr class="separator:a918486cdb4f3fbe863ec2e1231168538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc543dbbe1c5e37afc366e3c92203533"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#afc543dbbe1c5e37afc366e3c92203533">setIntensities</a> (const bool &amp;isintensities)</td></tr>
-<tr class="memdesc:afc543dbbe1c5e37afc366e3c92203533"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达是否带信号质量 <br />
-连接成功后，必须使用::disconnect函数关闭  <a href="#afc543dbbe1c5e37afc366e3c92203533">More...</a><br /></td></tr>
-<tr class="separator:afc543dbbe1c5e37afc366e3c92203533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6de3ec3e2b2837f0459f1ce35257323a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a6de3ec3e2b2837f0459f1ce35257323a">setAutoReconnect</a> (const bool &amp;enable)</td></tr>
 <tr class="memdesc:a6de3ec3e2b2837f0459f1ce35257323a"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达异常自动重新连接 <br />
  <a href="#a6de3ec3e2b2837f0459f1ce35257323a">More...</a><br /></td></tr>
 <tr class="separator:a6de3ec3e2b2837f0459f1ce35257323a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66346f32e327f5a12fa1f0669c2523d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a66346f32e327f5a12fa1f0669c2523d1">setMultipleRate</a> (const bool &amp;enable)</td></tr>
-<tr class="memdesc:a66346f32e327f5a12fa1f0669c2523d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置雷达采样倍频 <br />
- <a href="#a66346f32e327f5a12fa1f0669c2523d1">More...</a><br /></td></tr>
-<tr class="separator:a66346f32e327f5a12fa1f0669c2523d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb4019d223331bc5d7ee3fa28c5f7d85"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aeb4019d223331bc5d7ee3fa28c5f7d85">getMultipleRate</a> () const </td></tr>
-<tr class="memdesc:aeb4019d223331bc5d7ee3fa28c5f7d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">获取当前雷达掉电保护功能 <br />
- <a href="#aeb4019d223331bc5d7ee3fa28c5f7d85">More...</a><br /></td></tr>
-<tr class="separator:aeb4019d223331bc5d7ee3fa28c5f7d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9a739915f16227e21c2616faed42877"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9a739915f16227e21c2616faed42877"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ae9a739915f16227e21c2616faed42877">checkTransTime</a> ()</td></tr>
 <tr class="memdesc:ae9a739915f16227e21c2616faed42877"><td class="mdescLeft">&#160;</td><td class="mdescRight">检测传输时间 <br />
@@ -303,26 +291,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ae4b3883dd18bf01737bc4783d2dae974"><td class="mdescLeft">&#160;</td><td class="mdescRight">关闭恒频功能 <br />
  <a href="#ae4b3883dd18bf01737bc4783d2dae974">More...</a><br /></td></tr>
 <tr class="separator:ae4b3883dd18bf01737bc4783d2dae974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73ef6628afc1eadf2f3079db99b383c6"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a73ef6628afc1eadf2f3079db99b383c6">setSaveLowExposure</a> (<a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;low_exposure, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a73ef6628afc1eadf2f3079db99b383c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">保存当前激光曝光值 <br />
- <a href="#a73ef6628afc1eadf2f3079db99b383c6">More...</a><br /></td></tr>
-<tr class="separator:a73ef6628afc1eadf2f3079db99b383c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02257e37b792870a9c42f8abfbe543ad"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a02257e37b792870a9c42f8abfbe543ad">setLowExposure</a> (<a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;low_exposure, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a02257e37b792870a9c42f8abfbe543ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置低光功率模式 <br />
- <a href="#a02257e37b792870a9c42f8abfbe543ad">More...</a><br /></td></tr>
-<tr class="separator:a02257e37b792870a9c42f8abfbe543ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f34ad1119b9b97c4af3936e80c182f4"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a3f34ad1119b9b97c4af3936e80c182f4">setLowExposureAdd</a> (<a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;exposure, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a3f34ad1119b9b97c4af3936e80c182f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">增加激光曝光值 <br />
- <a href="#a3f34ad1119b9b97c4af3936e80c182f4">More...</a><br /></td></tr>
-<tr class="separator:a3f34ad1119b9b97c4af3936e80c182f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aece83871e5912d19bc7677676a5511f8"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#aece83871e5912d19bc7677676a5511f8">setLowExposurerDis</a> (<a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;exposure, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:aece83871e5912d19bc7677676a5511f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">减小激光曝光值 <br />
- <a href="#aece83871e5912d19bc7677676a5511f8">More...</a><br /></td></tr>
-<tr class="separator:aece83871e5912d19bc7677676a5511f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c8d40889885386e6c5a7827b7747696"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a1c8d40889885386e6c5a7827b7747696">setPointsForOneRingFlag</a> (<a class="el" href="structscan__points.html">scan_points</a> &amp;points, uint32_t timeout=<a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a>)</td></tr>
-<tr class="memdesc:a1c8d40889885386e6c5a7827b7747696"><td class="mdescLeft">&#160;</td><td class="mdescRight">设置扫描一圈固定激光点数 <br />
- <a href="#a1c8d40889885386e6c5a7827b7747696">More...</a><br /></td></tr>
-<tr class="separator:a1c8d40889885386e6c5a7827b7747696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -423,10 +391,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:a998ba4b05927d19e8a0d4d29d3d47656"><td class="mdescLeft">&#160;</td><td class="mdescRight">串口发送数据 <br />
  <a href="#a998ba4b05927d19e8a0d4d29d3d47656">More...</a><br /></td></tr>
 <tr class="separator:a998ba4b05927d19e8a0d4d29d3d47656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="memItemLeft" align="right" valign="top">result_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a6e7dc7cd2a73d24a763cebde840a5d30">sendHeartBeat</a> ()</td></tr>
-<tr class="memdesc:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">发送掉电保护命令 <br />
- <a href="#a6e7dc7cd2a73d24a763cebde840a5d30">More...</a><br /></td></tr>
-<tr class="separator:a6e7dc7cd2a73d24a763cebde840a5d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66565bee3cdb8b74698b691f2ab1e63"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae66565bee3cdb8b74698b691f2ab1e63"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#ae66565bee3cdb8b74698b691f2ab1e63">disableDataGrabbing</a> ()</td></tr>
 <tr class="memdesc:ae66565bee3cdb8b74698b691f2ab1e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">关闭数据获取通道 <br />
@@ -442,6 +406,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a67fe00d7458cdb52b4160d745b8ecd32"><td class="mdescLeft">&#160;</td><td class="mdescRight">清除串口DTR <br />
 <br /></td></tr>
 <tr class="separator:a67fe00d7458cdb52b4160d745b8ecd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c6cd0b1e39fe6127656222d20ea4a9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c6cd0b1e39fe6127656222d20ea4a9b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#a6c6cd0b1e39fe6127656222d20ea4a9b">flushCache</a> ()</td></tr>
+<tr class="memdesc:a6c6cd0b1e39fe6127656222d20ea4a9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">flushCache <br /></td></tr>
+<tr class="separator:a6c6cd0b1e39fe6127656222d20ea4a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="abbb612f1ac6a9f6dfdcfeafb149dd0da"></a>
@@ -513,7 +481,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a99ba8286a5265e554cfba5c9d755c8be"></a>YDLIDAR_S2&#160;</td><td class="fielddoc">
 <p>S2雷达型号代号. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a453de597c65673b47601ca29b606d0b2"></a>YDLIDAR_G25&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a47bc5fa1ceb0d5eda94e7e70bfa03f53"></a>YDLIDAR_G6&#160;</td><td class="fielddoc">
 <p>G25雷达型号代号. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a1edd5634ea00ca122a0882d875f42853a37f9bd0b07a7f67f1d5c2aae6ea453ac"></a>YDLIDAR_Tail&#160;</td><td class="fielddoc">
@@ -569,7 +537,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="fieldname"><a class="anchor" id="a9f392158233eedf4d9fa42a77ce3d8f5a2c0f95005b7f01e75cd7ff69913d8b14"></a>YDLIDAR_S2_BAUD&#160;</td><td class="fielddoc">
 <p>S2雷达型号波特率. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a9f392158233eedf4d9fa42a77ce3d8f5ac6fa8fb411dbdd419d74bbb0160cc5c9"></a>YDLIDAR_G25_BAUD&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a9f392158233eedf4d9fa42a77ce3d8f5a1b8d1cf1248b7b1682d6bb1349cc6b89"></a>YDLIDAR_G6_BAUD&#160;</td><td class="fielddoc">
 <p>G25雷达型号波特率. </p>
 </td></tr>
 </table>
@@ -721,7 +689,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>连接雷达 <br />
-连接成功后，必须使用::disconnect函数关闭 </p>
+ 连接成功后，必须使用::disconnect函数关闭 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">port_path</td><td>串口号 </td></tr>
@@ -1129,32 +1097,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="aeb4019d223331bc5d7ee3fa28c5f7d85"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ydlidar::YDlidarDriver::getMultipleRate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>获取当前雷达掉电保护功能 <br />
-</p>
-<dl class="section return"><dt>Returns</dt><dd>返回掉电保护是否开启 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>掉电保护开启 </td></tr>
-    <tr><td class="paramname">false</td><td>掉电保护关闭 </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a7b7812329013f119235abf74da397aaa"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1547,41 +1489,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a6e7dc7cd2a73d24a763cebde840a5d30"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::sendHeartBeat </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>发送掉电保护命令 <br />
-</p>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>发送成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>发送失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>只有(G4, G4C, F4PRO)雷达支持掉电保护功能, 别的型号雷达暂不支持 </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a6de3ec3e2b2837f0459f1ce35257323a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1604,237 +1511,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a class="anchor" id="afc543dbbe1c5e37afc366e3c92203533"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ydlidar::YDlidarDriver::setIntensities </td>
-          <td>(</td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>isintensities</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>设置雷达是否带信号质量 <br />
-连接成功后，必须使用::disconnect函数关闭 </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">isintensities</td><td>是否带信号质量: true 带信号质量 false 无信号质量 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>只有S4B(波特率是153600)雷达支持带信号质量, 别的型号雷达暂不支持 </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a02257e37b792870a9c42f8abfbe543ad"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::setLowExposure </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;&#160;</td>
-          <td class="paramname"><em>low_exposure</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>设置低光功率模式 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">low_exposure</td><td>扫描频率 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作, 当前操作是开关量,只有S4雷达支持此功能 </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a3f34ad1119b9b97c4af3936e80c182f4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::setLowExposureAdd </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;&#160;</td>
-          <td class="paramname"><em>exposure</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>增加激光曝光值 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">exposure</td><td>曝光值 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作,只有S4雷达支持此功能 </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="aece83871e5912d19bc7677676a5511f8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::setLowExposurerDis </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;&#160;</td>
-          <td class="paramname"><em>exposure</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>减小激光曝光值 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">exposure</td><td>曝光值 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作,只有S4雷达支持此功能 </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a66346f32e327f5a12fa1f0669c2523d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ydlidar::YDlidarDriver::setMultipleRate </td>
-          <td>(</td>
-          <td class="paramtype">const bool &amp;&#160;</td>
-          <td class="paramname"><em>enable</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>设置雷达采样倍频 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">enable</td><td>是否开启采样倍频: true 开启 false 关闭 </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a1c8d40889885386e6c5a7827b7747696"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::setPointsForOneRingFlag </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscan__points.html">scan_points</a> &amp;&#160;</td>
-          <td class="paramname"><em>points</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>设置扫描一圈固定激光点数 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">points</td><td>固定点数状态 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作, 当前操作是开关量,只有S4雷达支持此功能 </dd></dl>
 
 </div>
 </div>
@@ -1970,52 +1646,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作 </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a73ef6628afc1eadf2f3079db99b383c6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">result_t ydlidar::YDlidarDriver::setSaveLowExposure </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscan__exposure.html">scan_exposure</a> &amp;&#160;</td>
-          <td class="paramname"><em>low_exposure</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="classydlidar_1_1_y_dlidar_driver.html#abbb612f1ac6a9f6dfdcfeafb149dd0daa07c79ce96f468ff4b40495ef84584442">DEFAULT_TIMEOUT</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>保存当前激光曝光值 <br />
-</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">low_exposure</td><td>低光功能状态 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>超时时间 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>返回执行结果 </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">RESULT_OK</td><td>成功 </td></tr>
-    <tr><td class="paramname">RESULT_FAILE</td><td>失败 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>停止扫描后再执行当前操作, 当前操作需在非低光功率模式下, <br />
-只有S4雷达支持此功能 </dd></dl>
 
 </div>
 </div>
@@ -2596,8 +2226,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/yang/gaussian/sdk/include/<a class="el" href="ydlidar__driver_8h_source.html">ydlidar_driver.h</a></li>
-<li>/home/yang/gaussian/sdk/src/ydlidar_driver.cpp</li>
+<li>include/<a class="el" href="ydlidar__driver_8h_source.html">ydlidar_driver.h</a></li>
+<li>src/ydlidar_driver.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

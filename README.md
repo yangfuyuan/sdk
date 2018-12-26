@@ -9,7 +9,7 @@ How to build YDLIDAR SDK samples
 =====================================================================
     $ git clone https://github.com/yangfuyuan/sdk
     $ cd sdk
-    $ git checkout master
+    $ git checkout G6
     $ cd ..
     $ mkdir build
     $ cd build
@@ -25,48 +25,34 @@ linux:
 
 	$ ./ydlidar_test
 	$Lidar[ydlidar7] detected, whether to select current radar(yes/no)?:yes
-	0. 115200
-	1. 128000
-	2. 153600
-	3. 230400
-	4. 512000
-	$Please enter the lidar serial baud rate:2
-	0. false
-	1. true
-	$Please enter the lidar intensity:1
-
 
 windows:
 
 	$ ydlidar_test.exe
 	$Lidar[ydlidar7] detected, whether to select current radar(yes/no)?:yes
-	0. 115200
-	1. 128000
-	2. 153600
-	3. 230400
-	4. 512000
-	$Please enter the lidar serial baud rate:2
-	0. false
-	1. true
-	$Please enter the lidar intensity:1
-
 
 You should see YDLIDAR's scan result in the console:
 
 	[YDLidar]: YDLidar running correctly ! The health status is good
 	[YDLIDAR] Connection established in [/dev/ttyUSB0]:
-	Firmware version: 1.2.0
-	Hardware version: 1
-	Model: S4
-	Serial: 2018091100006004
-	[YDLidar]: [YDLIDAR INFO] Current Sampling Rate : 4K
-	[YDLidar]: set EXPOSURE MODEL SUCCESS!!!
+	Firmware version: 1.0.5
+	Hardware version: 2
+	Model: G6
+	Serial: 2018112000000017
+	[YDLidar]: [YDLIDAR INFO] Current Sampling Rate : 18K
+	[YDLidar]: [YDLIDAR INFO] Current Scan Frequency : 8.000000Hz
 	[YDLidar]: [YDLIDAR INFO] Now YDLIDAR is scanning ......
 
-	[YDLidar]: Scan received[1543834103116861000]: 498 ranges
-	[YDLidar]: Scan received[1543834103241414000]: 497 ranges
-	[YDLidar]: Scan received[1543834103468167000]: 497 ranges
-	[YDLidar]: Scan received[1543834103592417000]: 494 ranges
+	[YDLidar]: Scan received[1545813311357484110]: 2087 ranges is [8.629041]Hz
+	[YDLidar]: Scan received[1545813311481785110]: 2309 ranges is [7.799038]Hz
+	[YDLidar]: Scan received[1545813311611886110]: 2348 ranges is [7.669442]Hz
+	[YDLidar]: Scan received[1545813311744358110]: 2380 ranges is [7.566280]Hz
+	[YDLidar]: Scan received[1545813311879407110]: 2406 ranges is [7.484483]Hz
+	[YDLidar]: Scan received[1545813312016237110]: 2432 ranges is [7.404435]Hz
+	[YDLidar]: Scan received[1545813312153357110]: 2453 ranges is [7.341020]Hz
+	[YDLidar]: Scan received[1545813312292580110]: 2505 ranges is [7.188571]Hz
+	[YDLidar]: Scan received[1545813312434769110]: 2527 ranges is [7.125962]Hz
+
 
 
 
@@ -92,11 +78,9 @@ example:
 
 	current_time_stamp = data[i].stamp;
 
-	 if(m_isMultipleRate) {
-		current_distance = (float)data[i].distance_q2/2000.f;
-	}else {
-		current_distance = (float)data[i].distance_q2/4000.f;
-	}
+
+	current_distance = (float)data[i].distance_q2/2000.f;
+
 
 	current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);
 
@@ -122,11 +106,8 @@ code:
 
                 }
 
-		 if(m_isMultipleRate) {
-			current_distance = (float)data[i].distance_q2/2000.f;
-		}else {
-			current_distance = (float)data[i].distance_q2/4000.f;
-		}
+				
+		current_distance = (float)data[i].distance_q2/2000.f;
 
                 current_angle = ((data[i].angle_q6_checkbit>>LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f);//LIDAR_RESP_MEASUREMENT_ANGLE_SHIFT equals 8
 

@@ -69,7 +69,7 @@ typedef enum {
     CT_Normal = 0,
     CT_RingStart  = 1,
     CT_Tail,
-}CT;
+} CT;
 #define Node_Default_Quality (10)
 #define Node_Sync 1
 #define Node_NotSync 2
@@ -92,7 +92,7 @@ struct node_info {
 struct PackageNode {
     uint8_t PakageSampleQuality;
     uint16_t PakageSampleDistance;
-}__attribute__((packed));
+} __attribute__((packed));
 
 struct node_package {
     uint16_t  package_Head;
@@ -115,7 +115,7 @@ struct node_packages {
 } __attribute__((packed)) ;
 
 
-struct device_info{
+struct device_info {
     uint8_t   model; ///< 雷达型号
     uint16_t  firmware_version; ///< 固件版本号
     uint8_t   hardware_version; ///< 硬件版本号
