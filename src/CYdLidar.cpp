@@ -213,7 +213,7 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError) {
         scan_msg.config.time_increment /= 1e9;
       }
 
-      scan_msg.config.scan_time = scan_time/1e9;
+      scan_msg.config.scan_time = scan_time / 1e9;
       scan_msg.config.min_range = m_MinRange;
       scan_msg.config.max_range = m_MaxRange;
       outscan = scan_msg;
