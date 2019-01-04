@@ -256,10 +256,10 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan,LaserScan &syncscan, PointClo
                         double angle = atan2(ly, lx);
                         int newindex = (angle - correction_scan_msg.config.min_angle) / correction_scan_msg.config.ang_increment;
                         if( 0 <= newindex && newindex < counts) {
-                            if( newrange < correction_scan_msg.config.min_angle)
+                            if( newrange < correction_scan_msg.config.min_range)
                                 newrange = 0.0;
                             correction_scan_msg.ranges[newindex] = newrange;
-                            correction_scan_msg.intensities[pos] = intensity;
+                            correction_scan_msg.intensities[newindex] = intensity;
 
                             if( newrange >= correction_scan_msg.config.min_range) {
                                 bearings.push_back(angle);
