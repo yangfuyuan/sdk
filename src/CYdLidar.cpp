@@ -31,6 +31,7 @@ CYdLidar::CYdLidar() : lidarPtr(nullptr) {
   each_angle          = 0.5;
   m_FrequencyOffset   = 0.4;
   m_isMultipleRate    = false;
+  m_EnableDebug       = true;
   m_IgnoreArray.clear();
 }
 
@@ -650,8 +651,8 @@ bool  CYdLidar::checkCOMMs() {
         m_SerialPort = std::string("\\\\.\\") + m_SerialPort;
       }
     }
-  }
-
+  }   
+  lidarPtr->setDebug(m_EnableDebug, "ydldiar_scan.txt");
   // make connection...
   result_t op_result = lidarPtr->connect(m_SerialPort.c_str(), m_SerialBaudrate);
 

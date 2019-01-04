@@ -138,6 +138,7 @@ int main(int argc, char *argv[]) {
   laser.setMinAngle(-180);
   laser.setReversion(false);
   laser.setFixedResolution(false);
+  laser.setEnableDebug(true);
   laser.initialize();
 
 

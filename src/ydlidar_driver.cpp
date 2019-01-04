@@ -42,7 +42,9 @@ YDlidarDriver::YDlidarDriver():
   SampleNumlAndCTCal = 0;
   LastSampleAngleCal = 0;
   CheckSunResult = true;
-  Valu8Tou16 = 0;
+  Valu8Tou16 = 0;   
+  fd = NULL;
+  m_debug = false;
 
 }
 
@@ -65,6 +67,9 @@ YDlidarDriver::~YDlidarDriver() {
   if (_serial) {
     delete _serial;
     _serial = NULL;
+  }
+  if (NULL != fd) {
+    fclose(fd);
   }
 
 }
@@ -95,18 +100,25 @@ result_t YDlidarDriver::connect(const char *port_path, uint32_t baudrate) {
     ScopedLocker l(_lock);
 
     if (!_serial->open()) {
+      if (NULL != fd&& m_debug) {
+        fprintf(fd, "connect %s failed in %d\n", port_path, baudrate);
+      }
       return RESULT_FAIL;
     }
 
     isConnected = true;
   }
 
+  if (NULL != fd&& m_debug) {
+    fprintf(fd, "connect %s success in %d\n", port_path, baudrate);
+  }
 
   {
     ScopedLocker l(_lock);
     sendCommand(LIDAR_CMD_FORCE_STOP);
     sendCommand(LIDAR_CMD_STOP);
   }
+  delay(40);
 
   clearDTR();
 
@@ -163,6 +175,27 @@ result_t YDlidarDriver::stopMotor() {
   }
 
   return RESULT_OK;
+}
+
+bool YDlidarDriver::setDebug(bool debug, const std::string& filename) {
+  bool ret = false;
+  m_debug = debug;
+  if(m_debug) {
+      if(fd == NULL){
+           fd=fopen("ydlidar_scan.txt","w");
+           ret = true;
+           if (NULL == fd){
+               fd =fopen(filename.c_str(), "w");
+               ret = false;
+           }
+      }
+  } else {
+      if(fd != NULL) {
+          fclose(fd);
+      }
+  }
+
+  return ret;
 }
 
 void YDlidarDriver::disconnect() {
@@ -248,17 +281,28 @@ result_t YDlidarDriver::sendData(const uint8_t *data, size_t size) {
     return RESULT_FAIL;
   }
 
+  if (NULL != fd&& m_debug){
+    fprintf(fd, "[send]: ");
+    for( int i =0; i < size; i++ )
+        fprintf(fd, "%02x ", *(data +i));
+  }
   size_t r;
 
   while (size) {
     r = _serial->write(data, size);
 
     if (r < 1) {
+      if (NULL != fd&& m_debug){
+        fprintf(fd, "[failed]\n");
+      }
       return RESULT_FAIL;
     }
 
     size -= r;
     data += r;
+  }
+  if (NULL != fd&& m_debug){
+    fprintf(fd, "[success]\n");
   }
 
   return RESULT_OK;
@@ -426,6 +470,9 @@ int YDlidarDriver::cacheScanData() {
           return RESULT_FAIL;
         } else {//做异常处理, 重新连接
           isAutoconnting = true;
+          if (NULL != fd&& m_debug){
+            fprintf(fd, "reconnecting lidar!!\n");
+          }
 
           while (isAutoReconnect && isAutoconnting) {
             ans = autoReconnectLidar();
@@ -433,6 +480,9 @@ int YDlidarDriver::cacheScanData() {
             if (IS_OK(ans)) {
               timeout_count = 0;
               isAutoconnting = false;
+              if (NULL != fd&& m_debug){
+                fprintf(fd, "reconnecting lidar success!!!\n");
+              }
               continue;
             }
           }
@@ -513,10 +563,16 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           if (currentByte == (PH & 0xFF)) {
             if (eol) {
               eol = false;
+              if (NULL != fd&& m_debug){
+                fprintf(fd, "[end]\n");
+              }
             }
           } else {
             if (!eol) {
               eol = true;
+            }
+            if (NULL != fd&& m_debug){
+              fprintf(fd, "[%02x]", currentByte);
             }
 
             continue;
@@ -530,6 +586,9 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           if (currentByte == (PH >> 8)) {
 
           } else {
+            if (NULL != fd&& m_debug){
+              fprintf(fd, "[%02x][header error]\n", currentByte);
+            }
             recvPos = 0;
             continue;
           }
@@ -543,8 +602,14 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           if ((package_type == CT_Normal) || (package_type == CT_RingStart)) {
             if (package_type == CT_RingStart) {
               scan_frequence = (currentByte & 0xFE) >> 1;
+              if((*node).scan_frequence != 0 && NULL != fd && m_debug) {
+                fprintf(fd, "[[%02x][SCAN FREQUENCE]]\n", currentByte);
+              }
             }
           } else {
+            if (NULL != fd&& m_debug){
+              fprintf(fd, "[%02x][CT error]\n", currentByte);
+            }
             recvPos = 0;
             continue;
           }
@@ -560,6 +625,9 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           if (currentByte & LIDAR_RESP_MEASUREMENT_CHECKBIT) {
             FirstSampleAngle = currentByte;
           } else {
+            if (NULL != fd&& m_debug){
+              fprintf(fd, "[%02x][ first sample angle error]\n", currentByte);
+            }
             recvPos = 0;
             continue;
           }
@@ -576,6 +644,9 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           if (currentByte & LIDAR_RESP_MEASUREMENT_CHECKBIT) {
             LastSampleAngle = currentByte;
           } else {
+            if (NULL != fd&& m_debug){
+              fprintf(fd, "[%02x][ last sample angle error]\n", currentByte);
+            }
             recvPos = 0;
             continue;
           }
@@ -629,6 +700,14 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
           break;
         }
 
+        if (NULL != fd&& m_debug){
+          if(recvPos ==3|| recvPos==8 || recvPos ==9){
+             fprintf(fd, "[%02x]", currentByte);
+          }else{
+             fprintf(fd, "%02x", currentByte);
+          }
+        }
+
         packageBuffer[recvPos++] = currentByte;
       }
 
@@ -679,6 +758,9 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
 
           packageBuffer[package_recvPos + recvPos] = recvBuffer[pos];
           recvPos++;
+          if (NULL != fd&& m_debug){
+            fprintf(fd, "%02x", recvBuffer[pos]);
+          }
         }
 
         if (package_Sample_Num * PackageSampleBytes == recvPos) {
@@ -701,8 +783,14 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
 
     if (CheckSunCal != CheckSun) {
       CheckSunResult = false;
+      if (NULL != fd&& m_debug){
+        fprintf(fd, "[%02x][%02x][checksum error]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+      }
     } else {
       CheckSunResult = true;
+      if (NULL != fd&& m_debug){
+        fprintf(fd, "[%02x][%02x]\n", CheckSunCal&0xff, (CheckSunCal>>8)&0xff);
+      }
     }
 
   }

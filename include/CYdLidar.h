@@ -48,6 +48,8 @@ class YDLIDAR_API CYdLidar {
   PropertyBuilderByName(std::string, SerialPort, private) ///< 设置和获取激光端口号
   PropertyBuilderByName(std::vector<float>, IgnoreArray, private) ///< 设置和获取激光剔除点
 
+  PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件
+
 
  public:
   CYdLidar(); //!< Constructor

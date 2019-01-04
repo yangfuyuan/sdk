@@ -122,6 +122,16 @@ class YDlidarDriver {
   	*/
   bool getMultipleRate() const;
 
+
+  /**
+   * @brief setDebug
+   * @param debug
+   * @param filename
+   * @return
+   */
+  bool setDebug(bool debug, const std::string& filename);
+
+
   /**
    * @brief 检测传输时间 \n
    * */
@@ -561,12 +571,13 @@ class YDlidarDriver {
   std::atomic<bool>     isScanning;   ///< 扫图状态
   std::atomic<bool>     isAutoReconnect;  ///< 异常自动从新连接
   std::atomic<bool>     isAutoconnting; ///< 是否正在自动连接中
+  std::atomic<bool>     m_debug;
 
   enum {
     DEFAULT_TIMEOUT 	= 2000,    /**< 默认超时时间. */
     DEFAULT_HEART_BEAT 	= 1000, /**< 默认检测掉电功能时间. */
     MAX_SCAN_NODES 		= 3600,	   /**< 最大扫描点数. */
-    DEFAULT_TIMEOUT_COUNT = 1,
+    DEFAULT_TIMEOUT_COUNT = 5,
   };
   enum {
     YDLIDAR_F4			= 1, /**< F4雷达型号代号. */
@@ -648,7 +659,8 @@ class YDlidarDriver {
   bool isMultipleRate;
   uint8_t scan_frequence;
 
-  std::string serial_port;///< 雷达端口
+  std::string serial_port;///< 雷达端口   
+  FILE *fd;
 
 };
 }
