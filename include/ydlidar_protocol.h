@@ -2,6 +2,18 @@
 #include "v8stdint.h"
 #include <vector>
 
+#define PropertyBuilderByName(type, name, access_permission)\
+    access_permission:\
+        type m_##name;\
+    public:\
+    inline void set##name(type v) {\
+        m_##name = v;\
+    }\
+    inline type get##name() {\
+        return m_##name;\
+}\
+
+
 #if !defined(_countof)
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
@@ -9,6 +21,10 @@
 #ifndef M_PI
 #define M_PI 3.1415926
 #endif
+
+#define DEG2RAD(x) ((x)*M_PI/180.)
+#define SUNNOISEINTENSITY 0xff
+#define GLASSNOISEINTENSITY 0xfe
 
 #define LIDAR_CMD_STOP                      0x65
 #define LIDAR_CMD_SCAN                      0x60
@@ -52,10 +68,12 @@
 #define LIDAR_CMD_ENABLE_CONST_FREQ        0x0E
 #define LIDAR_CMD_DISABLE_CONST_FREQ       0x0F
 
+#define LIDAR_CMD_GET_OFFSET_ANGLE        0x93
 #define LIDAR_CMD_SAVE_SET_EXPOSURE         0x94
 #define LIDAR_CMD_SET_LOW_EXPOSURE          0x95
 #define LIDAR_CMD_ADD_EXPOSURE       	    0x96
 #define LIDAR_CMD_DIS_EXPOSURE       	    0x97
+
 
 #define LIDAR_CMD_SET_HEART_BEAT        0xD9
 #define LIDAR_CMD_SET_SETPOINTSFORONERINGFLAG  0xae
@@ -149,6 +167,10 @@ struct scan_points {
 
 struct function_state {
   uint8_t state;
+} __attribute__((packed))  ;
+
+struct offset_angle {
+  int32_t angle;
 } __attribute__((packed))  ;
 
 struct cmd_packet {

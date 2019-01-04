@@ -187,11 +187,31 @@ class Serial  {
   void waitByteTimes(size_t count);
 
 
+  /**
+   * @brief waitfordata
+   * @param data_count
+   * @param timeout
+   * @param returned_size
+   * @return
+   */
   int waitfordata(size_t data_count, uint32_t timeout, size_t *returned_size);
 
 
+  /**
+   * @brief writeData
+   * @param data
+   * @param size
+   * @return
+   */
   virtual size_t writeData(const uint8_t *data, size_t size);
 
+
+  /**
+   * @brief readData
+   * @param data
+   * @param size
+   * @return
+   */
   virtual size_t readData(uint8_t *data, size_t size);
 
   /*! Read a given amount of bytes from the serial port into a given buffer.
@@ -586,6 +606,9 @@ struct PortInfo {
   /*! Hardware ID (e.g. VID:PID of USB serial devices) or "n/a" if not available. */
   std::string hardware_id;
 
+  /*! Hardware Device ID or "" if not available. */
+  std::string device_id;
+
 };
 
 /* Lists the serial ports available on the system
@@ -595,7 +618,8 @@ struct PortInfo {
 *
 * \return vector of serial::PortInfo.
 */
-//std::vector<PortInfo> list_ports();
+std::vector<PortInfo>
+list_ports();
 
 } // namespace serial
 

@@ -10,7 +10,7 @@ var searchData=
   ['scopedreadlock',['ScopedReadLock',['../classserial_1_1_serial_1_1_scoped_read_lock.html',1,'serial::Serial']]],
   ['scopedwritelock',['ScopedWriteLock',['../classserial_1_1_serial_1_1_scoped_write_lock.html',1,'serial::Serial']]],
   ['serial',['Serial',['../classserial_1_1_serial.html',1,'serial']]],
-  ['serialimpl',['SerialImpl',['../classserial_1_1serial_1_1_serial_1_1_serial_impl.html',1,'serial::Serial']]],
+  ['serialimpl',['SerialImpl',['../classserial_1_1_serial_1_1_serial_impl.html',1,'serial::Serial']]],
   ['si_5fconverta',['SI_ConvertA',['../class_s_i___convert_a.html',1,'']]],
   ['si_5fconvertw',['SI_ConvertW',['../class_s_i___convert_w.html',1,'']]],
   ['si_5fgenericcase',['SI_GenericCase',['../struct_s_i___generic_case.html',1,'']]],

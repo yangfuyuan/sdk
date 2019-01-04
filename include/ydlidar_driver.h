@@ -2,6 +2,7 @@
 #define YDLIDAR_DRIVER_H
 #include <stdlib.h>
 #include <atomic>
+#include <map>
 #include "serial.h"
 #include "locker.h"
 #include "thread.h"
@@ -40,11 +41,8 @@ class YDlidarDriver {
   * @brief 连接雷达 \n
   * 连接成功后，必须使用::disconnect函数关闭
   * @param[in] port_path    串口号
-  * @param[in] fileMode    波特率，YDLIDAR雷达有以下几个波特率：
-  *     115200 F4, G4C, S4A
-  *     128000 X4
-  *     153600 S4B
-  *     230600 F4PRO, G4
+  * @param[in] baudrate    波特率，YDLIDAR-SS雷达波特率：
+  *     230400 G2-SS-1
   * @return 返回连接状态
   * @retval 0     成功
   * @retval < 0   失败
@@ -64,6 +62,13 @@ class YDlidarDriver {
   * @return 返回当前SKD 版本号
   */
   static std::string getSDKVersion();
+
+  /**
+  * @brief lidarPortList 获取雷达端口
+  * @return 在线雷达列表
+  */
+  static std::map<std::string, std::string> lidarPortList();
+
 
   /**
   * @brief 扫图状态 \n
@@ -173,23 +178,6 @@ class YDlidarDriver {
   result_t reset(uint32_t timeout = DEFAULT_TIMEOUT);
 
   /**
-  * @brief 打开电机 \n
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  */
-  result_t startMotor();
-
-  /**
-  * @brief 关闭电机 \n
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  */
-  result_t stopMotor();
-
-
-  /**
   * @brief 获取激光雷达当前扫描频率 \n
   * @param[in] frequency    扫描频率
   * @param[in] timeout      超时时间
@@ -257,7 +245,7 @@ class YDlidarDriver {
 
   /**
   * @brief 设置激光雷达当前采样频率 \n
-  * @param[in] frequency    采样频率
+  * @param[in] rate    　　　采样频率
   * @param[in] timeout      超时时间
   * @return 返回执行结果
   * @retval RESULT_OK       成功
@@ -267,84 +255,15 @@ class YDlidarDriver {
   result_t setSamplingRate(sampling_rate &rate, uint32_t timeout = DEFAULT_TIMEOUT);
 
   /**
-  * @brief 设置电机顺时针旋转 \n
-  * @param[in] rotation    旋转方向
+  * @brief 获取激光雷达当前零位角 \n
+  * @param[in] angle　　　   零位偏移角
   * @param[in] timeout      超时时间
   * @return 返回执行结果
   * @retval RESULT_OK       成功
   * @retval RESULT_FAILE    失败
   * @note 停止扫描后再执行当前操作
   */
-  result_t setRotationPositive(scan_rotation &rotation, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 设置电机逆顺时针旋转 \n
-  * @param[in] rotation    旋转方向
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作
-  */
-  result_t setRotationInversion(scan_rotation &rotation, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 低功耗使能 \n
-  * @param[in] state    低功耗状态
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作,低功耗关闭,关闭后 G4 在空闲模式下电\n
-  * 机和测距单元仍然工作
-  */
-  result_t enableLowerPower(function_state &state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 关闭低功耗 \n
-  * @param[in] state    低功耗状态
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作,关闭后 G4 在空闲模式下电\n
-  * 机和测距单元仍然工作
-  */
-  result_t disableLowerPower(function_state &state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 获取电机状态 \n
-  * @param[in] state    电机状态
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作
-  */
-  result_t getMotorState(function_state &state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 开启恒频功能 \n
-  * @param[in] state    	  恒频状态
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作
-  */
-  result_t enableConstFreq(function_state &state, uint32_t timeout = DEFAULT_TIMEOUT);
-
-  /**
-  * @brief 关闭恒频功能 \n
-  * @param[in] state    	  恒频状态
-  * @param[in] timeout      超时时间
-  * @return 返回执行结果
-  * @retval RESULT_OK       成功
-  * @retval RESULT_FAILE    失败
-  * @note 停止扫描后再执行当前操作
-  */
-  result_t disableConstFreq(function_state &state, uint32_t timeout = DEFAULT_TIMEOUT);
-
+  result_t getZeroOffsetAngle(offset_angle& angle, uint32_t timeout = DEFAULT_TIMEOUT);
 
  protected:
 
@@ -366,6 +285,12 @@ class YDlidarDriver {
   */
   result_t startAutoScan(bool force = false, uint32_t timeout = DEFAULT_TIMEOUT) ;
 
+  /**
+  * @brief stopScan
+  * @param timeout
+  * @return
+  */
+  result_t stopScan(uint32_t timeout = DEFAULT_TIMEOUT);
 
   /**
   * @brief 解包激光数据 \n
@@ -448,20 +373,11 @@ class YDlidarDriver {
   */
   result_t sendData(const uint8_t *data, size_t size);
 
-  /**
-  * @brief 发送掉电保护命令 \n
-  * @return 返回执行结果
-  * @retval RESULT_OK       发送成功
-  * @retval RESULT_FAILE    发送失败
-  * @note只有(G4, G4C, F4PRO)雷达支持掉电保护功能, 别的型号雷达暂不支持
-  */
-  result_t sendHeartBeat();
 
   /**
   * @brief checkTransDelay
   */
   void checkTransDelay();
-
 
   /**
   * @brief 关闭数据获取通道 \n
@@ -478,11 +394,15 @@ class YDlidarDriver {
   */
   void clearDTR();
 
+  /**
+   * @brief checkAutoConnecting
+   */
+  result_t checkAutoConnecting();
+
 
  public:
   std::atomic<bool>     isConnected;  ///< 串口连接状体
   std::atomic<bool>     isScanning;   ///< 扫图状态
-  std::atomic<bool>     isHeartbeat;  ///< 掉电保护状态
   std::atomic<bool>     isAutoReconnect;  ///< 异常自动从新连接
   std::atomic<bool>     isAutoconnting;  ///< 是否正在自动连接中
 
@@ -502,7 +422,7 @@ class YDlidarDriver {
     YDLIDAR_X4 = 6,
     YDLIDAR_G4PRO = 7,
     YDLIDAR_F4PRO = 8,
-    YDLIDAR_G2_SS_1 = 9,
+    YDLIDAR_G2_SS_1 = 9,//230400
     YDLIDAR_G10 = 10, //256000
     YDLIDAR_S4B = 11,//153600
     YDLIDAR_S2 = 12,//115200
@@ -529,8 +449,6 @@ class YDlidarDriver {
   int PackageSampleBytes;             ///< 一个包包含的激光点数
   serial::Serial *_serial;			///< 串口
   bool m_intensities;					///< 信号质量状体
-  int m_sampling_rate;                ///< 采样频率
-  int model;							///< 雷达型号
   uint32_t m_baudrate;				///< 波特率
   bool isSupportMotorCtrl;			///< 是否支持电机控制
   uint64_t m_node_time_ns;			///< 时间戳

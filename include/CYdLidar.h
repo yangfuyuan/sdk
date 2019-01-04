@@ -5,32 +5,6 @@
 #include <math.h>
 #include <SimpleIni.h>
 
-
-#define PropertyBuilderByName(type, name, access_permission)\
-    access_permission:\
-        type m_##name;\
-    public:\
-    inline void set##name(type v) {\
-        m_##name = v;\
-    }\
-    inline type get##name() {\
-        return m_##name;\
-}\
-
-
-#ifndef _countof
-#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
-#endif
-
-#ifndef M_PI
-#define M_PI 3.1415926
-#endif
-
-#define DEG2RAD(x) ((x)*M_PI/180.)
-#define SUNNOISEINTENSITY 0xff
-#define GLASSNOISEINTENSITY 0xfe
-
-
 using namespace ydlidar;
 
 class YDLIDAR_API CYdLidar {
@@ -40,7 +14,7 @@ class YDLIDAR_API CYdLidar {
                         private) ///< 设置和获取激光最大角度, 最大值180度(度)
   PropertyBuilderByName(float, MinAngle,
                         private) ///< 设置和获取激光最小角度, 最小值-180度(度)
-  PropertyBuilderByName(int, ScanFrequency,
+  PropertyBuilderByName(float, ScanFrequency,
                         private) ///< 设置和获取激光扫描频率(范围5HZ~12HZ)(HZ)
 
   PropertyBuilderByName(bool, Intensities,
@@ -51,10 +25,6 @@ class YDLIDAR_API CYdLidar {
   PropertyBuilderByName(bool, AutoReconnect, private) ///< 设置异常是否开启重新连接
   PropertyBuilderByName(bool, GlassNoise, private) ///< 设置是否关闭玻璃噪声干扰
   PropertyBuilderByName(bool, SunNoise, private) ///< 设置是否关闭太阳干扰
-
-
-
-
   PropertyBuilderByName(int, SerialBaudrate, private) ///< 设置和获取激光通讯波特率
   PropertyBuilderByName(int, SampleRate, private) ///< 设置和获取激光采样频率(KHz)
   PropertyBuilderByName(std::string, CalibrationFileName, private) ///< 角度校准文件名
@@ -65,7 +35,10 @@ class YDLIDAR_API CYdLidar {
  public:
   CYdLidar(); //!< Constructor
   virtual ~CYdLidar();  //!< Destructor: turns the laser off.
-
+  /**
+   * @brief initialize
+   * @return
+   */
   bool initialize();  //!< Attempts to connect and turns the laser on. Raises an exception on error.
 
   // Return true if laser data acquistion succeeds, If it's not
@@ -73,17 +46,9 @@ class YDLIDAR_API CYdLidar {
 
   //Turn on the motor enable
   bool  turnOn();  //!< See base class docs
+
   //Turn off the motor enable and close the scan
   bool  turnOff(); //!< See base class docs
-
-  /** Returns true if the device is in good health, If it's not*/
-  bool getDeviceHealth();
-
-  /** Returns true if the device information is correct, If it's not*/
-  bool getDeviceInfo();
-
-  /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
-  bool checkScanFrequency();
 
   //Turn off lidar connection
   void disconnecting(); //!< Closes the comms with the laser. Shouldn't have to be directly needed by the user
@@ -110,13 +75,23 @@ class YDLIDAR_API CYdLidar {
    */
   void checkCalibrationAngle(const std::string &serialNumber);
 
+  /** Returns true if the device is in good health, If it's not*/
+  bool getDeviceHealth();
+
+  /** Returns true if the device information is correct, If it's not*/
+  bool getDeviceInfo();
+
+  /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
+  bool checkScanFrequency();
+
  private:
   bool    isScanning;
   int     node_counts ;
   double  each_angle;
-  int     print_error;
   float   frequencyOffset;
   float   m_AngleOffset;
+  uint8_t Major;
+  uint8_t Minjor;
   CSimpleIniA ini;
   YDlidarDriver *lidarPtr;
 

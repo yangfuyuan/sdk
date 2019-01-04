@@ -11,8 +11,6 @@
 #include <assert.h>
 #endif
 
-#define UNUSED(x) (void)x
-
 #if defined(__ANDROID__)
 #define    pthread_cancel(x) 0
 #endif

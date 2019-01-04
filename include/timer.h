@@ -42,7 +42,7 @@ namespace impl {
 void HPtimer_reset();
 #endif
 uint32_t getHDTimer();
-TTimeStamp getCurrentTime();
+uint64_t getCurrentTime();
 }
 
 

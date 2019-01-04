@@ -24,7 +24,7 @@ using std::wstring;
 using std::invalid_argument;
 
 
-class serial::Serial::SerialImpl {
+class Serial::SerialImpl {
  public:
   explicit SerialImpl(const string &port,
                       unsigned long baudrate,
