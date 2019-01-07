@@ -249,7 +249,24 @@ bool  CYdLidar::doProcessSimple(LaserScan &outscan, bool &hardwareError) {
 						turnOn
 -------------------------------------------------------------*/
 bool  CYdLidar::turnOn() {
-  return checkStatus();
+  if (isScanning && lidarPtr->isscanning()) {
+    return true;
+  }
+  // start scan...
+  result_t op_result = lidarPtr->startScan();
+  if (!IS_OK(op_result)) {
+    op_result = lidarPtr->startScan();
+    if (!IS_OK(op_result)) {
+      fprintf(stderr, "[CYdLidar] Failed to start scan mode: %x\n", op_result);
+      isScanning = false;
+      return false;
+    }
+  }
+  isScanning = true;
+  lidarPtr->setAutoReconnect(m_AutoReconnect);
+  printf("[YDLIDAR INFO] Now YDLIDAR is scanning ......\n");
+  fflush(stdout);
+  return true;
 }
 
 /*-------------------------------------------------------------
@@ -258,8 +275,9 @@ bool  CYdLidar::turnOn() {
 bool  CYdLidar::turnOff() {
   if (lidarPtr) {
     lidarPtr->stop();
-    isScanning = false;
   }
+  isScanning = false;
+  printf("[YDLIDAR INFO] Now YDLIDAR Scanning has stopped ......\n");
   return true;
 }
 
@@ -488,12 +506,9 @@ bool  CYdLidar::checkCOMMs() {
                         checkStatus
 -------------------------------------------------------------*/
 bool CYdLidar::checkStatus() {
-  if (!lidarPtr) {
-    return false;
-  }
 
-  if (isScanning && lidarPtr->isscanning()) {
-    return true;
+  if (!checkCOMMs()) {
+    return false;
   }
 
   bool ret = getDeviceHealth();
@@ -510,26 +525,7 @@ bool CYdLidar::checkStatus() {
       return false;
     }
   }
-
   lidarPtr->setIntensities(m_Intensities);
-  // start scan...
-  result_t op_result = lidarPtr->startScan();
-
-  if (!IS_OK(op_result)) {
-    op_result = lidarPtr->startScan();
-
-    if (!IS_OK(op_result)) {
-      fprintf(stderr, "[CYdLidar] Error starting scanning mode: %x\n", op_result);
-      isScanning = false;
-      return false;
-    }
-  }
-
-  isScanning = true;
-  lidarPtr->setAutoReconnect(m_AutoReconnect);
-  printf("[YDLIDAR INFO] Now YDLIDAR is scanning ......\n");
-  fflush(stdout);
-  delay(1000);
   return true;
 }
 
@@ -550,20 +546,17 @@ bool CYdLidar::checkHardware() {
 						initialize
 -------------------------------------------------------------*/
 bool CYdLidar::initialize() {
-  bool ret = true;
-
   if (!checkCOMMs()) {
-    fprintf(stderr, "[CYdLidar::initialize] Error initializing YDLIDAR scanner.\n");
+    fprintf(stderr, "[CYdLidar::initialize] Error initializing YDLIDAR check Comms.\n");
     fflush(stderr);
     return false;
   }
 
-  if (!turnOn()) {
-    fprintf(stderr,
-            "[CYdLidar::initialize] Error initializing YDLIDAR scanner. Because the motor and scan mode falied to start.\n");
+  if(!checkStatus()) {
+    fprintf(stderr, "[CYdLidar::initialize] Error initializing YDLIDAR check status.\n");
     fflush(stderr);
-    ret = false;
+    return false;
   }
 
-  return ret;
+  return true;
 }

@@ -395,6 +395,11 @@ class YDlidarDriver {
   void clearDTR();
 
   /**
+   * @brief flushSerial
+   */
+  void flushSerial();
+
+  /**
    * @brief checkAutoConnecting
    */
   result_t checkAutoConnecting();

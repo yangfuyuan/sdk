@@ -149,6 +149,15 @@ void YDlidarDriver::clearDTR() {
     _serial->setDTR(0);
   }
 }
+void YDlidarDriver::flushSerial() {
+	if(!isConnected) {
+		return;
+	}
+	size_t len = _serial->available();
+	if(len) {
+		_serial->read(len);
+	}
+}
 
 
 void YDlidarDriver::disconnect() {
@@ -159,7 +168,7 @@ void YDlidarDriver::disconnect() {
   }
 
   stop();
-  delay(40);
+  delay(20);
   ScopedLocker l(_serial_lock);
   if (_serial) {
     if (_serial->isOpen()) {
@@ -333,11 +342,11 @@ result_t YDlidarDriver::checkAutoConnecting() {
     {
       ScopedLocker l(_serial_lock);
       if (_serial) {
-        if (_serial->isOpen()) {
+        if (_serial->isOpen() || isConnected) {
+          isConnected = false;
           _serial->closePort();
           delete _serial;
           _serial = NULL;
-          isConnected = false;
         }
       }
     }
@@ -994,12 +1003,13 @@ result_t YDlidarDriver::startScan(bool force, uint32_t timeout) {
   if (!isConnected) {
     return RESULT_FAIL;
   }
-
   if (isScanning) {
     return RESULT_OK;
   }
   stop();
   checkTransDelay();
+  flushSerial();
+  delay(30);
   {
     ScopedLocker l(_lock);
     if ((ans = sendCommand(force ? LIDAR_CMD_FORCE_SCAN : LIDAR_CMD_SCAN)) != RESULT_OK) {
@@ -1031,6 +1041,7 @@ result_t YDlidarDriver::stopScan(uint32_t timeout) {
   ScopedLocker l(_lock);
   sendCommand(LIDAR_CMD_FORCE_STOP);
   sendCommand(LIDAR_CMD_STOP);
+  delay(10);
   return RESULT_OK;
 }
 
@@ -1050,6 +1061,8 @@ result_t YDlidarDriver::startAutoScan(bool force, uint32_t timeout) {
   if (!isConnected) {
     return RESULT_FAIL;
   }
+  flushSerial();
+  delay(10);
   {
     ScopedLocker l(_lock);
 
@@ -1083,6 +1096,7 @@ result_t YDlidarDriver::stop() {
     isAutoReconnect = false;
     isScanning = false;
     disableDataGrabbing();
+    stopScan();
     return RESULT_OK;
 
   }

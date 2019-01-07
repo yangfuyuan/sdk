@@ -1,4 +1,4 @@
-
+﻿
 #include "CYdLidar.h"
 #include <iostream>
 #include <string>
@@ -125,6 +125,9 @@ int main(int argc, char *argv[]) {
   laser.setIgnoreArray(ignore_array);
 
   bool ret = laser.initialize();
+  if(ret) {
+    ret = laser.turnOn();
+  }
 
   while (ret && ydlidar::ok()) {
     bool hardError;
