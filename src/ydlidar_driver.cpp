@@ -103,6 +103,7 @@ result_t YDlidarDriver::connect(const char *port_path, uint32_t baudrate) {
     sendCommand(LIDAR_CMD_FORCE_STOP);
     sendCommand(LIDAR_CMD_STOP);
   }
+  delay(20);
 
   clearDTR();
 
@@ -704,13 +705,8 @@ result_t YDlidarDriver::waitPackage(node_info *node, uint32_t timeout) {
 
   if (CheckSunResult) {
     (*node).distance_q = packages.packageSampleDistance[package_Sample_Index];
+    AngleCorrectForDistance = 0;
 
-    if ((*node).distance_q != 0) {
-      AngleCorrectForDistance = (int32_t)(((atan(((21.8 * (155.3 - ((*node).distance_q))) / 155.3) / ((
-                                              *node).distance_q))) * 180.0 / 3.1415) * 64.0);
-    } else {
-      AngleCorrectForDistance = 0;
-    }
 
     if ((FirstSampleAngle + IntervalSampleAngle * package_Sample_Index + AngleCorrectForDistance) < 0) {
       (*node).angle_q6_checkbit = (((uint16_t)(FirstSampleAngle + IntervalSampleAngle *
@@ -1029,7 +1025,7 @@ result_t YDlidarDriver::stop() {
     sendCommand(LIDAR_CMD_FORCE_STOP);
     sendCommand(LIDAR_CMD_STOP);
   }
-
+  delay(20);
   stopMotor();
 
   return RESULT_OK;
