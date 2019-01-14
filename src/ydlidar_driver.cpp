@@ -1047,6 +1047,16 @@ std::string format(const char *fmt, ...)
 		stop();   
 		startMotor();
         checkTransDelay();
+		{
+			ScopedLocker lock(_lock);
+			sendCommand(LIDAR_CMD_FORCE_STOP);
+			sendCommand(LIDAR_CMD_STOP);
+		}
+		delay(50);
+		size_t len = _serial->available();
+		if(len) {
+			_serial->read(len);
+		}
 
 		{
 			ScopedLocker l(_lock);
