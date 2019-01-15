@@ -286,7 +286,6 @@ bool CYdLidar::getDeviceHealth() {
   if (!lidarPtr) {
     return false;
   }
-
   lidarPtr->stop();
   result_t op_result;
   device_health healthinfo;
@@ -312,27 +311,33 @@ bool CYdLidar::getDeviceHealth() {
 }
 
 bool CYdLidar::getDeviceInfo() {
-
   if (!lidarPtr) {
     return false;
   }
-
   device_info devinfo;
   result_t op_result = lidarPtr->getDeviceInfo(devinfo);
-
   if (!IS_OK(op_result)) {
     fprintf(stderr, "get Device Information Error\n");
     return false;
   }
-
-  if (devinfo.model != YDlidarDriver::YDLIDAR_G2_SS_1) {
+  if (devinfo.model != YDlidarDriver::YDLIDAR_G2_SS_1 && devinfo.model != YDlidarDriver::YDLIDAR_G4) {
     printf("[YDLIDAR INFO] Current SDK does not support current lidar models[%d]\n", devinfo.model);
     return false;
   }
-
   std::string model = "G2-SS-1";
   int m_samp_rate = 5;
-  m_SampleRate = m_samp_rate;
+  switch (devinfo.model) {
+  case YDlidarDriver::YDLIDAR_G4:
+    model = "G4";
+  break;
+  case YDlidarDriver::YDLIDAR_G2_SS_1:
+    model = "G2-SS-1";
+    m_samp_rate = 5;
+    m_SampleRate = m_samp_rate;
+  break;
+  default:
+  break;
+  }
 
   Major = (uint8_t)(devinfo.firmware_version >> 8);
   Minjor = (uint8_t)(devinfo.firmware_version & 0xff);
@@ -354,13 +359,70 @@ bool CYdLidar::getDeviceInfo() {
   }
 
   printf("%s\n", serial_number.c_str());
-  printf("[YDLIDAR INFO] Current Sampling Rate : %dK\n", m_samp_rate);
-  checkCalibrationAngle(serial_number);
+  if(devinfo.model == YDlidarDriver::YDLIDAR_G2_SS_1) {
+    checkCalibrationAngle(serial_number);
+  } else {
+    checkSampleRate();
+  }
+  printf("[YDLIDAR INFO] Current Sampling Rate : %dK\n", m_SampleRate);
   checkScanFrequency();
   return true;
+}
 
 
-
+void CYdLidar::checkSampleRate() {
+  sampling_rate _rate;
+  int _samp_rate = 9;
+  int try_count;
+  node_counts = 1440;
+  each_angle = 0.25;
+  result_t ans = lidarPtr->getSamplingRate(_rate);
+  if(IS_OK(ans)) {
+    switch (m_SampleRate)
+    {
+    case 4:
+      _samp_rate = YDlidarDriver::YDLIDAR_RATE_4K;
+    break;
+    case 8:
+      _samp_rate = YDlidarDriver::YDLIDAR_RATE_8K;
+    break;
+    case 9:
+      _samp_rate = YDlidarDriver::YDLIDAR_RATE_9K;
+    break;
+    default:
+      _samp_rate = _rate.rate;
+    break;
+    }
+    while (_samp_rate != _rate.rate) {
+      ans = lidarPtr->setSamplingRate(_rate);
+      if (!IS_OK(ans)) {
+        try_count++;
+        if (try_count > 3) {
+          break;
+        }
+      }
+    }
+    switch (_rate.rate) {
+    case YDlidarDriver::YDLIDAR_RATE_4K:
+      _samp_rate = 4;
+      node_counts = 720;
+      each_angle = 0.5;
+    break;
+    case YDlidarDriver::YDLIDAR_RATE_8K:
+      node_counts = 1440;
+      each_angle = 0.25;
+      _samp_rate = 8;
+    break;
+    case YDlidarDriver::YDLIDAR_RATE_9K:
+      node_counts = 1440;
+      each_angle = 0.25;
+      _samp_rate = 9;
+    break;
+    default:
+      break;
+    }
+  }
+  m_SampleRate = _samp_rate;
 
 }
 
@@ -373,32 +435,26 @@ bool CYdLidar::checkScanFrequency() {
   float hz = 0;
   result_t ans = RESULT_FAIL;
   m_ScanFrequency += frequencyOffset;
-
   if (5.0-frequencyOffset <= m_ScanFrequency && m_ScanFrequency <= 12 +frequencyOffset) {
     ans = lidarPtr->getScanFrequency(_scan_frequency) ;
-
     if (IS_OK(ans)) {
       frequency = _scan_frequency.frequency / 100.f;
       hz = m_ScanFrequency - frequency;
-
       if (hz > 0) {
         while (hz > 0.95) {
           lidarPtr->setScanFrequencyAdd(_scan_frequency);
           hz = hz - 1.0;
         }
-
         while (hz > 0.09) {
           lidarPtr->setScanFrequencyAddMic(_scan_frequency);
           hz = hz - 0.1;
         }
-
         frequency = _scan_frequency.frequency / 100.0f;
       } else {
         while (hz < -0.95) {
           lidarPtr->setScanFrequencyDis(_scan_frequency);
           hz = hz + 1.0;
         }
-
         while (hz < -0.09) {
           lidarPtr->setScanFrequencyDisMic(_scan_frequency);
           hz = hz + 0.1;
@@ -410,14 +466,11 @@ bool CYdLidar::checkScanFrequency() {
     fprintf(stderr, "current scan frequency[%f] is out of range.",
             m_ScanFrequency - frequencyOffset);
   }
-
   ans = lidarPtr->getScanFrequency(_scan_frequency);
-
   if (IS_OK(ans)) {
     frequency = _scan_frequency.frequency / 100.0f;
     m_ScanFrequency = frequency;
   }
-
   m_ScanFrequency -= frequencyOffset;
   node_counts = m_SampleRate * 1000 / (m_ScanFrequency-0.1);
   each_angle = 360.0 / node_counts;

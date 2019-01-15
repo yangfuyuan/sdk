@@ -71,6 +71,11 @@ class YDLIDAR_API CYdLidar {
   bool checkHardware();
 
   /**
+   * @brief checkSampleRate
+   */
+  void checkSampleRate();
+
+  /**
    * @brief checkCalibrationAngle
    */
   void checkCalibrationAngle(const std::string &serialNumber);
