@@ -15,12 +15,10 @@ Release Notes
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Title      |  Version |  Data |
 | :-------- | --------:|  :--: |
-| SDK     |  2.0.0 |   2019-01-03  |
+| SDK     |  2.0.1 |   2019-01-15  |
 
 
-- [new feature] Remove other lidar model interfaces functions.
-- [new feature] fix turnOn function.
-- [new feature] Lidar supports zero offset angle adjustment.
+- [new feature] support G4 Lidar.
 
 
 
