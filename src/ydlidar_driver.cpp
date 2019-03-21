@@ -137,6 +137,7 @@ std::string format(const char *fmt, ...)
             sendCommand(LIDAR_CMD_STOP);
 
         }
+        delay(50);
 		
 		clearDTR();
 
@@ -449,6 +450,7 @@ std::string format(const char *fmt, ...)
                                 if(IS_OK(ans)){
                                     timeout_count =0;
                                     isAutoconnting = false;
+                                    local_scan[0].sync_flag = Node_NotSync;
                                     continue;
                                 }
                                 if (NULL != fd&& save_parsing){
@@ -463,6 +465,7 @@ std::string format(const char *fmt, ...)
 
                 } else {
                     timeout_count++;
+                    local_scan[0].sync_flag = Node_NotSync;
                     fprintf(stderr, "timout count: %d\n", timeout_count);
                     fflush(stderr);
                 }
@@ -500,7 +503,7 @@ std::string format(const char *fmt, ...)
         int recvPos         = 0;
         uint32_t startTs    = getms();
         uint32_t size       = (m_intensities)?sizeof(node_package):sizeof(node_packages);
-		uint8_t* recvBuffer = new uint8_t[size];
+        uint8_t* recvBuffer = new uint8_t[size];
 
         uint32_t waitTime   = 0;
         uint8_t  *packageBuffer = (m_intensities)?(uint8_t*)&package.package_Head:(uint8_t*)&packages.package_Head;
@@ -784,7 +787,8 @@ std::string format(const char *fmt, ...)
             m_node_last_time_ns = m_node_time_ns;
             m_node_time_ns = getTime()- (nowPackageNum*3 +10)*trans_delay - (nowPackageNum -1)*m_pointTime;
             if(m_node_time_ns < m_node_last_time_ns) {
-               m_node_time_ns = m_node_last_time_ns;
+              if ((m_node_last_time_ns - m_node_time_ns) < 1e9/15)
+                m_node_time_ns = m_node_last_time_ns;
             }
 
 		}
@@ -837,8 +841,8 @@ std::string format(const char *fmt, ...)
 			{
 				if(scan_node_count == 0) {
 					return RESULT_FAIL;
-				}
-                ScopedLocker l(_lock);
+				}   
+				ScopedLocker l(_lock);
 				size_t size_to_copy = min(count, scan_node_count);
 				memcpy(nodebuffer, scan_node_buf, size_to_copy*sizeof(node_info));
 				count = size_to_copy;
@@ -915,10 +919,12 @@ std::string format(const char *fmt, ...)
 
         node_info *tmpbuffer = new node_info[count];
 		for (i = (int)zero_pos; i < (int)count; i++) {
-			tmpbuffer[i-zero_pos] = nodebuffer[i];
+			tmpbuffer[i-zero_pos] = nodebuffer[i];    
+			tmpbuffer[i - zero_pos].stamp = nodebuffer[i - zero_pos].stamp;
 		}
 		for (i = 0; i < (int)zero_pos; i++) {
 			tmpbuffer[i+(int)count-zero_pos] = nodebuffer[i];
+			tmpbuffer[i + (int)count - zero_pos].stamp = nodebuffer[i + (int)count - zero_pos].stamp;
 		}
 
 		memcpy(nodebuffer, tmpbuffer, count*sizeof(node_info));
@@ -1044,9 +1050,9 @@ std::string format(const char *fmt, ...)
 			return RESULT_OK;
 		}
 
-		stop();   
-		startMotor();
-        checkTransDelay();
+		//stop();
+		startMotor();  
+		checkTransDelay();
 		{
 			ScopedLocker lock(_lock);
 			sendCommand(LIDAR_CMD_FORCE_STOP);
@@ -1136,11 +1142,12 @@ std::string format(const char *fmt, ...)
         }
 		disableDataGrabbing();
 		{
-			ScopedLocker l(_lock);
-            sendCommand(LIDAR_CMD_FORCE_STOP);
+			ScopedLocker l(_lock); 
+			sendCommand(LIDAR_CMD_FORCE_STOP);
 			sendCommand(LIDAR_CMD_STOP);
 		}
 
+		delay(30);
 		stopMotor();
 
 		return RESULT_OK;

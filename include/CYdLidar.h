@@ -28,7 +28,8 @@ class CYdLidar
     PropertyBuilderByName(int,SerialBaudrate,private)///< 设置和获取激光通讯波特率
     PropertyBuilderByName(std::string,SerialPort,private)///< 设置和获取激光端口号
 
-    PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件
+    PropertyBuilderByName(bool,EnableDebug, private)///< 设置是否开启调试把解析数据保存到文件  
+    PropertyBuilderByName(int, AbnormalCheckCount, private) ///< Maximum number of abnormal checks
 
 
 public:
@@ -60,7 +61,7 @@ public:
 	bool getDeviceHealth() const;
 
     /** Returns true if the device information is correct, If it's not*/
-    bool getDeviceInfo(int &lidar_model);
+    bool getDeviceInfo();
 
     /** Retruns true if the scan frequency is set to user's frequency is successful, If it's not*/
     bool checkScanFrequency();
@@ -84,6 +85,9 @@ protected:
       * \return false on error.
       */
     bool checkHardware();
+
+    /** returns true if the lidar data is normal, If it's not*/
+    bool checkLidarAbnormal();
 
 private:
     bool    isScanning;

@@ -116,14 +116,16 @@ int main(int argc, char * argv[])
     //unit: m
     laser.setMinRange(0.1);
     laser.setMaxRange(12.0);
-    laser.initialize();
-    while(ydlidar::ok()){
+    bool ret = laser.initialize();
+    while(ret&&ydlidar::ok()){
 		bool hardError;
         node_info nodes[2048];
         size_t count = _countof(nodes);
         if(laser.doProcessSimple(nodes, count, hardError )){
+          uint64_t start_time = nodes[0].stamp;
+          uint64_t end_time = nodes[count -1].stamp;
             if(laser.ascendScanData(nodes, count)) {
-                fprintf(stdout,"Scan received: %lu ranges\n",count);
+                fprintf(stdout,"Scan received: %lu ranges in %f(%f) HZ\n",count, 1e9/double(end_time - start_time), nodes[0].scan_frequence/10.0);
                 fflush(stdout);
             } else {
                 fprintf(stderr,"ascend Scan data failed\n");
